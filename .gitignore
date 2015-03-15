@@ -1,0 +1,5 @@
+*.obj
+/build
+/build-86
+/cmake
+/QT-demo
