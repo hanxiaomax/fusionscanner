@@ -2,7 +2,6 @@
 #undef _CRT_SECURE_NO_DEPRECATE
 #include "XnCppWrapper.h"
 #include <io/capture.hpp>
-///临时添加
 #include <iostream>
 
 using namespace std;
@@ -32,7 +31,6 @@ using namespace xn;
 //                        "<Configuration>"
 //                                "<MapOutputMode xRes=\"640\" yRes=\"480\" FPS=\"30\"/>"
 //                                "<Mirror on=\"false\"/>"
-							
 //                        "</Configuration>"
 //                "</Node>"
 //        "</ProductionNodes>"
@@ -41,15 +39,14 @@ using namespace xn;
 #define REPORT_ERROR(msg) kfusion::cuda::error ((msg), __FILE__, __LINE__)
 
 
-
-//包含了OpenNI XnCppWrapper.h中的一些数据结构
+/*OpenNI设备的一些节点和元数据*/
 struct kfusion::OpenNISource::Impl
 {
-    Context context;
-    ScriptNode scriptNode;
-    DepthGenerator depth;
-    ImageGenerator image;
-    ProductionNode node;
+    Context context;//设备上下文
+    ScriptNode scriptNode;//脚本节点
+    DepthGenerator depth;//深度生成器节点
+    ImageGenerator image;//图像生成器节点
+    ProductionNode node;//生产节点
     DepthMetaData depthMD;
     ImageMetaData imageMD;
     XnChar strError[1024];
@@ -58,15 +55,6 @@ struct kfusion::OpenNISource::Impl
     bool has_image;
 };
 
-/*无预设配置文件情况下的构造函数
-*init:
-	depth_focal_length_VGA (0.f)
-	baseline (0.f)
-	shadow_value (0)
-	no_sample_value (0)
-	pixelSize (0.0)
-	max_depth (0)
-*/
 kfusion::OpenNISource::OpenNISource() : depth_focal_length_VGA (0.f), baseline (0.f),
     shadow_value (0), no_sample_value (0), pixelSize (0.0), max_depth (0) {}
 
@@ -74,8 +62,6 @@ kfusion::OpenNISource::OpenNISource(int device) {open (device); }
 kfusion::OpenNISource::OpenNISource(const string& filename) {open (filename); }
 kfusion::OpenNISource::~OpenNISource() { release (); }
 
-
-/*打开设备*/
 void kfusion::OpenNISource::open (int device)
 {
     impl_ = cv::Ptr<Impl>( new Impl () );
@@ -84,7 +70,10 @@ void kfusion::OpenNISource::open (int device)
     mode.nXRes = XN_VGA_X_RES;
     mode.nYRes = XN_VGA_Y_RES;
     mode.nFPS = 30;
+
+	//场景分析器
 	xn::SceneAnalyzer xn_scene;
+
 
     XnStatus rc;
     rc = impl_->context.Init ();
@@ -148,8 +137,26 @@ void kfusion::OpenNISource::open (int device)
         impl_->has_image = true;
         rc = impl_->image.SetMapOutputMode (mode);
     }
-	
-	rc=xn_scene.Create(impl_->context);
+	/*场景分析器节点*/
+	rc = xn_scene.Create(impl_->context);
+	if (rc != XN_STATUS_OK)
+	{
+		std::cout << "Failed to create scene analyzer: " << xnGetStatusString(
+			rc) << endl;
+	}
+
+
+	XnPlane3D floorCoords;
+	XnPoint3D floorPoint;
+
+	xnGetFloor(xn_scene, &floorCoords);
+
+	floorPoint = floorCoords.ptPoint;
+
+	cout << floorCoords.vNormal.X << " " << floorCoords.vNormal.Y << " " << floorCoords.vNormal.Z << endl;
+	cout << floorCoords.ptPoint.X << " " << floorCoords.ptPoint.Y << " " << floorCoords.ptPoint.Z  << "\n" << endl;
+
+	//////////////////////////////////////
 
     getParams ();
 
@@ -161,9 +168,6 @@ void kfusion::OpenNISource::open (int device)
     }
 }
 
-/*打开已有的oni格式文件
-*对于实时扫描我们并不采取这种方式
-*/
 void kfusion::OpenNISource::open(const std::string& filename)
 {
     impl_ = cv::Ptr<Impl> ( new Impl () );
@@ -206,8 +210,6 @@ void kfusion::OpenNISource::open(const std::string& filename)
     getParams ();
 }
 
-
-/*析构函数调用，进行垃圾回收*/
 void kfusion::OpenNISource::release ()
 {
     if (impl_)
@@ -232,28 +234,36 @@ bool kfusion::OpenNISource::grab(cv::Mat& depth, cv::Mat& image)
     if (rc != XN_STATUS_OK)
         return printf ("Read failed: %s\n", xnGetStatusString (rc)), false;
 
+	/*获取深度数据*/
     if (impl_->has_depth)
     {
-        impl_->depth.GetMetaData (impl_->depthMD);
+        impl_->depth.GetMetaData (impl_->depthMD);//GetMetaData(DepthMetaData &metaData)
+		/*Data返回深度矩阵首元素地址，行主序，16-bit*/
         const XnDepthPixel* pDepth = impl_->depthMD.Data ();
-        int x = impl_->depthMD.FullXRes ();
-        int y = impl_->depthMD.FullYRes ();
-        cv::Mat(y, x, CV_16U, (void*)pDepth).copyTo(depth);
-		//
-		//int *s=new int[CV_MAX_DIM];
-		//cout<<cvGetDims((CvArr*)&depth,s)<<endl;
+
+
 		
-		//cout<<depth.cols<<"*"<<depth.rows<<endl;//640*480
-		//for (int r=0;r<640;r++)
-		//{
-		//	for (int c=0;c<480;c++)
-		//	{
-		//		
-		//		cout<<depth.dims<<endl;
-		//		
-		//		
-		//	}
-		//}
+		
+        int x = impl_->depthMD.FullXRes ();//480
+        int y = impl_->depthMD.FullYRes ();
+		cv::Mat m=cv::Mat(y, x, CV_16U);
+        cv::Mat(y, x, CV_16U, (void*)pDepth).copyTo(depth);//注意y在x之前，行主序
+		
+		//cout<<depth<<endl;//<<操作对于二维矩阵是成立的
+		
+		
+		
+		//cout<<"col:"<<depth.cols<<" "<<"row:"<<depth.rows<<endl;//640*480
+   		for (int ix=0;ix<x-1;ix++)
+   		{
+   			for (int iy=0;iy<y-1;iy++)
+   			{
+   				if (depth.at<ushort>(iy,ix)>1000)
+   				{
+   					depth.at<ushort>(iy,ix)=0;
+   				}
+  			}
+   		}
     }
     else
     {
@@ -278,90 +288,16 @@ bool kfusion::OpenNISource::grab(cv::Mat& depth, cv::Mat& image)
         image.release();
         printf ("no image\n");
     }
-	
+
     return impl_->has_image || impl_->has_depth;
 }
 
-//void kfusion::OpenNISource::filter(cv::Mat &depth){
-//	for (int row = 0; row < depth.rows; row++)
-//	{
-//		float* ptr = (float*)(depth.data.ptr + row * depth.step);//第row行数据的起始指针
-//		for (int col = 0; col < depth.cols; col++)
-//		{
-//			cout<<*(ptr+3*col)<<endl;
-//			cout<<*(ptr+3*col+1)<<endl;
-//			cout<<*(ptr+3*col+2)<<endl;
-//		}
-//	}
-//}
-
-
-/*重载一个公有的getParams函数*/
-//void kfusion::OpenNISource::getParams (int x)
-//{
-//	XnStatus rc = XN_STATUS_OK;
-//
-//	//max_depth = impl_->depth.GetDeviceMaxDepth ();
-//	
-//	cout<<"getParams (int x)--> max depth: "<<max_depth<<endl;
-//	rc = impl_->depth.GetRealProperty ( "ZPPS", pixelSize );  // in mm
-//	
-//	if (rc != XN_STATUS_OK)
-//	{
-//		sprintf (impl_->strError, "ZPPS failed: %s\n", xnGetStatusString (rc));
-//		REPORT_ERROR (impl_->strError);
-//	}
-//
-//	XnUInt64 depth_focal_length_SXGA_mm;   //in mm
-//	rc = impl_->depth.GetIntProperty ("ZPD", depth_focal_length_SXGA_mm);
-//	if (rc != XN_STATUS_OK)
-//	{
-//		sprintf (impl_->strError, "ZPD failed: %s\n", xnGetStatusString (rc));
-//		REPORT_ERROR (impl_->strError);
-//	}
-//
-//	XnDouble baseline_local;
-//	rc = impl_->depth.GetRealProperty ("LDDIS", baseline_local);
-//	if (rc != XN_STATUS_OK)
-//	{
-//		sprintf (impl_->strError, "ZPD failed: %s\n", xnGetStatusString (rc));
-//		REPORT_ERROR (impl_->strError);
-//	}
-//
-//	XnUInt64 shadow_value_local;
-//	rc = impl_->depth.GetIntProperty ("ShadowValue", shadow_value_local);
-//	if (rc != XN_STATUS_OK)
-//	{
-//		sprintf (impl_->strError, "ShadowValue failed: %s\n", xnGetStatusString (rc));
-//		REPORT_ERROR (impl_->strError);
-//	}
-//	shadow_value = (int)shadow_value_local;
-//
-//	XnUInt64 no_sample_value_local;
-//	rc = impl_->depth.GetIntProperty ("NoSampleValue", no_sample_value_local);
-//	if (rc != XN_STATUS_OK)
-//	{
-//		sprintf (impl_->strError, "NoSampleValue failed: %s\n", xnGetStatusString (rc));
-//		REPORT_ERROR (impl_->strError);
-//	}
-//	no_sample_value = (int)no_sample_value_local;
-//
-//
-//	// baseline from cm -> mm
-//	baseline = (float)(baseline_local * 10);
-//
-//	//focal length from mm -> pixels (valid for 1280x1024)
-//	float depth_focal_length_SXGA = static_cast<float>(depth_focal_length_SXGA_mm / pixelSize);
-//	depth_focal_length_VGA = depth_focal_length_SXGA / 2;
-//}
-
-/*原有的私有函数*/
 void kfusion::OpenNISource::getParams ()
 {
     XnStatus rc = XN_STATUS_OK;
 
-    max_depth = impl_->depth.GetDeviceMaxDepth ();//设备默认的最大深度是10000mm
-	cout<<"getParams ()--> max depth: "<<max_depth<<endl;
+    max_depth = impl_->depth.GetDeviceMaxDepth ();
+
     rc = impl_->depth.GetRealProperty ( "ZPPS", pixelSize );  // in mm
     if (rc != XN_STATUS_OK)
     {
