@@ -102,7 +102,7 @@
           </property>
           <layout class="QGridLayout" name="glviewer_Box">
            <item row="0" column="0">
-            <widget class="QWidget" name="widget" native="true">
+            <widget class="glviewer" name="widget" native="true">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
                <horstretch>0</horstretch>
@@ -213,6 +213,7 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionCam"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -231,8 +232,21 @@
     <string>重置相机</string>
    </property>
   </action>
+  <action name="actionCam">
+   <property name="text">
+    <string>cam</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>glviewer</class>
+   <extends>QWidget</extends>
+   <header>glviewer.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="mainform.qrc"/>
  </resources>

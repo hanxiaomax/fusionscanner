@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainform.ui'
 **
-** Created: Sat Mar 21 19:22:07 2015
+** Created: Mon Mar 23 20:21:10 2015
 **      by: Qt User Interface Compiler version 4.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -29,6 +29,7 @@
 #include <QtGui/QToolBox>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
+#include "glviewer.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -36,6 +37,7 @@ class Ui_mainFormClass
 {
 public:
     QAction *resetCam;
+    QAction *actionCam;
     QWidget *centralWidget;
     QGridLayout *gridLayout;
     QHBoxLayout *horizontalLayout_2;
@@ -51,7 +53,7 @@ public:
     QPushButton *pushButton_4;
     QGroupBox *groupBox_2;
     QGridLayout *glviewer_Box;
-    QWidget *widget;
+    glviewer *widget;
     QGroupBox *output;
     QGridLayout *gridLayout_4;
     QTextEdit *textEdit;
@@ -72,6 +74,8 @@ public:
         mainFormClass->resize(849, 611);
         resetCam = new QAction(mainFormClass);
         resetCam->setObjectName(QString::fromUtf8("resetCam"));
+        actionCam = new QAction(mainFormClass);
+        actionCam->setObjectName(QString::fromUtf8("actionCam"));
         centralWidget = new QWidget(mainFormClass);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         centralWidget->setEnabled(true);
@@ -139,7 +143,7 @@ public:
         glviewer_Box->setSpacing(6);
         glviewer_Box->setContentsMargins(11, 11, 11, 11);
         glviewer_Box->setObjectName(QString::fromUtf8("glviewer_Box"));
-        widget = new QWidget(groupBox_2);
+        widget = new glviewer(groupBox_2);
         widget->setObjectName(QString::fromUtf8("widget"));
         QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
         sizePolicy.setHorizontalStretch(0);
@@ -222,6 +226,7 @@ public:
         mainFormClass->setStatusBar(statusBar);
 
         menuBar->addAction(menuFile->menuAction());
+        menuFile->addAction(actionCam);
         mainToolBar->addAction(resetCam);
 
         retranslateUi(mainFormClass);
@@ -236,6 +241,7 @@ public:
     {
         mainFormClass->setWindowTitle(QApplication::translate("mainFormClass", "mainForm", 0, QApplication::UnicodeUTF8));
         resetCam->setText(QApplication::translate("mainFormClass", "\351\207\215\347\275\256\347\233\270\346\234\272", 0, QApplication::UnicodeUTF8));
+        actionCam->setText(QApplication::translate("mainFormClass", "cam", 0, QApplication::UnicodeUTF8));
         pipline_2->setTitle(QApplication::translate("mainFormClass", "\346\211\253\346\217\217-\345\273\272\346\250\241\346\265\201\346\260\264\347\272\277", 0, QApplication::UnicodeUTF8));
         pushButton->setText(QApplication::translate("mainFormClass", "\346\267\261\345\272\246\346\225\260\346\215\256", 0, QApplication::UnicodeUTF8));
         pushButton_2->setText(QApplication::translate("mainFormClass", "\350\241\250\351\235\242\351\207\215\345\273\272", 0, QApplication::UnicodeUTF8));

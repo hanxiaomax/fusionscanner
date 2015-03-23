@@ -15,10 +15,13 @@ public:
 	~mainForm();
 
 private:
-	Ui::mainFormClass ui;
+	Ui::mainFormClass *ui;
+	cv::VideoCapture mCapture;
 
 private slots:
-	
+	void on_actionCam_triggered();
+protected:
+	void timerEvent(QTimerEvent *event);
 };
 
 #endif // MAINFORM_H
