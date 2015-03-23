@@ -8,13 +8,13 @@ using namespace kfusion::cuda;
 
 static inline float deg2rad (float alpha) { return alpha * 0.017453293f; }//角度转弧度
 
-/*kfusion::KinFuParams类具体实现*/
+/*kfusion::KinFuParams类default_params()的具体实现*/
 kfusion::KinFuParams kfusion::KinFuParams::default_params()//设置默认参数
 {
     const int iters[] = {10, 5, 4, 0};
-    const int levels = sizeof(iters)/sizeof(iters[0]);
+    const int levels = sizeof(iters)/sizeof(iters[0]);//ICP迭代层数
 
-    KinFuParams p;
+    KinFuParams p;//参数结构体
 
 	//分辨率640*480
     p.cols = 640;  //pixels
@@ -48,7 +48,7 @@ kfusion::KinFuParams kfusion::KinFuParams::default_params()//设置默认参数
     return p;
 }
 
-/*KinFu类具体实现
+/*KinFu类构造函数具体实现
 * init：
 	frame_counter_(0)
 	params_(params)
@@ -201,7 +201,7 @@ bool kfusion::KinFu::operator()(const kfusion::cuda::Depth& depth, const kfusion
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // ICP
-    Affine3f affine; // cuur -> prev
+    Affine3f affine; // cur -> prev
     {
         //ScopeTime time("icp");
 #if defined USE_DEPTH
@@ -248,15 +248,7 @@ bool kfusion::KinFu::operator()(const kfusion::cuda::Depth& depth, const kfusion
 }
 
 
-/*渲染图片
-//非iteractive_mode_模式下二参数renderImage()：不传入摄像机姿态？
-*params：
-		cuda::Image& image		输入图片（引用）
-		int flag				模式：
-									mode=1		渲染无色图片
-									mode=2		渲染彩色图片
-									mode=3		双色
-*/
+/*渲染图像*/
 void kfusion::KinFu::renderImage(cuda::Image& image, int flag)
 {
     const KinFuParams& p = params_;

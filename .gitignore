@@ -2,4 +2,8 @@
 /build
 /build-86
 /cmake
-/QT-demo
+/testGL
+*.log
+*.tlog
+*.pdb
+/QT-demo/QT-demo/x64

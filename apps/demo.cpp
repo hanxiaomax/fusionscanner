@@ -9,6 +9,7 @@
 using namespace std;
 using namespace kfusion;
 
+
 struct KinFuApp
 {
 	//键盘按键处理
@@ -28,14 +29,14 @@ struct KinFuApp
 
 	/*KinFuApp主函数
 	*param：
-		OpenNISource& source
+		OpenNISource& source 数据源
 	*init:
 		exit_ (false),  iteractive_mode_(false), capture_ (source)
 	*/
     KinFuApp(OpenNISource& source) : exit_ (false),  iteractive_mode_(false), capture_ (source)
     {
         KinFuParams params = KinFuParams::default_params();//设置默认参数
-        kinfu_ = KinFu::Ptr( new KinFu(params) );//创建Kinfu对象，用只能指针分配
+        kinfu_ = KinFu::Ptr( new KinFu(params) );//创建Kinfu对象
 
         capture_.setRegistration(true);//设置点云配准
 
@@ -113,18 +114,20 @@ struct KinFuApp
             if (!has_frame)//无法取得当前帧
                 return cout << "Can't grab" << endl, false;
 
-			/**/
+			
             depth_device_.upload(depth.data, depth.step, depth.rows, depth.cols);
-
-            {
-                SampledScopeTime fps(time_ms); (void)fps;
-                has_image = kinfu(depth_device_)   ;
-            }
+			
+			{
+                SampledScopeTime fps(time_ms); 
+				(void)fps;
+                has_image = kinfu(depth_device_)   ;//kinfu算法处理，成功返回true
+				
+			}
 
             if (has_image)
                 show_raycasted(kinfu);
 
-            //show_depth(depth);//显示当前帧的深度数据
+            show_depth(depth);//显示当前帧的深度数据
             //cv::imshow("Image", image);//显示当前帧的图像
 
             if (!iteractive_mode_)//重置相机为当前帧视角
@@ -173,13 +176,6 @@ int main (int argc, char* argv[])
     OpenNISource capture;//实例化一个OpenNI数据源对象
 
     capture.open (0);//打开默认的OpenNI设备及其配置
-    //capture.open("d:/onis/20111013-224932.oni");//从文件打开配置
-    //capture.open("d:/onis/reg20111229-180846.oni");
-    //capture.open("d:/onis/white1.oni");
-    //capture.open("/media/Main/onis/20111013-224932.oni");
-    //capture.open("20111013-225218.oni");
-    //capture.open("d:/onis/20111013-224551.oni");
-    //capture.open("d:/onis/20111013-224719.oni");
 
     KinFuApp app (capture);//初始化app，参数为某个OpenNI设备
 
