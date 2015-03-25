@@ -3,8 +3,10 @@
 
 #include <QtGui/QMainWindow>
 #include "ui_mainform.h"
-#include <App.h>
-
+#include <opencv2/core/core.hpp>
+#include <kfusion/kinfu.hpp>
+#include <io/capture.hpp>
+/*using namespace kfusion;*/
 
 class mainForm : public QMainWindow
 {
@@ -13,11 +15,12 @@ class mainForm : public QMainWindow
 public:
 	mainForm(QWidget *parent = 0, Qt::WFlags flags = 0);
 	~mainForm();
-
+	
 private:
+	
+	kfusion::OpenNISource _capture;
 	Ui::mainFormClass *ui;
-	cv::VideoCapture mCapture;
-
+	
 private slots:
 	void on_actionCam_triggered();
 protected:

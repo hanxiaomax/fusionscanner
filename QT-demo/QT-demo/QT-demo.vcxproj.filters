@@ -50,9 +50,6 @@
     <ClCompile Include="GeneratedFiles\qrc_mainform.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="App.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="glviewer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -80,9 +77,6 @@
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_mainform.h">
       <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="App.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

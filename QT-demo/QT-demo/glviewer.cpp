@@ -4,7 +4,7 @@
 glviewer::glviewer(QWidget *parent):QGLWidget(parent)
 {
 	mSceneChanged = false;
-	mBgColor = QColor::fromRgb(150, 150, 150);
+	mBgColor = QColor::fromRgb(150, 150, 150);//…Ë÷√±≥æ∞…´
 
 	mOutH = 0;
 	mOutW = 0;
