@@ -16,7 +16,6 @@ signals:
 	void    imageSizeChanged( int outW, int outH );
 public slots:
 	bool    showImage( cv::Mat image ); /// Used to set the image to be viewed
-
 	                              
 protected:
 	void 	initializeGL(); /// OpenGL initialization

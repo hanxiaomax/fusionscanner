@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainform.ui'
 **
-** Created: Wed Mar 25 09:59:42 2015
+** Created: Wed Mar 25 17:06:02 2015
 **      by: Qt User Interface Compiler version 4.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -37,7 +37,7 @@ class Ui_mainFormClass
 {
 public:
     QAction *resetCam;
-    QAction *actionCam;
+    QAction *actionKinect;
     QWidget *centralWidget;
     QGridLayout *gridLayout;
     QHBoxLayout *horizontalLayout_2;
@@ -46,14 +46,18 @@ public:
     QGridLayout *pipline;
     QHBoxLayout *horizontalLayout;
     QPushButton *pushButton;
+    QPushButton *show_depBtn;
     QPushButton *pushButton_2;
     QPushButton *pushButton_3;
     QPushButton *pushButton_5;
     QSpacerItem *horizontalSpacer;
     QPushButton *pushButton_4;
     QGroupBox *groupBox_2;
-    QGridLayout *glviewer_Box;
-    glviewer *widget;
+    QGridLayout *gridLayout_2;
+    glviewer *GRBviewer;
+    glviewer *Fusionviewer;
+    glviewer *depthviewer_4;
+    glviewer *Dviewer;
     QGroupBox *output;
     QGridLayout *gridLayout_4;
     QTextEdit *textEdit;
@@ -71,11 +75,11 @@ public:
     {
         if (mainFormClass->objectName().isEmpty())
             mainFormClass->setObjectName(QString::fromUtf8("mainFormClass"));
-        mainFormClass->resize(849, 611);
+        mainFormClass->resize(849, 695);
         resetCam = new QAction(mainFormClass);
         resetCam->setObjectName(QString::fromUtf8("resetCam"));
-        actionCam = new QAction(mainFormClass);
-        actionCam->setObjectName(QString::fromUtf8("actionCam"));
+        actionKinect = new QAction(mainFormClass);
+        actionKinect->setObjectName(QString::fromUtf8("actionKinect"));
         centralWidget = new QWidget(mainFormClass);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         centralWidget->setEnabled(true);
@@ -106,6 +110,11 @@ public:
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
 
         horizontalLayout->addWidget(pushButton);
+
+        show_depBtn = new QPushButton(pipline_2);
+        show_depBtn->setObjectName(QString::fromUtf8("show_depBtn"));
+
+        horizontalLayout->addWidget(show_depBtn);
 
         pushButton_2 = new QPushButton(pipline_2);
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
@@ -139,20 +148,44 @@ public:
 
         groupBox_2 = new QGroupBox(centralWidget);
         groupBox_2->setObjectName(QString::fromUtf8("groupBox_2"));
-        glviewer_Box = new QGridLayout(groupBox_2);
-        glviewer_Box->setSpacing(6);
-        glviewer_Box->setContentsMargins(11, 11, 11, 11);
-        glviewer_Box->setObjectName(QString::fromUtf8("glviewer_Box"));
-        widget = new glviewer(groupBox_2);
-        widget->setObjectName(QString::fromUtf8("widget"));
+        gridLayout_2 = new QGridLayout(groupBox_2);
+        gridLayout_2->setSpacing(6);
+        gridLayout_2->setContentsMargins(11, 11, 11, 11);
+        gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
+        GRBviewer = new glviewer(groupBox_2);
+        GRBviewer->setObjectName(QString::fromUtf8("GRBviewer"));
         QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(widget->sizePolicy().hasHeightForWidth());
-        widget->setSizePolicy(sizePolicy);
-        widget->setMinimumSize(QSize(0, 0));
+        sizePolicy.setHeightForWidth(GRBviewer->sizePolicy().hasHeightForWidth());
+        GRBviewer->setSizePolicy(sizePolicy);
+        GRBviewer->setMinimumSize(QSize(0, 0));
 
-        glviewer_Box->addWidget(widget, 0, 0, 1, 1);
+        gridLayout_2->addWidget(GRBviewer, 1, 0, 1, 1);
+
+        Fusionviewer = new glviewer(groupBox_2);
+        Fusionviewer->setObjectName(QString::fromUtf8("Fusionviewer"));
+        sizePolicy.setHeightForWidth(Fusionviewer->sizePolicy().hasHeightForWidth());
+        Fusionviewer->setSizePolicy(sizePolicy);
+        Fusionviewer->setMinimumSize(QSize(0, 0));
+
+        gridLayout_2->addWidget(Fusionviewer, 0, 1, 1, 1);
+
+        depthviewer_4 = new glviewer(groupBox_2);
+        depthviewer_4->setObjectName(QString::fromUtf8("depthviewer_4"));
+        sizePolicy.setHeightForWidth(depthviewer_4->sizePolicy().hasHeightForWidth());
+        depthviewer_4->setSizePolicy(sizePolicy);
+        depthviewer_4->setMinimumSize(QSize(0, 0));
+
+        gridLayout_2->addWidget(depthviewer_4, 0, 0, 1, 1);
+
+        Dviewer = new glviewer(groupBox_2);
+        Dviewer->setObjectName(QString::fromUtf8("Dviewer"));
+        sizePolicy.setHeightForWidth(Dviewer->sizePolicy().hasHeightForWidth());
+        Dviewer->setSizePolicy(sizePolicy);
+        Dviewer->setMinimumSize(QSize(0, 0));
+
+        gridLayout_2->addWidget(Dviewer, 1, 1, 1, 1);
 
 
         verticalLayout->addWidget(groupBox_2);
@@ -174,7 +207,7 @@ public:
         verticalLayout->addWidget(output);
 
         verticalLayout->setStretch(0, 1);
-        verticalLayout->setStretch(1, 20);
+        verticalLayout->setStretch(1, 15);
         verticalLayout->setStretch(2, 2);
 
         horizontalLayout_2->addLayout(verticalLayout);
@@ -187,11 +220,11 @@ public:
         toolBox_2->setObjectName(QString::fromUtf8("toolBox_2"));
         page_3 = new QWidget();
         page_3->setObjectName(QString::fromUtf8("page_3"));
-        page_3->setGeometry(QRect(0, 0, 204, 287));
+        page_3->setGeometry(QRect(0, 0, 204, 343));
         toolBox_2->addItem(page_3, QString::fromUtf8("Page 1"));
         page_4 = new QWidget();
         page_4->setObjectName(QString::fromUtf8("page_4"));
-        page_4->setGeometry(QRect(0, 0, 204, 287));
+        page_4->setGeometry(QRect(0, 0, 204, 343));
         toolBox_2->addItem(page_4, QString::fromUtf8("Page 2"));
 
         verticalLayout_2->addWidget(toolBox_2);
@@ -226,12 +259,13 @@ public:
         mainFormClass->setStatusBar(statusBar);
 
         menuBar->addAction(menuFile->menuAction());
-        menuFile->addAction(actionCam);
+        menuFile->addAction(actionKinect);
         mainToolBar->addAction(resetCam);
 
         retranslateUi(mainFormClass);
+        QObject::connect(pushButton, SIGNAL(clicked()), Dviewer, SLOT(showFullScreen()));
 
-        toolBox_2->setCurrentIndex(0);
+        toolBox_2->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(mainFormClass);
@@ -241,9 +275,10 @@ public:
     {
         mainFormClass->setWindowTitle(QApplication::translate("mainFormClass", "mainForm", 0, QApplication::UnicodeUTF8));
         resetCam->setText(QApplication::translate("mainFormClass", "\351\207\215\347\275\256\347\233\270\346\234\272", 0, QApplication::UnicodeUTF8));
-        actionCam->setText(QApplication::translate("mainFormClass", "cam", 0, QApplication::UnicodeUTF8));
+        actionKinect->setText(QApplication::translate("mainFormClass", "\345\274\200\345\220\257kinect", 0, QApplication::UnicodeUTF8));
         pipline_2->setTitle(QApplication::translate("mainFormClass", "\346\211\253\346\217\217-\345\273\272\346\250\241\346\265\201\346\260\264\347\272\277", 0, QApplication::UnicodeUTF8));
-        pushButton->setText(QApplication::translate("mainFormClass", "\346\267\261\345\272\246\346\225\260\346\215\256", 0, QApplication::UnicodeUTF8));
+        pushButton->setText(QApplication::translate("mainFormClass", "RGB", 0, QApplication::UnicodeUTF8));
+        show_depBtn->setText(QApplication::translate("mainFormClass", "\346\267\261\345\272\246\346\225\260\346\215\256", 0, QApplication::UnicodeUTF8));
         pushButton_2->setText(QApplication::translate("mainFormClass", "\350\241\250\351\235\242\351\207\215\345\273\272", 0, QApplication::UnicodeUTF8));
         pushButton_3->setText(QApplication::translate("mainFormClass", "\344\270\211\347\273\264\346\250\241\345\236\213", 0, QApplication::UnicodeUTF8));
         pushButton_5->setText(QApplication::translate("mainFormClass", "\346\211\253\346\217\217\350\243\205\347\275\256", 0, QApplication::UnicodeUTF8));

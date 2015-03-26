@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainform.h'
 **
-** Created: Wed Mar 25 14:15:13 2015
+** Created: Wed Mar 25 16:53:39 2015
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -37,7 +37,7 @@ static const uint qt_meta_data_mainForm[] = {
 };
 
 static const char qt_meta_stringdata_mainForm[] = {
-    "mainForm\0\0on_actionCam_triggered()\0"
+    "mainForm\0\0on_actionKinect_triggered()\0"
 };
 
 void mainForm::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -46,7 +46,7 @@ void mainForm::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         Q_ASSERT(staticMetaObject.cast(_o));
         mainForm *_t = static_cast<mainForm *>(_o);
         switch (_id) {
-        case 0: _t->on_actionCam_triggered(); break;
+        case 0: _t->on_actionKinect_triggered(); break;
         default: ;
         }
     }

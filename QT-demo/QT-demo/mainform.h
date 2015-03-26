@@ -6,7 +6,7 @@
 #include <opencv2/core/core.hpp>
 #include <kfusion/kinfu.hpp>
 #include <io/capture.hpp>
-/*using namespace kfusion;*/
+//using namespace kfusion;
 
 class mainForm : public QMainWindow
 {
@@ -22,7 +22,8 @@ private:
 	Ui::mainFormClass *ui;
 	
 private slots:
-	void on_actionCam_triggered();
+	void on_actionKinect_triggered();
+
 protected:
 	void timerEvent(QTimerEvent *event);
 };
