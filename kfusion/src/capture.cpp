@@ -226,7 +226,7 @@ void kfusion::OpenNISource::release ()
     pixelSize = 0.0;
 }
 
-
+/*设置深度数据采集的阀值*/
 void kfusion::OpenNISource::filter(cv::Mat &depth,int xRES,int yRES,int threshold_A,int threshold_B){
 	for (size_t ix=0;ix<xRES;ix++)
 	{
@@ -240,6 +240,7 @@ void kfusion::OpenNISource::filter(cv::Mat &depth,int xRES,int yRES,int threshol
 	}
 	return;
 }
+
 
 bool kfusion::OpenNISource::grab(cv::Mat& depth, cv::Mat& image)
 {

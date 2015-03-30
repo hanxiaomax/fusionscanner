@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainform.ui'
 **
-** Created: Wed Mar 25 17:06:02 2015
+** Created: Fri Mar 27 16:33:28 2015
 **      by: Qt User Interface Compiler version 4.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -263,9 +263,8 @@ public:
         mainToolBar->addAction(resetCam);
 
         retranslateUi(mainFormClass);
-        QObject::connect(pushButton, SIGNAL(clicked()), Dviewer, SLOT(showFullScreen()));
 
-        toolBox_2->setCurrentIndex(1);
+        toolBox_2->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(mainFormClass);

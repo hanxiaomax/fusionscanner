@@ -22,7 +22,7 @@ namespace kfusion
         void release();
 
         ~OpenNISource();
-
+		
         bool grab(cv::Mat &depth, cv::Mat &image);
 
         //parameters taken from camera/oni
