@@ -30,12 +30,12 @@ kfusion::KinFuParams kfusion::KinFuParams::default_params()//设置默认参数
     p.bilateral_kernel_size = 7;     //pixels
 
 	//迭代最近点ICP参数
-    p.icp_truncate_depth_dist = 0.f;        //meters, disabled
+    p.icp_truncate_depth_dist = 0.f;        //meters, disabled //似乎过滤的是近处的数据
     p.icp_dist_thres = 0.1f;                //meters
-    p.icp_angle_thres = deg2rad(30.f); //radians
+    p.icp_angle_thres = deg2rad(30.f); //radians//参数是角度
     p.icp_iter_num.assign(iters, iters + levels);
 
-    p.tsdf_min_camera_movement = 0.f; //meters, disabled
+    p.tsdf_min_camera_movement = 0.f; //meters, disabled //进行融合的最小摄像机位移
     p.tsdf_trunc_dist = 0.04f; //meters;
     p.tsdf_max_weight = 64;   //frames
 
@@ -164,11 +164,13 @@ kfusion::Affine3f kfusion::KinFu::getCameraPose (int time) const
 
 bool kfusion::KinFu::operator()(const kfusion::cuda::Depth& depth, const kfusion::cuda::Image& /*image*/)
 {
+	//创建参数的引用
     const KinFuParams& p = params_;
-    const int LEVELS = icp_->getUsedLevelsNum();
+    const int LEVELS = icp_->getUsedLevelsNum();//设置ICP层级（由粗到细）
 
-    cuda::computeDists(depth, dists_, p.intr);
-    cuda::depthBilateralFilter(depth, curr_.depth_pyr[0], p.bilateral_kernel_size, p.bilateral_sigma_spatial, p.bilateral_sigma_depth);
+    cuda::computeDists(depth, dists_, p.intr);//cuda计算距离
+    cuda::depthBilateralFilter(depth, curr_.depth_pyr[0], p.bilateral_kernel_size, p.bilateral_sigma_spatial, p.bilateral_sigma_depth);//cuda双边滤波
+
 
     if (p.icp_truncate_depth_dist > 0)
         kfusion::cuda::depthTruncation(curr_.depth_pyr[0], p.icp_truncate_depth_dist);
@@ -201,9 +203,10 @@ bool kfusion::KinFu::operator()(const kfusion::cuda::Depth& depth, const kfusion
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // ICP
-    Affine3f affine; // cur -> prev
+    Affine3f affine; // cur -> prev//仿射变换
     {
-        //ScopeTime time("icp");
+        //ScopeTime time("icp");//该语句可以打印icp时间
+		
 #if defined USE_DEPTH
         bool ok = icp_->estimateTransform(affine, p.intr, curr_.depth_pyr, curr_.normals_pyr, prev_.depth_pyr, prev_.normals_pyr);
 #else
@@ -224,14 +227,14 @@ bool kfusion::KinFu::operator()(const kfusion::cuda::Depth& depth, const kfusion
     bool integrate = (rnorm + tnorm)/2 >= p.tsdf_min_camera_movement;
     if (integrate)
     {
-        //ScopeTime time("tsdf");
+        //ScopeTime time("tsdf");//该语句可以打印tsdf时间
         volume_->integrate(dists_, poses_.back(), p.intr);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // Ray casting
     {
-        //ScopeTime time("ray-cast-all");
+        //ScopeTime time("ray-cast-all");//该语句可以打印ray-cast-all时间
 #if defined USE_DEPTH
         volume_->raycast(poses_.back(), p.intr, prev_.depth_pyr[0], prev_.normals_pyr[0]);
         for (int i = 1; i < LEVELS; ++i)
@@ -251,7 +254,7 @@ bool kfusion::KinFu::operator()(const kfusion::cuda::Depth& depth, const kfusion
 /*渲染图像*/
 void kfusion::KinFu::renderImage(cuda::Image& image, int flag)
 {
-    const KinFuParams& p = params_;
+    const KinFuParams& p = params_;//params应该为同一个，这里是创建了它的引用。
     image.create(p.rows, flag != 3 ? p.cols : p.cols * 2);
 
 #if defined USE_DEPTH
@@ -261,16 +264,13 @@ void kfusion::KinFu::renderImage(cuda::Image& image, int flag)
 #endif
 
     if (flag <= 1 || flag > 3){
-		//cout<<flag<<endl;
         cuda::renderImage(PASS1[0], prev_.normals_pyr[0], params_.intr, params_.light_pose, image);
 	}
     else if (flag == 2){
-		//cout<<flag<<endl;
         cuda::renderTangentColors(prev_.normals_pyr[0], image);
 	}
     else /* if (flag == 3) */
     {
-		//cout<<flag<<endl;
         DeviceArray2D<RGB> i1(p.rows, p.cols, image.ptr(), image.step());
         DeviceArray2D<RGB> i2(p.rows, p.cols, image.ptr() + p.cols, image.step());
 

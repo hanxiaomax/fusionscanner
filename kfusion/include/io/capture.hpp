@@ -24,6 +24,7 @@ namespace kfusion
         ~OpenNISource();
 		
         bool grab(cv::Mat &depth, cv::Mat &image);
+		void filter(cv::Mat &depth,int xRES,int yRES,int threshold_A,int threshold_B);
 
         //parameters taken from camera/oni
         int shadow_value, no_sample_value;

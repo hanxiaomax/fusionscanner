@@ -268,7 +268,8 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionKinect"/>
+    <addaction name="ConnectKinect"/>
+    <addaction name="Scan"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -287,9 +288,17 @@
     <string>重置相机</string>
    </property>
   </action>
-  <action name="actionKinect">
+  <action name="ConnectKinect">
    <property name="text">
-    <string>开启kinect</string>
+    <string>连接kinect</string>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;连接kinect设备，完成初始化&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </action>
+  <action name="Scan">
+   <property name="text">
+    <string>开始扫描</string>
    </property>
   </action>
  </widget>

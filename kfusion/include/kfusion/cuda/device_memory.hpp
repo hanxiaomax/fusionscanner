@@ -88,13 +88,13 @@ namespace kfusion
             size_t sizeBytes() const;
 
         private:
-            /** \brief Device pointer. */
+            /** \brief Device pointer. 指向gpu设备的指针*/
             void *data_;
 
-            /** \brief Allocated size in bytes. */
+            /** \brief Allocated size in bytes. 分配内存大小*/
             size_t sizeBytes_;
 
-            /** \brief Pointer to reference counter in CPU memory. */
+            /** \brief Pointer to reference counter in CPU memory. 指向CPU内存引用计数器的指针*/
             int* refcount_;
         };
 

@@ -126,13 +126,16 @@ void kfusion::cuda::TsdfVolume::raycast(const Affine3f& camera_pose, const Intr&
     device::raycast(volume, aff, Rinv, reproj, p, n, raycast_step_factor_, gradient_delta_factor_);
 }
 
+//获取点云，返回的是一维点类型数组
 DeviceArray<Point> kfusion::cuda::TsdfVolume::fetchCloud(DeviceArray<Point>& cloud_buffer) const
 {
     enum { DEFAULT_CLOUD_BUFFER_SIZE = 10 * 1000 * 1000 };
 
+	//判断缓冲是否为空
     if (cloud_buffer.empty ())
-        cloud_buffer.create (DEFAULT_CLOUD_BUFFER_SIZE);
+        cloud_buffer.create (DEFAULT_CLOUD_BUFFER_SIZE);//分配空间
 
+	//device::Point 为float4 （x,y,z,w）
     DeviceArray<device::Point>& b = (DeviceArray<device::Point>&)cloud_buffer;
 
     device::Vec3i dims = device_cast<device::Vec3i>(dims_);
@@ -140,9 +143,9 @@ DeviceArray<Point> kfusion::cuda::TsdfVolume::fetchCloud(DeviceArray<Point>& clo
     device::Aff3f aff  = device_cast<device::Aff3f>(pose_);
 
     device::TsdfVolume volume((ushort2*)data_.ptr<ushort2>(), dims, vsz, trunc_dist_, max_weight_);
-    size_t size = extractCloud(volume, aff, b);
+    size_t size = extractCloud(volume, aff, b);//从gpu获取点云数据,返回大小
 
-    return DeviceArray<Point>((Point*)cloud_buffer.ptr(), size);
+    return DeviceArray<Point>((Point*)cloud_buffer.ptr(), size);//参数为指向internal buffer的指针
 }
 
 void kfusion::cuda::TsdfVolume::fetchNormals(const DeviceArray<Point>& cloud, DeviceArray<Normal>& normals) const

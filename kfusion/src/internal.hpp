@@ -4,7 +4,7 @@
 #include "safe_call.hpp"
 
 //#define USE_DEPTH
-
+//internal buffer£¿
 namespace kfusion
 {
     namespace device

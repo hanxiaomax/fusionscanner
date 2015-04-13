@@ -4,7 +4,7 @@
 #include <opencv2/viz/vizcore.hpp>
 #include <kfusion/kinfu.hpp>
 #include <io/capture.hpp>
-
+#include <fstream>
 
 using namespace std;
 using namespace kfusion;
@@ -55,7 +55,7 @@ struct KinFuApp
         cv::Mat display;
         //cv::normalize(depth, display, 0, 255, cv::NORM_MINMAX, CV_8U);
         depth.convertTo(display, CV_8U, 255.0/4000);
-
+		/*cout<<depth.at<ushort>(1,2)<<endl;*/
 		/*imshow是highgui提供的接口
 		在Depth窗口中显示view_host_*/
         cv::imshow("Depth", display);
@@ -88,15 +88,48 @@ struct KinFuApp
 	/*获取点云*/
     void take_cloud(KinFu& kinfu)
     {
-		/*获取点云相关*/
-        cuda::DeviceArray<Point> cloud = kinfu.tsdf().fetchCloud(cloud_buffer);
-        cv::Mat cloud_host(1, (int)cloud.size(), CV_32FC4);
+		/*获取点云相关*/ 
+        cuda::DeviceArray<Point> cloud = kinfu.tsdf().fetchCloud(cloud_buffer);//GPU内存中的一维矩阵
+		ofstream plyfile("cloud_file.ply");
+        cv::Mat cloud_host(1, (int)cloud.size(), CV_32FC4);//一维矩阵，存放无序点云(1行，n列) CV_32FC4 32位浮点4通道
         cloud.download(cloud_host.ptr<Point>());
+		if(!plyfile){
+			cout<<"open file failed!"<<endl;
+		}
+		else{
+			plyfile<<"ply"<<endl;
+			plyfile<<"format ascii 1.0"<<endl;
+			plyfile<<"comment LINGFENG generated"<<endl;
+			plyfile<<"element vertex "<<(int)cloud.size()/3<<endl;
+			plyfile<<"property float x\nproperty float y\nproperty float z"<<endl;
+			plyfile<<"end_header"<<endl;
+			//当前会打印多余的数据，形成三个面的投影
+			for (size_t i=0;i<cloud_host.cols;i++)
+			{	
+				float x=cloud_host.at<cv::Vec4f>(0,i)[0];
+				float y=cloud_host.at<cv::Vec4f>(0,i)[1];
+				float z=cloud_host.at<cv::Vec4f>(0,i)[2];
+								
+				plyfile<<x<<" "<<y<<" "<<z<<endl;			
 
+			}
+			
+			cout<<"ply write done"<<endl;
+			cout<<"size"<<cloud_host.size<<endl;
+			
+		}
+		plyfile.close();
+		
 		/*显示点云或有颜色的点云*/
+		
+
+// 		if(cv::imwrite("alpha1111.png",cloud_host)){
+// 			cout<<"saved"<<endl;
+// 		}
+		
         //viz.showWidget("cloud", cv::viz::WCloud(cloud_host));//显示点云
         viz.showWidget("cloud", cv::viz::WPaintedCloud(cloud_host));//显示有颜色的点云
-		
+		//viz.showWidget("normal",cv::viz::WCloudNormals(cloud_host,cloud_host));//显示法线（法线是否已经计算？）
     }
 
 	/*App执行函数*/
@@ -128,7 +161,7 @@ struct KinFuApp
                 show_raycasted(kinfu);
 
             show_depth(depth);//显示当前帧的深度数据
-            //cv::imshow("Image", image);//显示当前帧的图像
+            cv::imshow("Image", image);//显示当前帧的图像
 
             if (!iteractive_mode_)//重置相机为当前帧视角
                 viz.setViewerPose(kinfu.getCameraPose());
@@ -157,7 +190,7 @@ struct KinFuApp
     cv::Mat view_host_;
     cuda::Image view_device_;
     cuda::Depth depth_device_;
-    cuda::DeviceArray<Point> cloud_buffer;
+    cuda::DeviceArray<Point> cloud_buffer;//点云数据缓存
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

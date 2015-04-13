@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainform.h'
 **
-** Created: Mon Mar 30 10:37:51 2015
+** Created: Wed Apr 8 09:26:19 2015
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_mainForm[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       1,   14, // methods
+       2,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -32,12 +32,14 @@ static const uint qt_meta_data_mainForm[] = {
 
  // slots: signature, parameters, type, tag, flags
       10,    9,    9,    9, 0x08,
+      39,    9,    9,    9, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_mainForm[] = {
-    "mainForm\0\0on_actionKinect_triggered()\0"
+    "mainForm\0\0on_ConnectKinect_triggered()\0"
+    "on_Scan_triggered()\0"
 };
 
 void mainForm::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -46,7 +48,8 @@ void mainForm::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         Q_ASSERT(staticMetaObject.cast(_o));
         mainForm *_t = static_cast<mainForm *>(_o);
         switch (_id) {
-        case 0: _t->on_actionKinect_triggered(); break;
+        case 0: _t->on_ConnectKinect_triggered(); break;
+        case 1: _t->on_Scan_triggered(); break;
         default: ;
         }
     }
@@ -85,9 +88,9 @@ int mainForm::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 1)
+        if (_id < 2)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 1;
+        _id -= 2;
     }
     return _id;
 }

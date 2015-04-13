@@ -159,13 +159,14 @@ void kfusion::OpenNISource::open (int device)
 	//////////////////////////////////////
 
     getParams ();
-
+	cout<<"ÒÑÁ¬½Ó"<<endl;
     _status = impl_->context.StartGeneratingAll ();
     if (_status != XN_STATUS_OK)
     {
         sprintf (impl_->strError, "Start failed: %s\n", xnGetStatusString (_status));
         REPORT_ERROR (impl_->strError);
     }
+
 }
 
 void kfusion::OpenNISource::open(const std::string& filename)

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainform.ui'
 **
-** Created: Fri Mar 27 16:33:28 2015
+** Created: Tue Apr 7 10:28:17 2015
 **      by: Qt User Interface Compiler version 4.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -37,7 +37,8 @@ class Ui_mainFormClass
 {
 public:
     QAction *resetCam;
-    QAction *actionKinect;
+    QAction *ConnectKinect;
+    QAction *Scan;
     QWidget *centralWidget;
     QGridLayout *gridLayout;
     QHBoxLayout *horizontalLayout_2;
@@ -78,8 +79,10 @@ public:
         mainFormClass->resize(849, 695);
         resetCam = new QAction(mainFormClass);
         resetCam->setObjectName(QString::fromUtf8("resetCam"));
-        actionKinect = new QAction(mainFormClass);
-        actionKinect->setObjectName(QString::fromUtf8("actionKinect"));
+        ConnectKinect = new QAction(mainFormClass);
+        ConnectKinect->setObjectName(QString::fromUtf8("ConnectKinect"));
+        Scan = new QAction(mainFormClass);
+        Scan->setObjectName(QString::fromUtf8("Scan"));
         centralWidget = new QWidget(mainFormClass);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         centralWidget->setEnabled(true);
@@ -259,7 +262,8 @@ public:
         mainFormClass->setStatusBar(statusBar);
 
         menuBar->addAction(menuFile->menuAction());
-        menuFile->addAction(actionKinect);
+        menuFile->addAction(ConnectKinect);
+        menuFile->addAction(Scan);
         mainToolBar->addAction(resetCam);
 
         retranslateUi(mainFormClass);
@@ -274,7 +278,11 @@ public:
     {
         mainFormClass->setWindowTitle(QApplication::translate("mainFormClass", "mainForm", 0, QApplication::UnicodeUTF8));
         resetCam->setText(QApplication::translate("mainFormClass", "\351\207\215\347\275\256\347\233\270\346\234\272", 0, QApplication::UnicodeUTF8));
-        actionKinect->setText(QApplication::translate("mainFormClass", "\345\274\200\345\220\257kinect", 0, QApplication::UnicodeUTF8));
+        ConnectKinect->setText(QApplication::translate("mainFormClass", "\350\277\236\346\216\245kinect", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        ConnectKinect->setToolTip(QApplication::translate("mainFormClass", "<html><head/><body><p>\350\277\236\346\216\245kinect\350\256\276\345\244\207\357\274\214\345\256\214\346\210\220\345\210\235\345\247\213\345\214\226</p></body></html>", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+        Scan->setText(QApplication::translate("mainFormClass", "\345\274\200\345\247\213\346\211\253\346\217\217", 0, QApplication::UnicodeUTF8));
         pipline_2->setTitle(QApplication::translate("mainFormClass", "\346\211\253\346\217\217-\345\273\272\346\250\241\346\265\201\346\260\264\347\272\277", 0, QApplication::UnicodeUTF8));
         pushButton->setText(QApplication::translate("mainFormClass", "RGB", 0, QApplication::UnicodeUTF8));
         show_depBtn->setText(QApplication::translate("mainFormClass", "\346\267\261\345\272\246\346\225\260\346\215\256", 0, QApplication::UnicodeUTF8));

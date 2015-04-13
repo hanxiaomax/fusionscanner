@@ -9,6 +9,7 @@ namespace kfusion
 {
     namespace cuda
     {
+		///具体实现在本文件内
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /** \brief @b DeviceArray class
           *
@@ -230,12 +231,13 @@ namespace kfusion
 }
 
 /////////////////////  Inline implementations of DeviceArray ////////////////////////////////////////////
-
-template<class T> inline kfusion::cuda::DeviceArray<T>::DeviceArray() {}
+////////////////////   DeviceArray的具体实现 ////////////////////////////////////////////////////////////
+///////////////////////重载父类DeviceMemory的构造函数////////////////////////////////////////////////////
+template<class T> inline kfusion::cuda::DeviceArray<T>::DeviceArray() {}//默认构造函数
 template<class T> inline kfusion::cuda::DeviceArray<T>::DeviceArray(size_t size) : DeviceMemory(size * elem_size) {}
 template<class T> inline kfusion::cuda::DeviceArray<T>::DeviceArray(T *ptr, size_t size) : DeviceMemory(ptr, size * elem_size) {}
 template<class T> inline kfusion::cuda::DeviceArray<T>::DeviceArray(const DeviceArray& other) : DeviceMemory(other) {}
-template<class T> inline kfusion::cuda::DeviceArray<T>& kfusion::cuda::DeviceArray<T>::operator=(const DeviceArray& other)
+template<class T> inline kfusion::cuda::DeviceArray<T>& kfusion::cuda::DeviceArray<T>::operator=(const DeviceArray& other)//拷贝构造函数
 { DeviceMemory::operator=(other); return *this; }
 
 template<class T> inline void kfusion::cuda::DeviceArray<T>::create(size_t size)
@@ -263,7 +265,7 @@ template<class T> template<class A> inline void kfusion::cuda::DeviceArray<T>::u
 template<class T> template<class A> inline void kfusion::cuda::DeviceArray<T>::download(std::vector<T, A>& data) const { data.resize(size()); if (!data.empty()) download(&data[0]); }
 
 /////////////////////  Inline implementations of DeviceArray2D ////////////////////////////////////////////
-
+////////////////////   DeviceArray2D 的具体实现 ////////////////////////////////////////////////////////////
 template<class T> inline kfusion::cuda::DeviceArray2D<T>::DeviceArray2D() {}
 template<class T> inline kfusion::cuda::DeviceArray2D<T>::DeviceArray2D(int rows, int cols) : DeviceMemory2D(rows, cols * elem_size) {}
 template<class T> inline kfusion::cuda::DeviceArray2D<T>::DeviceArray2D(int rows, int cols, void *data, size_t stepBytes) : DeviceMemory2D(rows, cols * elem_size, data, stepBytes) {}

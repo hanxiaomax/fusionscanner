@@ -6,6 +6,7 @@
 #include <opencv2/core/core.hpp>
 #include <kfusion/kinfu.hpp>
 #include <io/capture.hpp>
+
 using namespace kfusion;
 
 class mainForm : public QMainWindow
@@ -18,18 +19,16 @@ public:
 	
 private:
 	
-	OpenNISource _capture;
-	KinFu::Ptr kinfu_;
-	cv::Mat view_host_;
 	Ui::mainFormClass *ui;
-	cuda::Image view_device_;
-	cuda::Depth depth_device_;
-	cuda::DeviceArray<Point> cloud_buffer;
+	OpenNISource _capture;
 	
-
 private slots:
-	void on_actionKinect_triggered();
+	void on_ConnectKinect_triggered();
+	void on_Scan_triggered();
 
+private:
+	void init_gpu_device();
+	KinFu & init_fusion();
 protected:
 	void timerEvent(QTimerEvent *event);
 	void show_raycasted(KinFu& kinfu);
