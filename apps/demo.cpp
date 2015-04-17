@@ -5,6 +5,7 @@
 #include <kfusion/kinfu.hpp>
 #include <io/capture.hpp>
 #include <fstream>
+#include <io/CloudIO.h>
 
 using namespace std;
 using namespace kfusion;
@@ -90,43 +91,27 @@ struct KinFuApp
     {
 		/*获取点云相关*/ 
         cuda::DeviceArray<Point> cloud = kinfu.tsdf().fetchCloud(cloud_buffer);//GPU内存中的一维矩阵
-		ofstream plyfile("cloud_file.ply");
         cv::Mat cloud_host(1, (int)cloud.size(), CV_32FC4);//一维矩阵，存放无序点云(1行，n列) CV_32FC4 32位浮点4通道
         cloud.download(cloud_host.ptr<Point>());
-		if(!plyfile){
-			cout<<"open file failed!"<<endl;
-		}
-		else{
-			plyfile<<"ply"<<endl;
-			plyfile<<"format ascii 1.0"<<endl;
-			plyfile<<"comment LINGFENG generated"<<endl;
-			plyfile<<"element vertex "<<(int)cloud.size()/3<<endl;
-			plyfile<<"property float x\nproperty float y\nproperty float z"<<endl;
-			plyfile<<"end_header"<<endl;
-			//当前会打印多余的数据，形成三个面的投影
-			for (size_t i=0;i<cloud_host.cols;i++)
-			{	
-				float x=cloud_host.at<cv::Vec4f>(0,i)[0];
-				float y=cloud_host.at<cv::Vec4f>(0,i)[1];
-				float z=cloud_host.at<cv::Vec4f>(0,i)[2];
-								
-				plyfile<<x<<" "<<y<<" "<<z<<endl;			
-
-			}
-			
-			cout<<"ply write done"<<endl;
-			cout<<"size"<<cloud_host.size<<endl;
-			
-		}
-		plyfile.close();
 		
+
+		/*把点云数据写入ply文件*/
+		{
+			ScopeTime st("ply writer");
+			PLYFilewriter PLYw;
+			PLYw .write("cloud_file.ply",cloud);
+		}
+		
+		/*把点云数据写入pcd文件*/
+		{
+			ScopeTime st("pcd writer");
+			PCDFilewriter PCDw;
+			PCDw.write("cloud_file.pcd",cloud);
+		}
+		
+
 		/*显示点云或有颜色的点云*/
-		
 
-// 		if(cv::imwrite("alpha1111.png",cloud_host)){
-// 			cout<<"saved"<<endl;
-// 		}
-		
         //viz.showWidget("cloud", cv::viz::WCloud(cloud_host));//显示点云
         viz.showWidget("cloud", cv::viz::WPaintedCloud(cloud_host));//显示有颜色的点云
 		//viz.showWidget("normal",cv::viz::WCloudNormals(cloud_host,cloud_host));//显示法线（法线是否已经计算？）
