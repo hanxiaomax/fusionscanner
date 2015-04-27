@@ -6,11 +6,12 @@ namespace kfusion
 {
     namespace cuda
     {
+		/*截断符号距离函数*/
         class KF_EXPORTS TsdfVolume
         {
         public:
             TsdfVolume(const cv::Vec3i& dims);
-            virtual ~TsdfVolume();
+            virtual ~TsdfVolume(); 
 
             void create(const Vec3i& dims);
 
@@ -23,19 +24,19 @@ namespace kfusion
             Vec3f getSize() const;
             void setSize(const Vec3f& size);
 
-            float getTruncDist() const;
-            void setTruncDist(float distance);
+            float getTruncDist() const;//获取截断距离
+            void setTruncDist(float distance);//设置截断距离
 
-            int getMaxWeight() const;
-            void setMaxWeight(int weight);
+            int getMaxWeight() const;//获取最大重量
+            void setMaxWeight(int weight);//获取最大重量
 
-            Affine3f getPose() const;
-            void setPose(const Affine3f& pose);
+            Affine3f getPose() const;//获取姿态
+            void setPose(const Affine3f& pose);//设置姿态
 
-            float getRaycastStepFactor() const;
+            float getRaycastStepFactor() const;//获取raycast步长因子
             void setRaycastStepFactor(float factor);
 
-            float getGradientDeltaFactor() const;
+            float getGradientDeltaFactor() const;//获取梯度
             void setGradientDeltaFactor(float factor);
 
             Vec3i getGridOrigin() const;
@@ -43,15 +44,17 @@ namespace kfusion
 
             virtual void clear();
             virtual void applyAffine(const Affine3f& affine);
-            virtual void integrate(const Dists& dists, const Affine3f& camera_pose, const Intr& intr);
-            virtual void raycast(const Affine3f& camera_pose, const Intr& intr, Depth& depth, Normals& normals);
+            virtual void integrate(const Dists& dists, const Affine3f& camera_pose, const Intr& intr);//融合
+            virtual void raycast(const Affine3f& camera_pose, const Intr& intr, Depth& depth, Normals& normals);//raycast
             virtual void raycast(const Affine3f& camera_pose, const Intr& intr, Cloud& points, Normals& normals);
 
             void swap(CudaData& data);
 
-            DeviceArray<Point> fetchCloud(DeviceArray<Point>& cloud_buffer) const;
-            void fetchNormals(const DeviceArray<Point>& cloud, DeviceArray<Normal>& normals) const;
+            DeviceArray<Point> fetchCloud(DeviceArray<Point>& cloud_buffer) const;//获取点云
+            DeviceArray<Point> fetchNormals(const DeviceArray<Point>& cloud, DeviceArray<Normal>& normals) const;//获取法线
 
+
+			//half是什么东西？
             struct Entry
             {
                 typedef unsigned short half;
@@ -59,6 +62,7 @@ namespace kfusion
                 half tsdf;
                 unsigned short weight;
 
+				//这两个函数均没有具体实现
                 static float half2float(half value);
                 static half float2half(float value);
             };

@@ -148,10 +148,13 @@ DeviceArray<Point> kfusion::cuda::TsdfVolume::fetchCloud(DeviceArray<Point>& clo
     return DeviceArray<Point>((Point*)cloud_buffer.ptr(), size);//参数为指向internal buffer的指针
 }
 
-void kfusion::cuda::TsdfVolume::fetchNormals(const DeviceArray<Point>& cloud, DeviceArray<Normal>& normals) const
+
+
+/*获取法线，但是无返回值*/
+DeviceArray<Point> kfusion::cuda::TsdfVolume::fetchNormals(const DeviceArray<Point>& cloud, DeviceArray<Normal>& normals) const
 {
     normals.create(cloud.size());
-    DeviceArray<device::Point>& c = (DeviceArray<device::Point>&)cloud;
+    DeviceArray<device::Point>& c = (DeviceArray<device::Point>&)cloud;//强制转换一下矩阵的格式
 
     device::Vec3i dims = device_cast<device::Vec3i>(dims_);
     device::Vec3f vsz  = device_cast<device::Vec3f>(getVoxelSize());
@@ -160,4 +163,6 @@ void kfusion::cuda::TsdfVolume::fetchNormals(const DeviceArray<Point>& cloud, De
 
     device::TsdfVolume volume((ushort2*)data_.ptr<ushort2>(), dims, vsz, trunc_dist_, max_weight_);
     device::extractNormals(volume, c, aff, Rinv, gradient_delta_factor_, (float4*)normals.ptr());
+
+	return DeviceArray<Normal>((Point*)normals.ptr(), cloud.size());//参数为指向internal buffer的指针
 }

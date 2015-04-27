@@ -26,6 +26,10 @@ struct KinFuApp
 
         if(event.code == 'i' || event.code == 'I')
             kinfu.iteractive_mode_ = !kinfu.iteractive_mode_;//交互模式开关
+
+		if(event.code=='w' || event.code =='W')//把点云写入文件
+			kinfu.take_cloud(*kinfu.kinfu_,true);
+		
     }
 
 	/*KinFuApp主函数
@@ -87,34 +91,48 @@ struct KinFuApp
     }
 
 	/*获取点云*/
-    void take_cloud(KinFu& kinfu)
+    void take_cloud(KinFu& kinfu,bool writetofile=false)
     {
 		/*获取点云相关*/ 
         cuda::DeviceArray<Point> cloud = kinfu.tsdf().fetchCloud(cloud_buffer);//GPU内存中的一维矩阵
-        cv::Mat cloud_host(1, (int)cloud.size(), CV_32FC4);//一维矩阵，存放无序点云(1行，n列) CV_32FC4 32位浮点4通道
-        cloud.download(cloud_host.ptr<Point>());
-		
+		cuda::DeviceArray<Point> normal = kinfu.tsdf().fetchNormals(cloud,normal_buffer);//传入的是cloud不是cloud_buffer，后者无法正确download
 
-		/*把点云数据写入ply文件*/
+
+
+        cv::Mat cloud_host(1, (int)cloud.size(), CV_32FC4);//一维矩阵，存放无序点云(1行，n列) CV_32FC4 32位浮点4通道
+		cv::Mat normal_host(1, (int)cloud.size(), CV_32FC4);
+
+		
+        cloud.download(cloud_host.ptr<Point>());
+		normal.download(normal_host.ptr<Normal>());
+		
+		InfoBox infobox("take_cloud");
+		infobox.printInfo("点云获取:",InfoBox::SUC);
+
+		if (writetofile)
 		{
-			ScopeTime st("ply writer");
-			PLYFilewriter PLYw;
-			PLYw .write("cloud_file.ply",cloud);
+			/*把点云数据写入ply文件*/
+			{
+				ScopeTime st("ply writer");
+				PLYFilewriter PLYw;
+				PLYw .write("cloud_file.ply",cloud);
+			}
+
+			/*把点云数据写入pcd文件*/
+			{
+				ScopeTime st("pcd writer");
+				PCDFilewriter PCDw;
+				PCDw.write("cloud_file.pcd",cloud);
+			}
 		}
 		
-		/*把点云数据写入pcd文件*/
-		{
-			ScopeTime st("pcd writer");
-			PCDFilewriter PCDw;
-			PCDw.write("cloud_file.pcd",cloud);
-		}
 		
 
 		/*显示点云或有颜色的点云*/
 
         //viz.showWidget("cloud", cv::viz::WCloud(cloud_host));//显示点云
         viz.showWidget("cloud", cv::viz::WPaintedCloud(cloud_host));//显示有颜色的点云
-		//viz.showWidget("normal",cv::viz::WCloudNormals(cloud_host,cloud_host));//显示法线（法线是否已经计算？）
+		viz.showWidget("normal",cv::viz::WCloudNormals(cloud_host,normal_host));//显示法线（法线是否已经计算？）
     }
 
 	/*App执行函数*/
@@ -157,6 +175,7 @@ struct KinFuApp
             switch(key)
             {
             case 't': case 'T' : take_cloud(kinfu); break;
+			case 'w':case'W':take_cloud(kinfu,true);break;
             case 'i': case 'I' : iteractive_mode_ = !iteractive_mode_; break;//切换交互模式
             case 27: case 32: exit_ = true; break;
             }
@@ -176,6 +195,8 @@ struct KinFuApp
     cuda::Image view_device_;
     cuda::Depth depth_device_;
     cuda::DeviceArray<Point> cloud_buffer;//点云数据缓存
+
+	cuda::DeviceArray<Normal> normal_buffer;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

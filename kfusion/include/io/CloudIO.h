@@ -11,7 +11,7 @@ class CloudWriter
 {
 public:
 	CloudWriter(void);//没有函数体，因为函数体在cpp文件中定义了。
-	virtual ~CloudWriter(void);
+	virtual ~CloudWriter(void);//基类的析构函数要是虚函数，构造函数不能为虚
 public:
 	
 	virtual int write(const string &file_name,cuda::DeviceArray<Point> &cloud)=0;//不能给出有意义的实现，定义为虚函数，否则出现LINK2001，虚函数没有实现
@@ -21,11 +21,12 @@ public:
 class PCDFilewriter:public CloudWriter{
 
 public:
-	PCDFilewriter():CloudWriter(){};//必须有函数体，因为没有在.cpp文件中定义，否则出现LINK2019,虚函数没有实现
+	PCDFilewriter():CloudWriter(),infobox("PCDFilewriter"){};//必须有函数体，因为没有在.cpp文件中定义，否则出现LINK2019,虚函数没有实现
 	~PCDFilewriter(){};
 private:
 	string headerGenerator(cuda::DeviceArray<Point> &cloud);//生成header字符串
 	int writePoint(cuda::DeviceArray<Point> &cloud,std::ofstream& fs);//写入点
+	InfoBox infobox;//创建通知处理器
 public:
 	virtual int write(const string &file_name,cuda::DeviceArray<Point> &cloud);
 	
@@ -34,11 +35,12 @@ public:
 class PLYFilewriter:public CloudWriter{
 
 public:
-	PLYFilewriter():CloudWriter(){};
+	PLYFilewriter():CloudWriter(),infobox("PLYFilewriter"){};
 	~PLYFilewriter(){};
 private:
 	string headerGenerator(cuda::DeviceArray<Point> &cloud);//生成header字符串
 	int writePoint(cuda::DeviceArray<Point> &cloud,std::ofstream& fs);//写入点
+	InfoBox infobox;
 public:
 	virtual int write(const string &file_name,cuda::DeviceArray<Point> &cloud);
 };

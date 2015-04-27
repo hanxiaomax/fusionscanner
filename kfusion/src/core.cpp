@@ -229,3 +229,21 @@ kf::ScopeTime::~ScopeTime()
     double time_ms =  ((double)cv::getTickCount() - start)*1000.0/cv::getTickFrequency();
     std::cout << "Time(" << name << ") = " << time_ms << "ms" << std::endl;
 }
+
+
+/*通知生成器具体实现*/
+void kf::InfoBox::printInfo(const string info,int infotype)//定义中不再定义默认参数
+{
+	switch (infotype)
+	{
+	case INFO:
+		cout<<"<"<<name<<">\t"<<"[通知]\t"<<info<<endl;break;
+	case ERR:
+		cout<<"<"<<name<<">\t"<<"[错误]\t"<<info<<endl;break;
+	case SUC:
+		cout<<"<"<<name<<">\t"<<"[成功]\t"<<info<<endl;break;
+	default:
+		return;
+	}
+
+}

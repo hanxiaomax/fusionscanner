@@ -6,7 +6,8 @@
 #include <opencv2/core/affine.hpp>
 #include <opencv2/viz/vizcore.hpp>
 #include <iosfwd>
-
+#include <string>
+using namespace std;
 struct CUevent_st;
 
 namespace kfusion
@@ -73,6 +74,7 @@ namespace kfusion
 
     inline float deg2rad (float alpha) { return alpha * 0.017453293f; }//角度转弧度弧度
 
+	/*计算并输出某段代码耗时*/
     struct KF_EXPORTS ScopeTime
     {
         const char* name;
@@ -80,6 +82,7 @@ namespace kfusion
         ScopeTime(const char *name);
         ~ScopeTime();
     };
+
 
     struct KF_EXPORTS SampledScopeTime
     {
@@ -95,5 +98,23 @@ namespace kfusion
         double& time_ms_;
         double start;
     };
+	/*全局通知生成器*/
+	class InfoBox
+	{
+		public:
+			InfoBox(){};
+			InfoBox(const char *_name):name(_name){};
+			~InfoBox(){};
+		public:
+			enum{
+				ERR=0,
+				SUC=1,
+				INFO=2
+			};
+		private:
+			const char *name;
+		public:
+			void printInfo(const string info,int infotype=INFO);
+	};
 
 }
