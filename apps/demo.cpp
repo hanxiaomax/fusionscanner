@@ -109,20 +109,22 @@ struct KinFuApp
 		InfoBox infobox("take_cloud");
 		infobox.printInfo("点云获取:",InfoBox::SUC);
 
+
+
 		if (writetofile)
 		{
 			/*把点云数据写入ply文件*/
 			{
 				ScopeTime st("ply writer");
 				PLYFilewriter PLYw;
-				PLYw .write("cloud_file.ply",cloud);
+				PLYw .write("cloud_file.ply",cloud,normal);
 			}
 
 			/*把点云数据写入pcd文件*/
 			{
 				ScopeTime st("pcd writer");
 				PCDFilewriter PCDw;
-				PCDw.write("cloud_file.pcd",cloud);
+				PCDw.write("cloud_file.pcd",cloud,normal);
 			}
 		}
 		
