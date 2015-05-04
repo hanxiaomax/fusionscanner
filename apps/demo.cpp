@@ -4,9 +4,8 @@
 #include <opencv2/viz/vizcore.hpp>
 #include <kfusion/kinfu.hpp>
 #include <io/capture.hpp>
+#include <kfusion/CloudIO.h>
 #include <fstream>
-#include <io/CloudIO.h>
-
 using namespace std;
 using namespace kfusion;
 
@@ -117,15 +116,16 @@ struct KinFuApp
 			{
 				ScopeTime st("ply writer");
 				PLYFilewriter PLYw;
-				PLYw .write("cloud_file.ply",cloud,normal);
+				PLYw .write("cloud_file.ply",cloud);
+				PLYw .write("cloud_file-n.ply",cloud,normal);
 			}
 
-			/*把点云数据写入pcd文件*/
-			{
-				ScopeTime st("pcd writer");
-				PCDFilewriter PCDw;
-				PCDw.write("cloud_file.pcd",cloud,normal);
-			}
+// 			/*把点云数据写入pcd文件*/
+// 			{
+// 				ScopeTime st("pcd writer");
+// 				PCDFilewriter PCDw;
+// 				PCDw.write("cloud_file.pcd",cloud,normal);
+// 			}
 		}
 		
 		

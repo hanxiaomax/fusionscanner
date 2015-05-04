@@ -1,5 +1,7 @@
 #include "device.hpp"
 #include "texture_binder.hpp"
+#include <iostream>
+
 
 using namespace kfusion::device;
 
@@ -263,6 +265,7 @@ namespace kfusion
                         float3 vertex = ray_org + ray_dir * Ts;
                         float3 normal = compute_normal(vertex);
 
+						
                         if (!isnan(normal.x * normal.y * normal.z))
                         {
                             normal = Rinv * normal;

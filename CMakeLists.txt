@@ -7,7 +7,7 @@ if (DEFINED CMAKE_BUILD_TYPE)
 endif()
 
 # ---[ Solution name
-project(kfusion C CXX)
+project(fusionScanner C CXX)
 
 # ---[ utility
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules/")
@@ -37,5 +37,5 @@ endif()
 
 warnings_disable(CMAKE_CXX_FLAGS /wd4985)
 
-add_subdirectory(kfusion)
 add_subdirectory(apps)
+add_subdirectory(kfusion)
