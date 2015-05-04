@@ -165,8 +165,8 @@ struct KinFuApp
             if (has_image)
                 show_raycasted(kinfu);
 
-            show_depth(depth);//显示当前帧的深度数据
-            cv::imshow("Image", image);//显示当前帧的图像
+            //show_depth(depth);//显示当前帧的深度数据
+            //cv::imshow("Image", image);//显示当前帧的图像
 
             if (!iteractive_mode_)//重置相机为当前帧视角
                 viz.setViewerPose(kinfu.getCameraPose());
