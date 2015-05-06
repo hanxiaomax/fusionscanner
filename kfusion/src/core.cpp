@@ -213,6 +213,7 @@ kf::SampledScopeTime::~SampledScopeTime()
         time_ms_ = 0.0;
     }
     ++i_;
+	cout<<time_ms_<<" "<<i_<<endl;
 }
 
 double kf::SampledScopeTime::getTime()

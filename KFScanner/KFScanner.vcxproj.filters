@@ -53,6 +53,9 @@
     <ClCompile Include="glViewer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="fusionScanner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="mainform.h">
@@ -70,6 +73,9 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="glViewer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fusionScanner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -164,7 +164,7 @@ string PCDFilewriter::headerGenerator(cuda::DeviceArray<Point> &cloud,bool withN
 		oss<<"\nFIELDS x y z";
 		oss<<"\nSIZE 4 4 4 4 4 4";
 		oss<<"\nTYPE F F F F F F";
-		oss<<"\nCOUNT 1 1 1 1 1 1"
+		oss<<"\nCOUNT 1 1 1 1 1 1";
 	}
 	
 	

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <kfusion/kinfu.hpp>
-#include <pcl/io/ply_io.h>
+//#include <pcl/io/ply_io.h>
 
 
 /*点云文件写操作基类*/

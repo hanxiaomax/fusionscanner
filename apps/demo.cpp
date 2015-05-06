@@ -85,6 +85,7 @@ struct KinFuApp
 
         view_host_.create(view_device_.rows(), view_device_.cols(), CV_8UC4);//创建矩阵储存像素
         view_device_.download(view_host_.ptr<void>(), view_host_.step);
+		//cout<<view_host_.cols<<" "<<view_host_.rows<<endl;
 
         cv::imshow("Scene", view_host_);//在Scene窗口中显示view_host_
     }
@@ -140,14 +141,15 @@ struct KinFuApp
 	/*App执行函数*/
     bool execute()
     {
-        KinFu& kinfu = *kinfu_;
+        
         cv::Mat depth, image;//存放深度数据和图像
         double time_ms = 0;
         bool has_image = false;
-
+		
 		/*循环处理每一帧数据*/
         for (int i = 0; !exit_ && !viz.wasStopped(); ++i)
         {
+			KinFu& kinfu = *kinfu_;
             bool has_frame = capture_.grab(depth, image);//从source获取深度和图像
             if (!has_frame)//无法取得当前帧
                 return cout << "Can't grab" << endl, false;
