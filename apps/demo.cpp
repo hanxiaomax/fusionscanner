@@ -117,15 +117,15 @@ struct KinFuApp
 				ScopeTime st("ply writer");
 				PLYFilewriter PLYw;
 				PLYw .write("cloud_file.ply",cloud);
-				PLYw .write("cloud_file-n.ply",cloud,normal);
+				//PLYw .write("cloud_file-n.ply",cloud,normal);
 			}
 
 // 			/*把点云数据写入pcd文件*/
-// 			{
-// 				ScopeTime st("pcd writer");
-// 				PCDFilewriter PCDw;
-// 				PCDw.write("cloud_file.pcd",cloud,normal);
-// 			}
+			{
+				ScopeTime st("pcd writer");
+				PCDFilewriter PCDw;
+				PCDw.write("cloud_file.pcd",cloud,normal);
+			}
 		}
 		
 		
