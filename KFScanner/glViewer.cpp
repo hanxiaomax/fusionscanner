@@ -1,6 +1,6 @@
 #include "glViewer.h"
 #include <opencv2/core/core.hpp>
-
+#include <iostream>
 glViewer::glViewer(QWidget *parent):QGLWidget(parent)
 {
 	mSceneChanged = false;
@@ -135,15 +135,28 @@ bool glViewer::showImage( cv::Mat image )
 	mImgRatio = (float)image.cols/(float)image.rows;
 
 	if( mOrigImage.channels() == 3)
-		mRenderQtImg = QImage((const unsigned char*)(mOrigImage.data),
+	{
+		mRenderQtImg = QImage((const unsigned char*)(mOrigImage.data),//逗号
 		mOrigImage.cols, mOrigImage.rows,
-		mOrigImage.step, QImage::Format_RGB888).rgbSwapped();
+		mOrigImage.step, QImage::Format_RGB888).rgbSwapped();// QImage::Format_RGB888，存入格式为R, G, B 对应 0,1,2
+	}
 	else if( mOrigImage.channels() == 1)
+	{
 		mRenderQtImg = QImage((const unsigned char*)(mOrigImage.data),
 		mOrigImage.cols, mOrigImage.rows,
-		mOrigImage.step, QImage::Format_Indexed8);
+		mOrigImage.step, QImage::Format_Indexed8);//QImage::Format_Indexed8，需要设定颜色表，QVector<QRgb>
+	}
+	else if (mOrigImage.channels() == 4)
+	{
+		mRenderQtImg = QImage((const unsigned char*)(mOrigImage.data),//逗号
+			mOrigImage.cols, mOrigImage.rows,
+			mOrigImage.step, QImage::Format_RGB32);// QImage::Format_RGB888，存入格式为R, G, B 对应 0,1,2
+	}
 	else
+	{
+		//std::cout<<"！"<<std::endl;
 		return false;
+	}
 
 	mRenderQtImg = QGLWidget::convertToGLFormat(mRenderQtImg);
 

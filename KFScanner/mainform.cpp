@@ -64,7 +64,12 @@ void mainform::timerEvent(QTimerEvent *event)
 // 		ui->init_viewer->showImage(frame);
 // 	}
 	_scanner->update();
-	//ui->init_viewer->showImage(_scanner->view_host_);
-	ui->init_viewer->showImage(_scanner->image );
-	cv::imshow("Scene", _scanner->view_host_);
+	/*
+	view_host_为4通道，image为3通道
+	*/
+	ui->init_viewer->showImage(_scanner->view_host_);
+	//ui->init_viewer->showImage(_scanner->image );
+// 	cout<<"image.channels():"<<_scanner->image.channels()<<endl;
+// 	cout<<"view_host_.channels():"<<_scanner->view_host_.channels()<<endl;
+	//cv::imshow("Scene", _scanner->view_host_);
 }
