@@ -27,6 +27,8 @@ private:
 
 	cuda::DeviceArray<Normal> normal_buffer;
 	double time_ms;
+
+	cv::viz::Viz3d viz;
 public:
 	void run();
 	void update();

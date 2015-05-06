@@ -1,6 +1,8 @@
 #include "fusionScanner.h"
 #include <iostream>
-
+#include <opencv2/viz/vizcore.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 fusionScanner::fusionScanner(OpenNISource& source)
 	:capture(source),
 	 time_ms(0)
@@ -9,7 +11,9 @@ fusionScanner::fusionScanner(OpenNISource& source)
 	kinfu_sp = KinFu::Ptr( new KinFu(params) );//创建Kinfu对象
 
 	capture.setRegistration(true);//设置点云配准
-
+	cv::viz::WCube cube(cv::Vec3d::all(0), cv::Vec3d(params.volume_size), true, cv::viz::Color::apricot());//坐标系？
+        viz.showWidget("cube", cube, params.volume_pose);//showWideget()会创建一个窗口部件
+        viz.showWidget("coor", cv::viz::WCoordinateSystem(0.1));
 
 }
 
@@ -45,4 +49,5 @@ void fusionScanner::show_raycasted(KinFu& kinfu)
         view_host_.create(view_device_.rows(), view_device_.cols(), CV_8UC4);//创建矩阵储存像素
         view_device_.download(view_host_.ptr<void>(), view_host_.step);
 		//cout<<view_host_.cols<<" "<<view_host_.rows<<endl;
+		
 }

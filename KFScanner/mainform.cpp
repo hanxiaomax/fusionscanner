@@ -64,7 +64,7 @@ void mainform::timerEvent(QTimerEvent *event)
 // 		ui->init_viewer->showImage(frame);
 // 	}
 	_scanner->update();
-	ui->init_viewer->showImage(_scanner->view_host_);
-	//ui->init_viewer->showImage(_scanner->image );
-
+	//ui->init_viewer->showImage(_scanner->view_host_);
+	ui->init_viewer->showImage(_scanner->image );
+	cv::imshow("Scene", _scanner->view_host_);
 }
