@@ -21,7 +21,7 @@ fusionScanner::fusionScanner(OpenNISource& source)
 
 fusionScanner::~fusionScanner(void)
 {
-	capture.release();
+
 }
 
 

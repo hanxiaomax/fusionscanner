@@ -12,6 +12,7 @@
 #include <kfusion/CloudIO.h>
 #include <fstream>
 #include "fusionScanner.h"
+#include <QTimer>
 /*主窗口*/
 
 
@@ -24,11 +25,12 @@ public:
 	~mainform();
 
 private:
-	Ui::mainformClass *ui;//初始化ui对象
-	fusionScanner*  _scanner;
-	OpenNISource* _capture;
+	Ui::mainformClass ui;//一定会用到，且不是参数，声明为对象
+	fusionScanner*  _scanner;//不一定会用到，且不是参数，声明为指针
+	OpenNISource* _capture;//不一定会用到，且不是参数，声明为指针
 	int viewerTimer;
 	int updateTimer;
+	QTimer *delayTimer;//一定会用到，且不是参数，应该声明为对象，但是QTimer声明了一个private类型的拷贝构造函数，防止以传值的方式使用，同时也阻止了值初始化。《TIC P.518》
 	cv::Mat frame;
 
 private slots:

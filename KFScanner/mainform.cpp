@@ -8,13 +8,19 @@ using namespace std;
 
 
 mainform::mainform(QWidget *parent, Qt::WFlags flags)
-	: QMainWindow(parent, flags),ui(new Ui::mainformClass)
+	: QMainWindow(parent, flags),
+	ui(Ui::mainformClass()),
+	delayTimer(new QTimer(this))
 
 {
-	ui->setupUi(this);
+	/*指针初始化*/
+	_scanner=NULL;
+	_capture=NULL;
+
+	ui.setupUi(this);
 	/*设置mainTab*/
-	ui->mainTab->setCurrentIndex(0);///要在setupUi之后
-	connect(ui->defaultBtn,SIGNAL(clicked()),this,SLOT(resetToDefault()));
+	ui.mainTab->setCurrentIndex(0);///要在setupUi之后
+	connect(ui.defaultBtn,SIGNAL(clicked()),this,SLOT(resetToDefault()));
 	
 }
 
@@ -29,10 +35,9 @@ mainform::~mainform()
 
 void mainform::resetToDefault()
 {
-	ui->delay_slider->setValue(5);
-	ui->range_slider->setValue(1500);
-	ui->full_rb->setChecked(true);
-	
+	ui.delay_slider->setValue(5);
+	ui.range_slider->setValue(1500);
+	ui.full_rb->setChecked(true);
 }
 
 void mainform::on_connectKinect_triggered()
@@ -41,8 +46,6 @@ void mainform::on_connectKinect_triggered()
 	int device = 0;
 	cuda::setDevice (device);//设置GPU：0
 	cuda::printShortCudaDeviceInfo (device);//打印GPU信息
-
-
 	//检查GPU架构是否支持
 	if(cuda::checkIfPreFermiGPU(device))
 	{
@@ -75,8 +78,8 @@ void mainform::on_TooldeleteBtn_triggered()
 {
 
 	_scanner->fusionReset();
-	//ui->fusionViewer->updateScene();//只有在派生类中才可以通过派生类对象访问基类的protected成员。
-	showInViewer(_scanner->view_host_,ui->fusionViewer);
+	//ui.fusionViewer->updateScene();//只有在派生类中才可以通过派生类对象访问基类的protected成员。
+	showInViewer(_scanner->view_host_,ui.fusionViewer);
 }
 void mainform::timerEvent(QTimerEvent *event)
 {
@@ -85,9 +88,9 @@ void mainform::timerEvent(QTimerEvent *event)
 	{
 		_scanner->update();//更新数据
 
-		showInViewer(_scanner->view_host_,ui->fusionViewer);
-		showInViewer(_scanner->image,ui->RGBViewer);
-		showInViewer(_scanner->depth,ui->depthViewer);
+		showInViewer(_scanner->view_host_,ui.fusionViewer);
+		showInViewer(_scanner->image,ui.RGBViewer);
+		showInViewer(_scanner->depth,ui.depthViewer);
 	}
 
 }
