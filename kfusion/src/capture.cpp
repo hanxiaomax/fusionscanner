@@ -60,7 +60,7 @@ kfusion::OpenNISource::OpenNISource() : depth_focal_length_VGA (0.f), baseline (
 
 kfusion::OpenNISource::OpenNISource(int device) {open (device); }
 kfusion::OpenNISource::OpenNISource(const string& filename) {open (filename); }
-kfusion::OpenNISource::~OpenNISource() { release (); }
+kfusion::OpenNISource::~OpenNISource() { release ();}
 
 void kfusion::OpenNISource::open (int device)
 {
@@ -225,6 +225,7 @@ void kfusion::OpenNISource::release ()
     shadow_value = 0;
     no_sample_value = 0;
     pixelSize = 0.0;
+	cout<<"设备关闭"<<endl; 
 }
 
 /*设置深度数据采集的阀值*/

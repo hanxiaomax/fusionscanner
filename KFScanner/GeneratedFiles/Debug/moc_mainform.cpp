@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainform.h'
 **
-** Created: Sun May 17 09:13:08 2015
+** Created: Sun May 17 13:01:48 2015
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_mainform[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       2,   14, // methods
+       5,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -33,6 +33,9 @@ static const uint qt_meta_data_mainform[] = {
  // slots: signature, parameters, type, tag, flags
       10,    9,    9,    9, 0x08,
       39,    9,    9,    9, 0x08,
+      67,    9,    9,    9, 0x08,
+      94,    9,    9,    9, 0x08,
+     123,    9,    9,    9, 0x08,
 
        0        // eod
 };
@@ -40,6 +43,9 @@ static const uint qt_meta_data_mainform[] = {
 static const char qt_meta_stringdata_mainform[] = {
     "mainform\0\0on_connectKinect_triggered()\0"
     "on_ToolstartBtn_triggered()\0"
+    "on_ToolstopBtn_triggered()\0"
+    "on_TooldeleteBtn_triggered()\0"
+    "resetToDefault()\0"
 };
 
 void mainform::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -50,6 +56,9 @@ void mainform::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         switch (_id) {
         case 0: _t->on_connectKinect_triggered(); break;
         case 1: _t->on_ToolstartBtn_triggered(); break;
+        case 2: _t->on_ToolstopBtn_triggered(); break;
+        case 3: _t->on_TooldeleteBtn_triggered(); break;
+        case 4: _t->resetToDefault(); break;
         default: ;
         }
     }
@@ -88,9 +97,9 @@ int mainform::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 2)
+        if (_id < 5)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 2;
+        _id -= 5;
     }
     return _id;
 }

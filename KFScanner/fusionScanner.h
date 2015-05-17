@@ -19,6 +19,7 @@ public:
 
 private:
 	bool exit_, iteractive_mode_;
+	bool fusionstart;
 	OpenNISource& capture;
 	KinFu::Ptr kinfu_sp;
 	cuda::Image view_device_;
@@ -32,11 +33,12 @@ private:
 public:
 	void run();
 	void update();
+	void hold();
+	void fusionReset();
 private:
 	void show_raycasted(KinFu& kinfu);
-// 	void show_depth();
-// 	void show_image();
-// 	void show_fusion();
+	void clean_raycasted();
+
 };
 
 #endif

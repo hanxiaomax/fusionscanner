@@ -9,23 +9,34 @@ using namespace std;
 
 mainform::mainform(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags),ui(new Ui::mainformClass)
-	 // _scanner(new fusionScanner())
+
 {
-	
 	ui->setupUi(this);
 	/*设置mainTab*/
 	ui->mainTab->setCurrentIndex(0);///要在setupUi之后
+	connect(ui->defaultBtn,SIGNAL(clicked()),this,SLOT(resetToDefault()));
 	
 }
 
 mainform::~mainform()
 {
-
+	if (_capture)//如果不连接就直接关闭窗口，则_capture不存在
+	{
+		_capture->release();
+	}
+	
 }
 
+void mainform::resetToDefault()
+{
+	ui->delay_slider->setValue(5);
+	ui->range_slider->setValue(1500);
+	ui->full_rb->setChecked(true);
+	
+}
 
-
-void mainform::on_connectKinect_triggered(){
+void mainform::on_connectKinect_triggered()
+{
 
 	int device = 0;
 	cuda::setDevice (device);//设置GPU：0
@@ -44,44 +55,41 @@ void mainform::on_connectKinect_triggered(){
 	_capture = new OpenNISource();
 	_capture->open(0);
 	_scanner = new fusionScanner(*_capture);//创建scanner app实例，注意是一个指针
+	
 }
-void mainform::on_ToolstartBtn_triggered(){
-	viewerTimer=startTimer(0);
+void mainform::on_ToolstartBtn_triggered()
+{
+	
 	updateTimer=startTimer(33);
-
-	cout<<viewerTimer<<" "<<updateTimer<<endl;
+	_scanner->run();
+/*	cout<<viewerTimer<<" "<<updateTimer<<endl;*/
 }
 
+//停止扫描:停止更新fusion数据
+void mainform::on_ToolstopBtn_triggered()
+{
+	_scanner->hold();
+}
 
+void mainform::on_TooldeleteBtn_triggered()
+{
+
+	_scanner->fusionReset();
+	//ui->fusionViewer->updateScene();//只有在派生类中才可以通过派生类对象访问基类的protected成员。
+	showInViewer(_scanner->view_host_,ui->fusionViewer);
+}
 void mainform::timerEvent(QTimerEvent *event)
 {
-// 	if (event->timerId()==viewerTimer)
-// 	{
-// 		
-// 
-// 		_capture->grab(_scanner->depth, _scanner->image);
-// 
-// 		//ui->init_viewer->showImage(_scanner->image );
-// 		show_depth(_scanner->depth,ui->init_viewer);
-// 	}
-// 	else if (event->timerId()==updateTimer)
-// 	{
-// 		
-// 		_scanner->update()
-// 		ui->init_viewer->showImage(frame);
-// 	}
-	_scanner->update();//更新数据
 
-	showInViewer(_scanner->view_host_,ui->fusionViewer);
- 	showInViewer(_scanner->image,ui->RGBViewer);
- 	showInViewer(_scanner->depth,ui->depthViewer);
+	if (event->timerId()==updateTimer)
+	{
+		_scanner->update();//更新数据
 
-	//ui->init_viewer->showImage(_scanner->image );
-// 	cout<<"image.channels():"<<_scanner->image.channels()<<endl;
-// 	cout<<"view_host_.channels():"<<_scanner->view_host_.channels()<<endl;
-	//cv::imshow("Scene", _scanner->view_host_);
-	//show_depth(_scanner->depth,ui->init_viewer);
-	
+		showInViewer(_scanner->view_host_,ui->fusionViewer);
+		showInViewer(_scanner->image,ui->RGBViewer);
+		showInViewer(_scanner->depth,ui->depthViewer);
+	}
+
 }
 /*在glview中显示二维数据
 params:

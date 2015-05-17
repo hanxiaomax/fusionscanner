@@ -34,6 +34,9 @@ private:
 private slots:
 	void on_connectKinect_triggered();
 	void on_ToolstartBtn_triggered();
+	void on_ToolstopBtn_triggered();
+	void on_TooldeleteBtn_triggered();
+	void resetToDefault();
 private:
 	void timerEvent(QTimerEvent *event);
 	void showInViewer(const cv::Mat& depth,glViewer *viewer);

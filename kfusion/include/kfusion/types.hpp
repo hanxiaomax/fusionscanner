@@ -98,7 +98,9 @@ namespace kfusion
         double& time_ms_;
         double start;
     };
-	/*全局通知生成器*/
+	/*全局通知生成器
+	
+	*/
 	class InfoBox
 	{
 		public:

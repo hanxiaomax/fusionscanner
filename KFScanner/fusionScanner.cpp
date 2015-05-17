@@ -5,7 +5,8 @@
 #include <opencv2/imgproc/imgproc.hpp>
 fusionScanner::fusionScanner(OpenNISource& source)
 	:capture(source),
-	 time_ms(0)
+	 time_ms(0),
+	 fusionstart(false)
 {
 	KinFuParams params = KinFuParams::default_params();//设置默认参数
 	kinfu_sp = KinFu::Ptr( new KinFu(params) );//创建Kinfu对象
@@ -20,25 +21,44 @@ fusionScanner::fusionScanner(OpenNISource& source)
 
 fusionScanner::~fusionScanner(void)
 {
+	capture.release();
 }
 
 
-void fusionScanner::run(){
+void fusionScanner::run()
+{
+	fusionstart=true;
+}
 
+void fusionScanner::hold()
+{
+	fusionstart=false;
+}
+void fusionScanner::fusionReset()
+{
+	kinfu_sp->reset();
+	clean_raycasted();
 }
 
 //获取更新数据
 void fusionScanner::update(){
-	KinFu& kinfu=*kinfu_sp;
+
 	capture.grab(depth, image);
-	depth_device_.upload(depth.data, depth.step, depth.rows, depth.cols);
+	if (fusionstart)
 	{
-		SampledScopeTime fps(time_ms); 
-		(void)fps;
-		kinfu(depth_device_)   ;//kinfu算法处理，成功返回true
+		KinFu& kinfu=*kinfu_sp;
+		
+		depth_device_.upload(depth.data, depth.step, depth.rows, depth.cols);
+		{
+			SampledScopeTime fps(time_ms); 
+			(void)fps;
+			kinfu(depth_device_)   ;//kinfu算法处理，成功返回true
+		}
+		show_raycasted(kinfu);
 	}
-	show_raycasted(kinfu);
+	
 }
+
 
 void fusionScanner::show_raycasted(KinFu& kinfu)
 {		int mode=1;
@@ -48,3 +68,7 @@ void fusionScanner::show_raycasted(KinFu& kinfu)
         view_device_.download(view_host_.ptr<void>(), view_host_.step);		
 }
 
+void fusionScanner::clean_raycasted()
+{		
+	view_device_.release();
+}
