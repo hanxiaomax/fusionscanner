@@ -1,10 +1,12 @@
-#include "glViewer.h"
+#include "GL2Dviewer.h"
 #include <opencv2/core/core.hpp>
 #include <iostream>
+
+
 glViewer::glViewer(QWidget *parent):QGLWidget(parent)
 {
 	mSceneChanged = false;
-	mBgColor = QColor::fromRgb(150, 150, 150);//设置背景色
+	mBgColor = QColor::fromRgb(255, 0, 0);//设置背景色
 
 	mOutH = 0;
 	mOutW = 0;
@@ -12,6 +14,8 @@ glViewer::glViewer(QWidget *parent):QGLWidget(parent)
 
 	mPosX = 0;
 	mPosY = 0;
+	//glutCreateWindow("111");
+	
 }
 
 
@@ -128,25 +132,30 @@ void glViewer::renderImage()
 		glFlush();
 	}
 }
+
 bool glViewer::showImage( cv::Mat image )
 {
 	image.copyTo(mOrigImage);
 
 	mImgRatio = (float)image.cols/(float)image.rows;
 
-	if( mOrigImage.channels() == 3)
+	if( mOrigImage.channels() == 3)//image是三通道
 	{
 		mRenderQtImg = QImage((const unsigned char*)(mOrigImage.data),//逗号
 		mOrigImage.cols, mOrigImage.rows,
-		mOrigImage.step, QImage::Format_RGB888).rgbSwapped();// QImage::Format_RGB888，存入格式为R, G, B 对应 0,1,2
+		mOrigImage.step, QImage::Format_RGB888).rgbSwapped();
+		// QImage::Format_RGB888，存入格式为R, G, B 255/255/255
+		// rgbSwapped() converting an RGB image to an BGR image.
 	}
-	else if( mOrigImage.channels() == 1)
+	else if( mOrigImage.channels() == 1)//depth为单通道
 	{
+		
 		mRenderQtImg = QImage((const unsigned char*)(mOrigImage.data),
 		mOrigImage.cols, mOrigImage.rows,
 		mOrigImage.step, QImage::Format_Indexed8);//QImage::Format_Indexed8，需要设定颜色表，QVector<QRgb>
+		
 	}
-	else if (mOrigImage.channels() == 4)
+	else if (mOrigImage.channels() == 4)//为4通道的矩阵设置图像格式
 	{
 		mRenderQtImg = QImage((const unsigned char*)(mOrigImage.data),//逗号
 			mOrigImage.cols, mOrigImage.rows,

@@ -50,10 +50,10 @@
     <ClCompile Include="GeneratedFiles\qrc_mainform.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="glViewer.cpp">
+    <ClCompile Include="fusionScanner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fusionScanner.cpp">
+    <ClCompile Include="GL2Dviewer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -72,10 +72,10 @@
     <ClInclude Include="GeneratedFiles\ui_mainform.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="glViewer.h">
+    <ClInclude Include="fusionScanner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="fusionScanner.h">
+    <ClInclude Include="GL2Dviewer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

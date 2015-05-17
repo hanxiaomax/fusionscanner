@@ -1,4 +1,14 @@
 <RCC>
-    <qresource prefix="mainform">
-    </qresource>
+  <qresource prefix="images">
+    <file>Resources/images/20569_64.png</file>
+    <file>Resources/images/29085_64.png</file>
+    <file>Resources/images/30747_64.png</file>
+    <file>Resources/images/recycle.png</file>
+    <file>Resources/images/start.png</file>
+    <file>Resources/images/stop.png</file>
+    <file>Resources/images/255_64.png</file>
+    <file>Resources/images/256_64.png</file>
+    <file>Resources/images/260_64.png</file>
+    <file>Resources/images/2215_64.png</file>
+  </qresource>
 </RCC>

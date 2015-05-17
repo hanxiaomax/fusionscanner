@@ -33,9 +33,10 @@ private:
 
 private slots:
 	void on_connectKinect_triggered();
-	void on_connectlifter_triggered();
+	void on_ToolstartBtn_triggered();
 private:
 	void timerEvent(QTimerEvent *event);
+	void showInViewer(const cv::Mat& depth,glViewer *viewer);
 };
 
 #endif // MAINFORM_H

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainform.h'
 **
-** Created: Wed May 6 15:05:29 2015
+** Created: Sun May 17 09:13:08 2015
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -39,7 +39,7 @@ static const uint qt_meta_data_mainform[] = {
 
 static const char qt_meta_stringdata_mainform[] = {
     "mainform\0\0on_connectKinect_triggered()\0"
-    "on_connectlifter_triggered()\0"
+    "on_ToolstartBtn_triggered()\0"
 };
 
 void mainform::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -49,7 +49,7 @@ void mainform::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         mainform *_t = static_cast<mainform *>(_o);
         switch (_id) {
         case 0: _t->on_connectKinect_triggered(); break;
-        case 1: _t->on_connectlifter_triggered(); break;
+        case 1: _t->on_ToolstartBtn_triggered(); break;
         default: ;
         }
     }

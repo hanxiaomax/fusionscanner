@@ -56,8 +56,9 @@ struct KinFuApp
 	*/
     void show_depth(const cv::Mat& depth)
     {
+		cout<<depth.channels()<<endl;
         cv::Mat display;
-        //cv::normalize(depth, display, 0, 255, cv::NORM_MINMAX, CV_8U);
+        cv::normalize(depth, display, 0, 255, cv::NORM_MINMAX, CV_8U);
         depth.convertTo(display, CV_8U, 255.0/4000);
 		/*cout<<depth.at<ushort>(1,2)<<endl;*/
 		/*imshow是highgui提供的接口
@@ -167,7 +168,7 @@ struct KinFuApp
             if (has_image)
                 show_raycasted(kinfu);
 
-            //show_depth(depth);//显示当前帧的深度数据
+            show_depth(depth);//显示当前帧的深度数据
             //cv::imshow("Image", image);//显示当前帧的图像
 
             if (!iteractive_mode_)//重置相机为当前帧视角

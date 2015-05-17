@@ -27,17 +27,15 @@ void fusionScanner::run(){
 
 }
 
+//获取更新数据
 void fusionScanner::update(){
-
 	KinFu& kinfu=*kinfu_sp;
 	capture.grab(depth, image);
 	depth_device_.upload(depth.data, depth.step, depth.rows, depth.cols);
-
 	{
 		SampledScopeTime fps(time_ms); 
 		(void)fps;
 		kinfu(depth_device_)   ;//kinfu算法处理，成功返回true
-
 	}
 	show_raycasted(kinfu);
 }
@@ -47,7 +45,6 @@ void fusionScanner::show_raycasted(KinFu& kinfu)
         kinfu.renderImage(view_device_, mode);
 
         view_host_.create(view_device_.rows(), view_device_.cols(), CV_8UC4);//创建矩阵储存像素
-        view_device_.download(view_host_.ptr<void>(), view_host_.step);
-		//cout<<view_host_.cols<<" "<<view_host_.rows<<endl;
-		
+        view_device_.download(view_host_.ptr<void>(), view_host_.step);		
 }
+

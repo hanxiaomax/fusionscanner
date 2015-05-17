@@ -1,6 +1,5 @@
 #include <kfusion/kinfu.hpp>
 #include "safe_call.hpp"
-
 #include <cuda.h>
 #include <cstdio>
 #include <iostream>
@@ -248,3 +247,4 @@ void kf::InfoBox::printInfo(const string info,int infotype)//∂®“Â÷–≤ª‘Ÿ∂®“Âƒ¨»œ≤
 	}
 
 }
+

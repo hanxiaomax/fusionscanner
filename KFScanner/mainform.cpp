@@ -11,13 +11,19 @@ mainform::mainform(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags),ui(new Ui::mainformClass)
 	 // _scanner(new fusionScanner())
 {
+	
 	ui->setupUi(this);
+	/*设置mainTab*/
+	ui->mainTab->setCurrentIndex(0);///要在setupUi之后
+	
 }
 
 mainform::~mainform()
 {
 
 }
+
+
 
 void mainform::on_connectKinect_triggered(){
 
@@ -39,8 +45,8 @@ void mainform::on_connectKinect_triggered(){
 	_capture->open(0);
 	_scanner = new fusionScanner(*_capture);//创建scanner app实例，注意是一个指针
 }
-void mainform::on_connectlifter_triggered(){
-	//viewerTimer=startTimer(0);
+void mainform::on_ToolstartBtn_triggered(){
+	viewerTimer=startTimer(0);
 	updateTimer=startTimer(33);
 
 	cout<<viewerTimer<<" "<<updateTimer<<endl;
@@ -55,7 +61,8 @@ void mainform::timerEvent(QTimerEvent *event)
 // 
 // 		_capture->grab(_scanner->depth, _scanner->image);
 // 
-// 		ui->init_viewer->showImage(_scanner->image );
+// 		//ui->init_viewer->showImage(_scanner->image );
+// 		show_depth(_scanner->depth,ui->init_viewer);
 // 	}
 // 	else if (event->timerId()==updateTimer)
 // 	{
@@ -63,13 +70,39 @@ void mainform::timerEvent(QTimerEvent *event)
 // 		_scanner->update()
 // 		ui->init_viewer->showImage(frame);
 // 	}
-	_scanner->update();
-	/*
-	view_host_为4通道，image为3通道
-	*/
-	ui->init_viewer->showImage(_scanner->view_host_);
+	_scanner->update();//更新数据
+
+	showInViewer(_scanner->view_host_,ui->fusionViewer);
+ 	showInViewer(_scanner->image,ui->RGBViewer);
+ 	showInViewer(_scanner->depth,ui->depthViewer);
+
 	//ui->init_viewer->showImage(_scanner->image );
 // 	cout<<"image.channels():"<<_scanner->image.channels()<<endl;
 // 	cout<<"view_host_.channels():"<<_scanner->view_host_.channels()<<endl;
 	//cv::imshow("Scene", _scanner->view_host_);
+	//show_depth(_scanner->depth,ui->init_viewer);
+	
+}
+/*在glview中显示二维数据
+params:
+	cv::Mat& data
+	glViewer *viewer
+*/
+void mainform::showInViewer(const cv::Mat& data,glViewer *viewer)
+{
+	
+	if (data.channels()==1)
+	{
+		
+		cv::Mat display;
+		cv::normalize(data, display, 0, 255, cv::NORM_MINMAX, CV_8U);
+		data.convertTo(display, CV_8U, 255.0/4000);
+		viewer->showImage(display);
+		
+	}
+	else{
+		viewer->showImage(data);
+	}
+	
+		
 }

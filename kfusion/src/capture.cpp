@@ -242,7 +242,10 @@ void kfusion::OpenNISource::filter(cv::Mat &depth,int xRES,int yRES,int threshol
 	return;
 }
 
-
+/*抓取一帧数据
+* depth：CV_16U 单通道
+* image：CV_8UC3 三通道
+*/
 bool kfusion::OpenNISource::grab(cv::Mat& depth, cv::Mat& image)
 {
     XnStatus _status = XN_STATUS_OK;
@@ -261,10 +264,12 @@ bool kfusion::OpenNISource::grab(cv::Mat& depth, cv::Mat& image)
         int y = impl_->depthMD.FullYRes ();//480：rows
         cv::Mat(y, x, CV_16U, (void*)pDepth).copyTo(depth);//注意y在x之前，行主序
 		
+
+		
 		//cout<<depth<<endl;//<<操作对于二维矩阵是成立的
 		//cout<<"col:"<<depth.cols<<" "<<"row:"<<depth.rows<<endl;//640*480
 
-   		filter(depth,x,y,0,1200);//保留100~1000范围内的点
+   		filter(depth,x,y,0,1200);//保留0~1200范围内的点
     }
     else
     {
