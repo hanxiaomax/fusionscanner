@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainform.ui'
 **
-** Created: Sun May 17 13:08:27 2015
+** Created: Mon May 18 11:53:06 2015
 **      by: Qt User Interface Compiler version 4.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -45,6 +45,7 @@ public:
     QAction *ToolstartBtn;
     QAction *ToolstopBtn;
     QAction *TooldeleteBtn;
+    QAction *actionSaveCloud;
     QWidget *centralWidget;
     QGridLayout *gridLayout;
     QTabWidget *mainTab;
@@ -90,6 +91,7 @@ public:
     QPushButton *recordBtn;
     QPushButton *stopBtn;
     QPushButton *deleteBtn;
+    QPushButton *showCloudBtn;
     QWidget *reconstruction;
     QGridLayout *gridLayout_5;
     QHBoxLayout *horizontalLayout_2;
@@ -115,6 +117,7 @@ public:
     QGroupBox *groupBox_4;
     QMenuBar *menuBar;
     QMenu *menu_2;
+    QMenu *menu;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
     QToolBar *toolBar;
@@ -151,6 +154,8 @@ public:
         QIcon icon4;
         icon4.addFile(QString::fromUtf8(":/images/Resources/images/recycle.png"), QSize(), QIcon::Normal, QIcon::On);
         TooldeleteBtn->setIcon(icon4);
+        actionSaveCloud = new QAction(mainformClass);
+        actionSaveCloud->setObjectName(QString::fromUtf8("actionSaveCloud"));
         centralWidget = new QWidget(mainformClass);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         gridLayout = new QGridLayout(centralWidget);
@@ -197,7 +202,7 @@ public:
         init_toolbox->setLineWidth(1);
         page = new QWidget();
         page->setObjectName(QString::fromUtf8("page"));
-        page->setGeometry(QRect(0, 0, 287, 475));
+        page->setGeometry(QRect(0, 0, 211, 174));
         gridLayout_2 = new QGridLayout(page);
         gridLayout_2->setSpacing(6);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
@@ -432,6 +437,11 @@ public:
 
         verticalLayout_2->addWidget(deleteBtn);
 
+        showCloudBtn = new QPushButton(scan);
+        showCloudBtn->setObjectName(QString::fromUtf8("showCloudBtn"));
+
+        verticalLayout_2->addWidget(showCloudBtn);
+
 
         horizontalLayout_4->addLayout(verticalLayout_2);
 
@@ -572,6 +582,8 @@ public:
         menuBar->setGeometry(QRect(0, 0, 922, 23));
         menu_2 = new QMenu(menuBar);
         menu_2->setObjectName(QString::fromUtf8("menu_2"));
+        menu = new QMenu(menuBar);
+        menu->setObjectName(QString::fromUtf8("menu"));
         mainformClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(mainformClass);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
@@ -590,9 +602,11 @@ public:
         mainformClass->addToolBar(Qt::TopToolBarArea, toolBar);
 
         menuBar->addAction(menu_2->menuAction());
+        menuBar->addAction(menu->menuAction());
         menu_2->addAction(ToolstartBtn);
         menu_2->addAction(ToolstopBtn);
         menu_2->addAction(TooldeleteBtn);
+        menu->addAction(actionSaveCloud);
         mainToolBar->addAction(connectKinect);
         mainToolBar->addAction(connectlifter);
         mainToolBar->addSeparator();
@@ -600,12 +614,13 @@ public:
         toolBar->addAction(ToolstopBtn);
         toolBar->addAction(TooldeleteBtn);
         toolBar->addSeparator();
+        toolBar->addAction(actionSaveCloud);
 
         retranslateUi(mainformClass);
         QObject::connect(delay_slider, SIGNAL(valueChanged(int)), delay_value, SLOT(setNum(int)));
         QObject::connect(range_slider, SIGNAL(valueChanged(int)), range_value, SLOT(setNum(int)));
 
-        mainTab->setCurrentIndex(0);
+        mainTab->setCurrentIndex(1);
         init_toolbox->setCurrentIndex(0);
         toolBox->setCurrentIndex(0);
         toolBox_2->setCurrentIndex(0);
@@ -622,6 +637,7 @@ public:
         ToolstartBtn->setText(QApplication::translate("mainformClass", "\345\274\200\345\247\213", 0, QApplication::UnicodeUTF8));
         ToolstopBtn->setText(QApplication::translate("mainformClass", "\345\201\234\346\255\242", 0, QApplication::UnicodeUTF8));
         TooldeleteBtn->setText(QApplication::translate("mainformClass", "\346\270\205\351\231\244", 0, QApplication::UnicodeUTF8));
+        actionSaveCloud->setText(QApplication::translate("mainformClass", "\344\277\235\345\255\230\347\202\271\344\272\221", 0, QApplication::UnicodeUTF8));
         delaylabel->setText(QApplication::translate("mainformClass", "\345\220\257\345\212\250\345\273\266\346\227\266", 0, QApplication::UnicodeUTF8));
         delay_value->setText(QApplication::translate("mainformClass", "5", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("mainformClass", "s", 0, QApplication::UnicodeUTF8));
@@ -639,6 +655,7 @@ public:
         recordBtn->setText(QApplication::translate("mainformClass", "\345\274\200\345\247\213", 0, QApplication::UnicodeUTF8));
         stopBtn->setText(QApplication::translate("mainformClass", "\345\201\234\346\255\242", 0, QApplication::UnicodeUTF8));
         deleteBtn->setText(QApplication::translate("mainformClass", "\346\270\205\351\231\244", 0, QApplication::UnicodeUTF8));
+        showCloudBtn->setText(QApplication::translate("mainformClass", "\346\230\276\347\244\272\347\202\271\344\272\221", 0, QApplication::UnicodeUTF8));
         mainTab->setTabText(mainTab->indexOf(scan), QApplication::translate("mainformClass", "\346\211\253\346\217\217", 0, QApplication::UnicodeUTF8));
         groupBox_2->setTitle(QString());
         pushButton->setText(QApplication::translate("mainformClass", "\351\207\215\345\273\272", 0, QApplication::UnicodeUTF8));
@@ -653,6 +670,7 @@ public:
         groupBox_4->setTitle(QApplication::translate("mainformClass", "\350\276\223\345\207\272", 0, QApplication::UnicodeUTF8));
         mainTab->setTabText(mainTab->indexOf(process), QApplication::translate("mainformClass", "\345\220\216\345\244\204\347\220\206", 0, QApplication::UnicodeUTF8));
         menu_2->setTitle(QApplication::translate("mainformClass", "\346\211\253\346\217\217", 0, QApplication::UnicodeUTF8));
+        menu->setTitle(QApplication::translate("mainformClass", "\346\226\207\344\273\266", 0, QApplication::UnicodeUTF8));
         toolBar->setWindowTitle(QApplication::translate("mainformClass", "toolBar", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 

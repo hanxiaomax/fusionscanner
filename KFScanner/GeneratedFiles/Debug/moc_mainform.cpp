@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainform.h'
 **
-** Created: Sun May 17 15:50:12 2015
+** Created: Mon May 18 12:19:21 2015
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_mainform[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       5,   14, // methods
+       7,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -36,6 +36,8 @@ static const uint qt_meta_data_mainform[] = {
       67,    9,    9,    9, 0x08,
       94,    9,    9,    9, 0x08,
      123,    9,    9,    9, 0x08,
+     154,    9,    9,    9, 0x08,
+     171,    9,    9,    9, 0x08,
 
        0        // eod
 };
@@ -45,7 +47,8 @@ static const char qt_meta_stringdata_mainform[] = {
     "on_ToolstartBtn_triggered()\0"
     "on_ToolstopBtn_triggered()\0"
     "on_TooldeleteBtn_triggered()\0"
-    "resetToDefault()\0"
+    "on_actionSaveCloud_triggered()\0"
+    "resetToDefault()\0onShowCloudBtn()\0"
 };
 
 void mainform::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -58,7 +61,9 @@ void mainform::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 1: _t->on_ToolstartBtn_triggered(); break;
         case 2: _t->on_ToolstopBtn_triggered(); break;
         case 3: _t->on_TooldeleteBtn_triggered(); break;
-        case 4: _t->resetToDefault(); break;
+        case 4: _t->on_actionSaveCloud_triggered(); break;
+        case 5: _t->resetToDefault(); break;
+        case 6: _t->onShowCloudBtn(); break;
         default: ;
         }
     }
@@ -97,9 +102,9 @@ int mainform::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 5)
+        if (_id < 7)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 5;
+        _id -= 7;
     }
     return _id;
 }

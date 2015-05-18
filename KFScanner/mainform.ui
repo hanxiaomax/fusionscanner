@@ -35,7 +35,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="iconSize">
        <size>
@@ -109,8 +109,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>287</width>
-           <height>475</height>
+           <width>211</width>
+           <height>174</height>
           </rect>
          </property>
          <attribute name="label">
@@ -458,6 +458,13 @@
               </property>
              </widget>
             </item>
+            <item>
+             <widget class="QPushButton" name="showCloudBtn">
+              <property name="text">
+               <string>显示点云</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
          </layout>
@@ -676,7 +683,14 @@
     <addaction name="ToolstopBtn"/>
     <addaction name="TooldeleteBtn"/>
    </widget>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>文件</string>
+    </property>
+    <addaction name="actionSaveCloud"/>
+   </widget>
    <addaction name="menu_2"/>
+   <addaction name="menu"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="sizePolicy">
@@ -716,6 +730,7 @@
    <addaction name="ToolstopBtn"/>
    <addaction name="TooldeleteBtn"/>
    <addaction name="separator"/>
+   <addaction name="actionSaveCloud"/>
   </widget>
   <action name="connectKinect">
    <property name="checkable">
@@ -768,6 +783,11 @@
    </property>
    <property name="text">
     <string>清除</string>
+   </property>
+  </action>
+  <action name="actionSaveCloud">
+   <property name="text">
+    <string>保存点云</string>
    </property>
   </action>
  </widget>

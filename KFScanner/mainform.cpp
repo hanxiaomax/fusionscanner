@@ -8,9 +8,8 @@ using namespace std;
 
 
 mainform::mainform(QWidget *parent, Qt::WFlags flags)
-	: QMainWindow(parent, flags),
-	ui(Ui::mainformClass()),
-	delayTimer(new QTimer(this))
+	: QMainWindow(parent, flags)
+	//ui(Ui::mainformClass())//如果ui是对象的话这里其实没有必要，初始化已经完成
 
 {
 	/*指针初始化*/
@@ -21,7 +20,8 @@ mainform::mainform(QWidget *parent, Qt::WFlags flags)
 	/*设置mainTab*/
 	ui.mainTab->setCurrentIndex(0);///要在setupUi之后
 	connect(ui.defaultBtn,SIGNAL(clicked()),this,SLOT(resetToDefault()));
-	
+	connect(ui.showCloudBtn,SIGNAL(clicked()),this,SLOT(onShowCloudBtn()));//等价于on_ShowCloudBtn_clicked(),所以槽的命名不能是这个，否则会发射两次信号
+
 }
 
 mainform::~mainform()
@@ -39,6 +39,7 @@ void mainform::resetToDefault()
 	ui.range_slider->setValue(1500);
 	ui.full_rb->setChecked(true);
 }
+
 
 void mainform::on_connectKinect_triggered()
 {
@@ -62,16 +63,15 @@ void mainform::on_connectKinect_triggered()
 }
 void mainform::on_ToolstartBtn_triggered()
 {
-	
-	updateTimer=startTimer(33);
-	_scanner->run();
-/*	cout<<viewerTimer<<" "<<updateTimer<<endl;*/
+	unsigned int delay=ui.delay_slider->value()*1000;//毫秒变为秒
+	updateTimer=startTimer(33);//viewer定时器，33ms触发一次
+	delayTimer=startTimer(delay);//fusionstart延时启动定时器，触发一次
 }
 
 //停止扫描:停止更新fusion数据
 void mainform::on_ToolstopBtn_triggered()
 {
-	_scanner->hold();
+	_scanner->fusionHold();
 }
 
 void mainform::on_TooldeleteBtn_triggered()
@@ -79,18 +79,32 @@ void mainform::on_TooldeleteBtn_triggered()
 
 	_scanner->fusionReset();
 	//ui.fusionViewer->updateScene();//只有在派生类中才可以通过派生类对象访问基类的protected成员。
-	showInViewer(_scanner->view_host_,ui.fusionViewer);
+	//showInViewer(_scanner->view_host_,ui.fusionViewer);
 }
+
+void mainform::onShowCloudBtn()
+{
+	_scanner->take_cloud();
+}
+
+
 void mainform::timerEvent(QTimerEvent *event)
 {
 
 	if (event->timerId()==updateTimer)
 	{
 		_scanner->update();//更新数据
-
-		showInViewer(_scanner->view_host_,ui.fusionViewer);
+		if(!_scanner->view_host_.empty())//view_host_在run()之前是空的，显示会出错
+		{	
+			showInViewer(_scanner->view_host_,ui.fusionViewer);
+		}	
 		showInViewer(_scanner->image,ui.RGBViewer);
 		showInViewer(_scanner->depth,ui.depthViewer);
+	}
+	if (event->timerId()==delayTimer)
+	{
+		killTimer(delayTimer);//出发一次后关掉定时器
+		_scanner->fusionStart();
 	}
 
 }
@@ -101,19 +115,23 @@ params:
 */
 void mainform::showInViewer(const cv::Mat& data,glViewer *viewer)
 {
-	
-	if (data.channels()==1)
+	if (data.channels()==1)//对深度数据进行变换
 	{
-		
 		cv::Mat display;
 		cv::normalize(data, display, 0, 255, cv::NORM_MINMAX, CV_8U);
 		data.convertTo(display, CV_8U, 255.0/4000);
 		viewer->showImage(display);
-		
 	}
 	else{
 		viewer->showImage(data);
 	}
-	
 		
 }
+
+
+
+void mainform::on_actionSaveCloud_triggered()
+{
+	_scanner->take_cloud(true);
+}
+

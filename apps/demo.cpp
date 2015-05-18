@@ -15,7 +15,7 @@ struct KinFuApp
 	//¼üÅÌ°´¼ü´¦Àí
     static void KeyboardCallback(const cv::viz::KeyboardEvent& event, void* pthis)
     {
-        KinFuApp& kinfu = *static_cast<KinFuApp*>(pthis);
+        KinFuApp& kinfu = *static_cast<KinFuApp*>(pthis);//////////////////////////////////////
 
         if(event.action != cv::viz::KeyboardEvent::KEY_DOWN)
             return;
