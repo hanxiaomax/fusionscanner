@@ -129,7 +129,7 @@ void kfusion::cuda::TsdfVolume::raycast(const Affine3f& camera_pose, const Intr&
 //获取点云，返回的是一维点类型数组
 DeviceArray<Point> kfusion::cuda::TsdfVolume::fetchCloud(DeviceArray<Point>& cloud_buffer) const
 {
-    enum { DEFAULT_CLOUD_BUFFER_SIZE = 10 * 1000 * 1000 };
+    enum { DEFAULT_CLOUD_BUFFER_SIZE = 10 * 1000 * 1000 };//使用枚举类型代替define
 
 	//判断缓冲是否为空
     if (cloud_buffer.empty ())
@@ -150,7 +150,7 @@ DeviceArray<Point> kfusion::cuda::TsdfVolume::fetchCloud(DeviceArray<Point>& clo
 
 
 
-/*获取法线，但是无返回值*/
+/*获取法线*/
 DeviceArray<Point> kfusion::cuda::TsdfVolume::fetchNormals(const DeviceArray<Point>& cloud, DeviceArray<Normal>& normals) const
 {
     normals.create(cloud.size());
@@ -162,6 +162,7 @@ DeviceArray<Point> kfusion::cuda::TsdfVolume::fetchNormals(const DeviceArray<Poi
     device::Mat3f Rinv = device_cast<device::Mat3f>(pose_.rotation().inv(cv::DECOMP_SVD));
 
     device::TsdfVolume volume((ushort2*)data_.ptr<ushort2>(), dims, vsz, trunc_dist_, max_weight_);
+	//extractNormals (const TsdfVolume& volume, const PtrSz<Point>& points, const Aff3f& aff, const Mat3f& Rinv, float gradient_delta_factor, float4* output)
     device::extractNormals(volume, c, aff, Rinv, gradient_delta_factor_, (float4*)normals.ptr());
 
 	return DeviceArray<Normal>((Point*)normals.ptr(), cloud.size());//参数为指向internal buffer的指针

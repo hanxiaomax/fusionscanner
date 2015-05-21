@@ -100,6 +100,7 @@ void mainform::timerEvent(QTimerEvent *event)
 		}	
 		showInViewer(_scanner->image,ui.RGBViewer);
 		showInViewer(_scanner->depth,ui.depthViewer);
+
 	}
 	if (event->timerId()==delayTimer)
 	{

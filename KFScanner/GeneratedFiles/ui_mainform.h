@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainform.ui'
 **
-** Created: Mon May 18 11:53:06 2015
+** Created: Tue May 19 12:17:38 2015
 **      by: Qt User Interface Compiler version 4.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -348,7 +348,7 @@ public:
         init_toolbox->addItem(page, QString::fromUtf8("\346\211\253\346\217\217\345\217\202\346\225\260"));
         page_2 = new QWidget();
         page_2->setObjectName(QString::fromUtf8("page_2"));
-        page_2->setGeometry(QRect(0, 0, 98, 28));
+        page_2->setGeometry(QRect(0, 0, 287, 475));
         init_toolbox->addItem(page_2, QString::fromUtf8("Kinfu\345\217\202\346\225\260"));
         mainTab->addTab(initiation, QString());
         scan = new QWidget();
@@ -620,8 +620,8 @@ public:
         QObject::connect(delay_slider, SIGNAL(valueChanged(int)), delay_value, SLOT(setNum(int)));
         QObject::connect(range_slider, SIGNAL(valueChanged(int)), range_value, SLOT(setNum(int)));
 
-        mainTab->setCurrentIndex(1);
-        init_toolbox->setCurrentIndex(0);
+        mainTab->setCurrentIndex(0);
+        init_toolbox->setCurrentIndex(1);
         toolBox->setCurrentIndex(0);
         toolBox_2->setCurrentIndex(0);
 

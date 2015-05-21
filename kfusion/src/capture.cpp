@@ -270,7 +270,7 @@ bool kfusion::OpenNISource::grab(cv::Mat& depth, cv::Mat& image)
 		//cout<<depth<<endl;//<<操作对于二维矩阵是成立的
 		//cout<<"col:"<<depth.cols<<" "<<"row:"<<depth.rows<<endl;//640*480
 
-   		filter(depth,x,y,0,1200);//保留0~1200范围内的点
+   		filter(depth,x,y,0,1000);//保留0~1200范围内的点
     }
     else
     {

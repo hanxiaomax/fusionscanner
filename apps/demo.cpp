@@ -56,7 +56,6 @@ struct KinFuApp
 	*/
     void show_depth(const cv::Mat& depth)
     {
-		cout<<depth.channels()<<endl;
         cv::Mat display;
         cv::normalize(depth, display, 0, 255, cv::NORM_MINMAX, CV_8U);
         depth.convertTo(display, CV_8U, 255.0/4000);
@@ -76,7 +75,7 @@ struct KinFuApp
         const int mode =3;
 		/*交互模式下，渲染图片，获取观察者姿态，否则不获取，调用重载的renderImage函数*/
         if (iteractive_mode_){
-			//cout<<"iteractive_mode_"<<"-->render mode:";	
+			cout<<"iteractive_mode_"<<"-->render mode:";	
             kinfu.renderImage(view_device_, viz.getViewerPose(), mode);//viz.getViewerPose()：Returns the current pose of the viewer.
 		}
         else
@@ -136,7 +135,7 @@ struct KinFuApp
 
         //viz.showWidget("cloud", cv::viz::WCloud(cloud_host));//显示点云
         viz.showWidget("cloud", cv::viz::WPaintedCloud(cloud_host));//显示有颜色的点云
-		viz.showWidget("normal",cv::viz::WCloudNormals(cloud_host,normal_host));//显示法线（法线是否已经计算？）
+		//viz.showWidget("normal",cv::viz::WCloudNormals(cloud_host,normal_host));//显示法线（法线是否已经计算？）
     }
 
 	/*App执行函数*/
@@ -148,7 +147,7 @@ struct KinFuApp
         bool has_image = false;
 		
 		/*循环处理每一帧数据*/
-        for (int i = 0; !exit_ && !viz.wasStopped(); ++i)
+        for (int i = 0; !exit_ &&!viz.wasStopped() ; ++i)//;
         {
 			KinFu& kinfu = *kinfu_;
             bool has_frame = capture_.grab(depth, image);//从source获取深度和图像
@@ -186,7 +185,7 @@ struct KinFuApp
             }
 
             //exit_ = exit_ || i > 100;
-            viz.spinOnce(3, true);
+           viz.spinOnce(3, true);
         }
         return true;
     }
