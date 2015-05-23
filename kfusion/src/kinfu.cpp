@@ -1,10 +1,9 @@
 #include "precomp.hpp"
 #include "internal.hpp"
-
+#include <iostream>
 using namespace std;
 using namespace kfusion;
 using namespace kfusion::cuda;
-
 
 static inline float deg2rad (float alpha) { return alpha * 0.017453293f; }//角度转弧度
 
@@ -48,6 +47,45 @@ kfusion::KinFuParams kfusion::KinFuParams::default_params()//设置默认参数
     return p;
 }
 
+kfusion::KinFuParams kfusion::KinFuParams::set_params(kfusion::KinFuParams& User_params)
+{
+	const int iters[] = {10, 5, 4, 0};
+	const int levels = sizeof(iters)/sizeof(iters[0]);//ICP迭代层数
+
+	KinFuParams p;//参数结构体
+
+	//分辨率640*480
+	p.cols = 640;  //pixels
+	p.rows = 480;  //pixels
+	p.intr = Intr(525.f, 525.f, p.cols/2 - 0.5f, p.rows/2 - 0.5f);
+
+	p.volume_dims = Vec3i::all(512);  //number of voxels
+	p.volume_size = Vec3f::all(3.f);  //meters
+	p.volume_pose = Affine3f().translate(Vec3f(-p.volume_size[0]/2, -p.volume_size[1]/2, 0.5f));
+
+	p.bilateral_sigma_depth = User_params.bilateral_sigma_depth;  //meter
+	p.bilateral_sigma_spatial = User_params.bilateral_sigma_spatial; //pixels
+	p.bilateral_kernel_size = User_params.bilateral_kernel_size;     //pixels
+
+	//迭代最近点ICP参数
+	p.icp_truncate_depth_dist = User_params.icp_truncate_depth_dist;        //meters, disabled //似乎过滤的是近处的数据
+	p.icp_dist_thres = User_params.icp_dist_thres;                //meters
+	p.icp_angle_thres = deg2rad(User_params.icp_angle_thres); //radians//参数是角度
+	p.icp_iter_num.assign(iters, iters + levels);
+
+	p.tsdf_min_camera_movement = User_params.tsdf_min_camera_movement; //meters, disabled //进行融合的最小摄像机位移
+	p.tsdf_trunc_dist = User_params.tsdf_trunc_dist; //meters;
+	p.tsdf_max_weight = User_params.tsdf_max_weight;   //frames
+
+	p.raycast_step_factor = User_params.raycast_step_factor;  //in voxel sizes
+	p.gradient_delta_factor = User_params.gradient_delta_factor; //in voxel sizes
+
+	//p.light_pose = p.volume_pose.translation()/4; //meters
+	p.light_pose = Vec3f::all(0.f); //meters
+
+	return p;
+}
+
 /*KinFu类构造函数具体实现
 * init：
 	frame_counter_(0)
@@ -82,7 +120,37 @@ const kfusion::KinFuParams& kfusion::KinFu::params() const
 kfusion::KinFuParams& kfusion::KinFu::params()
 { return params_; }
 
+void kfusion::KinFu::PrintKFparms()
+{
+	
+	cout<<"----------分辨率------------------------"<<endl;
+	cout<<"clos*rows :\t"<<params_.cols<<"*"<<params_.rows<<endl;
 
+	cout<<"----------Volume------------------------"<<endl;
+	cout<<"volume_dims :\t"<<params_.volume_dims<<endl;
+	cout<<"volume_size :\t"<<params_.volume_size<<endl;
+	
+	cout<<"----------双边滤波参数------------------"<<endl;
+	cout<<"双边sigma深度 :\t"<<params_.bilateral_sigma_depth<<endl;  //meter
+	cout<<"双边sigma_spatial :\t"<<params_.bilateral_sigma_spatial<<endl;//pixels
+	cout<<"双边核大小 :\t"<<params_.bilateral_kernel_size<<endl;  //pixels
+
+	//迭代最近点ICP参数
+	cout<<"----------ICP参数-----------------------"<<endl;
+	cout<<"ICP截断深度距离 :\t"<<params_.icp_truncate_depth_dist<<endl;        //meters, disabled //似乎过滤的是近处的数据
+	cout<<"ICP距离阀值 :\t"<<params_.icp_dist_thres<<endl;               //meters
+	cout<<"ICP角度阀值 :\t"<<params_.icp_angle_thres<<endl;//radians//参数是角度
+
+	
+
+	cout<<"----------TSDF参数------------------------"<<endl;
+	cout<<"摄像机最小位移 :\t"<<params_.tsdf_min_camera_movement<<endl; //meters, disabled //进行融合的最小摄像机位移
+	cout<<"TSDF截断距离 :\t"<<params_.tsdf_trunc_dist<<endl; //meters;
+	cout<<"TSDF最大重量 :\t"<<params_.tsdf_max_weight<<endl;   //frames
+
+	cout<<"光照步长因数 :\t"<<params_.raycast_step_factor<<endl;  //in voxel sizes
+	cout<<"梯度变化因数 :\t"<<params_.gradient_delta_factor<<endl; //in voxel sizes
+}
 const kfusion::cuda::TsdfVolume& kfusion::KinFu::tsdf() const
 { return *volume_; }
 
@@ -219,7 +287,7 @@ bool kfusion::KinFu::operator()(const kfusion::cuda::Depth& depth, const kfusion
     poses_.push_back(poses_.back() * affine); // curr -> global
 
     ///////////////////////////////////////////////////////////////////////////////////////////
-    // Volume integration
+    // Volume integration TSDF体合成
 
     // We do not integrate volume if camera does not move.
     float rnorm = (float)cv::norm(affine.rvec());
@@ -232,7 +300,7 @@ bool kfusion::KinFu::operator()(const kfusion::cuda::Depth& depth, const kfusion
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
-    // Ray casting
+    // Ray casting 光线投射
     {
         //ScopeTime time("ray-cast-all");//该语句可以打印ray-cast-all时间
 #if defined USE_DEPTH

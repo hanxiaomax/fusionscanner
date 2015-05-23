@@ -6,7 +6,8 @@
 
 void kfusion::cuda::error(const char *error_string, const char *file, const int line, const char *func)
 {
-    std::cout << "KinFu2 error: " << error_string << "\t" << file << ":" << line << std::endl;
+    //std::cout << "KinFu2 error: " << error_string << "\t" << file << ":" << line << std::endl;
+	std::cout << "KinFu ´íÎó: " << error_string << "\t" << file << ":" << line << std::endl;
     exit(0);
 }
 

@@ -4,26 +4,35 @@
 #include <cstdio>
 #include <iostream>
 
+
+/*获取可用的CUDA设备个数
+  * 没有返回0
+  *驱动版本过低返回-1
+*/
 int kf::cuda::getCudaEnabledDeviceCount()
 {
     int count;
-    cudaError_t error = cudaGetDeviceCount( &count );
+    cudaError_t error = cudaGetDeviceCount( &count );//获取可用的CUDA设备个数,返回错误类型
+	
 
-    if (error == cudaErrorInsufficientDriver)
+    if (error == cudaErrorInsufficientDriver)//设备驱动版本太低
         return -1;
 
-    if (error == cudaErrorNoDevice)
+    if (error == cudaErrorNoDevice)//没有支持CUDA的设备
+	
         return 0;
 
     cudaSafeCall(error);
     return count;  
 }
 
+//设置将要使用的CUDA设备
 void kf::cuda::setDevice(int device)
 {
     cudaSafeCall( cudaSetDevice( device ) );
 }
 
+//获取CUDA设备名
 std::string kf::cuda::getDeviceName(int device)
 {
     cudaDeviceProp prop;
@@ -31,7 +40,7 @@ std::string kf::cuda::getDeviceName(int device)
 
     return prop.name;
 }
-
+//检查显卡架构
 bool kf::cuda::checkIfPreFermiGPU(int device)
 {
   if (device < 0)
@@ -55,6 +64,7 @@ namespace
         kfusion::cuda::error("driver API error", __FILE__, __LINE__);
     }
 
+	//转换sm到核心数量
     inline int convertSMVer2Cores(int major, int minor)
     {
         // Defines for GPU Architecture types (using the SM version to determine the # of cores per SM
@@ -76,7 +86,7 @@ namespace
         return 0;
     }
 }
-
+//输出CUDA设备的信息
 void kf::cuda::printCudaDeviceInfo(int device)
 {
     int count = getCudaEnabledDeviceCount();
@@ -173,6 +183,7 @@ void kf::cuda::printCudaDeviceInfo(int device)
     fflush(stdout);
 }
 
+//输出CUDA设备的简短信息
 void kf::cuda::printShortCudaDeviceInfo(int device)
 {
     int count = getCudaEnabledDeviceCount();
@@ -198,6 +209,7 @@ void kf::cuda::printShortCudaDeviceInfo(int device)
     fflush(stdout);
 }
 
+//采样时间
 kf::SampledScopeTime::SampledScopeTime(double& time_ms) : time_ms_(time_ms)
 {
     start = (double)cv::getTickCount();
@@ -212,18 +224,18 @@ kf::SampledScopeTime::~SampledScopeTime()
         time_ms_ = 0.0;
     }
     ++i_;
-	//cout<<time_ms_<<" "<<i_<<endl;
 }
-
+//获取当前流逝的时间
 double kf::SampledScopeTime::getTime()
 {
     return ((double)cv::getTickCount() - start)*1000.0/cv::getTickFrequency();
 }
-
+//构造某个时间域并开始计数
 kf::ScopeTime::ScopeTime(const char *name_) : name(name_)
 {
     start = (double)cv::getTickCount();
 }
+//析构某个时间域并获取时间
 kf::ScopeTime::~ScopeTime()
 {
     double time_ms =  ((double)cv::getTickCount() - start)*1000.0/cv::getTickFrequency();

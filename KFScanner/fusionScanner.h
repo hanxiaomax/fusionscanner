@@ -13,6 +13,7 @@ class fusionScanner
 public:
 	fusionScanner(void);
 	fusionScanner(OpenNISource &source);
+	fusionScanner(OpenNISource &source,KinFuParams &params);
 	~fusionScanner(void);
 public:
 	cv::Mat view_host_;//¥Ê∑≈fusionœ‘ æ
@@ -28,7 +29,7 @@ private:
 	KinFu::Ptr kinfu_sp;
 	cuda::Image view_device_;
 	cuda::Depth depth_device_;
-
+	
 	
 	double time_ms;
 

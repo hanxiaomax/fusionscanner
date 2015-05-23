@@ -3,14 +3,32 @@
 #include <opencv2/viz/vizcore.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+
 fusionScanner::fusionScanner(OpenNISource& source)
+	:capture(source),
+	time_ms(0),
+	fusionstart(false)
+{
+	KinFuParams params = KinFuParams::default_params();//设置默认参数
+	kinfu_sp = KinFu::Ptr( new KinFu(params) );//创建Kinfu对象
+	kinfu_sp->PrintKFparms();
+	capture.setRegistration(true);//设置点云配准
+	cv::viz::WCube cube(cv::Vec3d::all(0), cv::Vec3d(params.volume_size), true, cv::viz::Color::apricot());//坐标系？
+	viz.showWidget("cube", cube, params.volume_pose);//showWideget()会创建一个窗口部件
+	viz.showWidget("coor", cv::viz::WCoordinateSystem(0.1));
+
+}
+
+
+//带自定义参数的构造函数
+fusionScanner::fusionScanner(OpenNISource& source,KinFuParams &params)
 	:capture(source),
 	 time_ms(0),
 	 fusionstart(false)
 {
-	KinFuParams params = KinFuParams::default_params();//设置默认参数
-	kinfu_sp = KinFu::Ptr( new KinFu(params) );//创建Kinfu对象
-
+	KinFuParams p = params;
+	kinfu_sp = KinFu::Ptr( new KinFu(p) );//创建Kinfu对象
+	kinfu_sp->PrintKFparms();
 	capture.setRegistration(true);//设置点云配准
 	cv::viz::WCube cube(cv::Vec3d::all(0), cv::Vec3d(params.volume_size), true, cv::viz::Color::apricot());//坐标系？
         viz.showWidget("cube", cube, params.volume_pose);//showWideget()会创建一个窗口部件

@@ -45,7 +45,7 @@ namespace kfusion
             virtual void clear();
             virtual void applyAffine(const Affine3f& affine);
             virtual void integrate(const Dists& dists, const Affine3f& camera_pose, const Intr& intr);//ÈÚºÏ
-            virtual void raycast(const Affine3f& camera_pose, const Intr& intr, Depth& depth, Normals& normals);//raycast
+            virtual void raycast(const Affine3f& camera_pose, const Intr& intr, Depth& depth, Normals& normals);
             virtual void raycast(const Affine3f& camera_pose, const Intr& intr, Cloud& points, Normals& normals);
 
             void swap(CudaData& data);
@@ -67,6 +67,7 @@ namespace kfusion
                 static half float2half(float value);
             };
         private:
+			void printTSDFparams();
             CudaData data_;
 
             float trunc_dist_;

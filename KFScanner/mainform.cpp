@@ -1,7 +1,7 @@
 #include "mainform.h"
 #include <QtGui/QDialog>
 #include "fusionScanner.h"
-
+#include <string> 
 
 using namespace kfusion;
 using namespace std;
@@ -19,6 +19,11 @@ mainform::mainform(QWidget *parent, Qt::WFlags flags)
 	ui.setupUi(this);
 	/*设置mainTab*/
 	ui.mainTab->setCurrentIndex(0);///要在setupUi之后
+	ui.init_toolbox->setCurrentIndex(0);
+	resetToDefault();
+
+
+	/////////////////////////////////////////////////////////////////
 	connect(ui.defaultBtn,SIGNAL(clicked()),this,SLOT(resetToDefault()));
 	connect(ui.showCloudBtn,SIGNAL(clicked()),this,SLOT(onShowCloudBtn()));//等价于on_ShowCloudBtn_clicked(),所以槽的命名不能是这个，否则会发射两次信号
 
@@ -35,7 +40,7 @@ mainform::~mainform()
 
 void mainform::resetToDefault()
 {
-	ui.delay_slider->setValue(5);
+	ui.delay_slider->setValue(0);
 	ui.range_slider->setValue(1500);
 	ui.full_rb->setChecked(true);
 }
@@ -45,6 +50,7 @@ void mainform::on_connectKinect_triggered()
 {
 
 	int device = 0;
+	int use_default_params=0;
 	cuda::setDevice (device);//设置GPU：0
 	cuda::printShortCudaDeviceInfo (device);//打印GPU信息
 	//检查GPU架构是否支持
@@ -58,7 +64,15 @@ void mainform::on_connectKinect_triggered()
 
 	_capture = new OpenNISource();
 	_capture->open(0);
-	_scanner = new fusionScanner(*_capture);//创建scanner app实例，注意是一个指针
+	if (use_default_params)
+	{
+		_scanner = new fusionScanner(*_capture);//创建scanner app实例，注意是一个指针
+	}
+	else
+	{
+		_scanner = new fusionScanner(*_capture,setKinfuParams());
+		
+	}
 	
 }
 void mainform::on_ToolstartBtn_triggered()
@@ -136,3 +150,53 @@ void mainform::on_actionSaveCloud_triggered()
 	_scanner->take_cloud(true);
 }
 
+kfusion::KinFuParams  mainform::setKinfuParams()
+{
+	KinFuParams p;
+	const int iters[] = {10, 5, 4, 0};
+	const int levels = sizeof(iters)/sizeof(iters[0]);//ICP迭代层数
+
+	//分辨率640*480
+	p.cols = 640;  //pixels
+	p.rows = 480;  //pixels
+	
+
+	p.intr = Intr(525.f, 525.f, p.cols/2 - 0.5f, p.rows/2 - 0.5f);
+
+	p.volume_dims = Vec3i::all(512);  //number of voxels
+	p.volume_size = Vec3f::all(3.f);  //meters
+
+	QString res = to_QString(to_string(static_cast<long long>(p.cols))+"*"+to_string(static_cast<long long>(p.rows)));
+	QString dim = to_QString(to_string(static_cast<long long>(p.volume_dims[0]))+" "+to_string(static_cast<long long>(p.volume_dims[1]))+" "+to_string(static_cast<long long>(p.volume_dims[2])));
+	QString size = to_QString(to_string(static_cast<long long>(p.volume_size[0]))+" "+to_string(static_cast<long long>(p.volume_size[1]))+" "+to_string(static_cast<long long>(p.volume_size[2])));
+
+	////////////////////////////////////////////////////////
+	ui.res_value_label->setText(res);
+	ui.dims_label->setText(dim);
+	ui.size_label->setText(size);
+
+
+	p.volume_pose = Affine3f().translate(Vec3f(-p.volume_size[0]/2, -p.volume_size[1]/2, 0.5f));
+
+	p.bilateral_sigma_depth = ui.sigma_depth_sb->value();  //meter
+	p.bilateral_sigma_spatial = ui.sigma_spatial_sb->value(); //pixels
+	p.bilateral_kernel_size = ui.sigma_k_size_sb->value();     //pixels
+
+	//迭代最近点ICP参数
+	p.icp_truncate_depth_dist = ui.ICP_depthdist_sb->value();        //meters, disabled //似乎过滤的是近处的数据
+	p.icp_dist_thres = ui.ICP_dist_th_sb->value();                //meters
+	p.icp_angle_thres = deg2rad(ui.ICP_angel_th_sb->value()); //radians//参数是角度
+	p.icp_iter_num.assign(iters, iters + levels);
+
+	p.tsdf_min_camera_movement = ui.cam_min_move_sb->value(); //meters, disabled //进行融合的最小摄像机位移
+	p.tsdf_trunc_dist = ui.tsdf_dist_sb->value(); //meters;
+	p.tsdf_max_weight = ui.tsdf_max_weight_sb->value();   //frames
+
+	p.raycast_step_factor = ui.raycast_factor_sb->value();  //in voxel sizes
+	p.gradient_delta_factor = ui.gradient_factor_sb->value(); //in voxel sizes
+
+	//p.light_pose = p.volume_pose.translation()/4; //meters
+	p.light_pose = Vec3f::all(0.f); //meters
+
+	return p;
+}

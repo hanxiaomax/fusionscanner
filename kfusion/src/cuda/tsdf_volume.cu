@@ -346,7 +346,7 @@ namespace kfusion
                 } /* for (;;) */
             }
 
-
+			/*计算法线*/
             __kf_device__
             float3 compute_normal(const float3& p) const
             {
@@ -379,6 +379,7 @@ namespace kfusion
 
     }
 }
+
 
 void kfusion::device::raycast(const TsdfVolume& volume, const Aff3f& aff, const Mat3f& Rinv, const Reprojector& reproj,
                               Depth& depth, Normals& normals, float raycaster_step_factor, float gradient_delta_factor)
@@ -417,7 +418,7 @@ void kfusion::device::raycast(const TsdfVolume& volume, const Aff3f& aff, const 
 
 ////////////////////////////////////////////////////////////////////////////////////////
 /// Volume cloud exctraction
-
+/// 体云获取？
 namespace kfusion
 {
     namespace device
@@ -652,7 +653,7 @@ namespace kfusion
         __global__ void extract_kernel(const FullScan6 fs, PtrSz<Point> output) { fs(output); }
 
 
-
+		///获取法线
         struct ExtractNormals
         {
             typedef float8 float8;
@@ -738,6 +739,7 @@ namespace kfusion
     }
 }
 
+//获取点云，返回大小，第三个参数为输出
 size_t kfusion::device::extractCloud (const TsdfVolume& volume, const Aff3f& aff, PtrSz<Point> output)
 {
     typedef FullScan6 FS;

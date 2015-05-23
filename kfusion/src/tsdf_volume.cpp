@@ -1,5 +1,5 @@
 #include "precomp.hpp"
-
+#include <iostream>
 using namespace kfusion;
 using namespace kfusion::cuda;
 
@@ -15,38 +15,70 @@ kfusion::cuda::TsdfVolume::Entry::half kfusion::cuda::TsdfVolume::Entry::float2h
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// TsdfVolume
 
-kfusion::cuda::TsdfVolume::TsdfVolume(const Vec3i& dims) : data_(), trunc_dist_(0.03f), max_weight_(128), dims_(dims),
-    size_(Vec3f::all(3.f)), pose_(Affine3f::Identity()), gradient_delta_factor_(0.75f), raycast_step_factor_(0.75f)
-{ create(dims_); }
+
+/*截断距离函数体元素对象构造函数
+*只会初始化一次
+*/
+kfusion::cuda::TsdfVolume::TsdfVolume(const Vec3i& dims) 
+	:	data_(), //CUDA data
+		trunc_dist_(0.03f), //截断距离
+		max_weight_(128), //最大重量
+		dims_(dims),//维数
+		size_(Vec3f::all(3.f)),//大小（Vec3f类型，初值为[3,3,3]） 
+		pose_(Affine3f::Identity()), 
+		gradient_delta_factor_(0.75f), 
+		raycast_step_factor_(0.75f)
+{ 
+	create(dims_);
+	printTSDFparams();
+}
+
+
+void kfusion::cuda::TsdfVolume::printTSDFparams()
+{
+	std::cout <<"size:"<<size_<<std::endl;
+	std::cout <<"截断距离:"<<trunc_dist_<<std::endl;
+	std::cout <<"max_weight_:"<<max_weight_<<std::endl;
+ 	std::cout <<"dims_:"<<dims_<<std::endl;
+ 	std::cout <<"梯度delta因子:"<<gradient_delta_factor_<<std::endl;
+ 	std::cout <<"光照步长因子:"<<raycast_step_factor_<<std::endl;
+
+}
 
 kfusion::cuda::TsdfVolume::~TsdfVolume() {}
 
+
+//创建TSDF体
 void kfusion::cuda::TsdfVolume::create(const Vec3i& dims)
 {
     dims_ = dims;
-    int voxels_number = dims_[0] * dims_[1] * dims_[2];
-    data_.create(voxels_number * sizeof(int));
-    setTruncDist(trunc_dist_);
+    int voxels_number = dims_[0] * dims_[1] * dims_[2];//计算体素个数
+    data_.create(voxels_number * sizeof(int));//创建CUDA数据需要的空间
+    setTruncDist(trunc_dist_);//设置截断距离
     clear();
 }
 
+//获取维数
 Vec3i kfusion::cuda::TsdfVolume::getDims() const
 { return dims_; }
 
-Vec3f kfusion::cuda::TsdfVolume::getVoxelSize() const
+//获取体素大小
+Vec3f kfusion::cuda::TsdfVolume::getVoxelSize() const//const防止函数调用改变数据
 {
+	//std::cout<<Vec3f(size_[0]/dims_[0], size_[1]/dims_[1], size_[2]/dims_[2])<<endl;
     return Vec3f(size_[0]/dims_[0], size_[1]/dims_[1], size_[2]/dims_[2]);
+	
 }
 
 const CudaData kfusion::cuda::TsdfVolume::data() const { return data_; }
 CudaData kfusion::cuda::TsdfVolume::data() {  return data_; }
 Vec3f kfusion::cuda::TsdfVolume::getSize() const { return size_; }
-
 void kfusion::cuda::TsdfVolume::setSize(const Vec3f& size)
 { size_ = size; setTruncDist(trunc_dist_); }
 
+//获取截断距离
 float kfusion::cuda::TsdfVolume::getTruncDist() const { return trunc_dist_; }
-
+//设置截断距离
 void kfusion::cuda::TsdfVolume::setTruncDist(float distance)
 {
     Vec3f vsz = getVoxelSize();
@@ -65,15 +97,17 @@ void kfusion::cuda::TsdfVolume::setGradientDeltaFactor(float factor) { gradient_
 void kfusion::cuda::TsdfVolume::swap(CudaData& data) { data_.swap(data); }
 void kfusion::cuda::TsdfVolume::applyAffine(const Affine3f& affine) { pose_ = affine * pose_; }
 
+
 void kfusion::cuda::TsdfVolume::clear()
 { 
-    device::Vec3i dims = device_cast<device::Vec3i>(dims_);
-    device::Vec3f vsz  = device_cast<device::Vec3f>(getVoxelSize());
+    device::Vec3i dims = device_cast<device::Vec3i>(dims_);//类型转换
+    device::Vec3f vsz  = device_cast<device::Vec3f>(getVoxelSize());//类型转换
 
-    device::TsdfVolume volume(data_.ptr<ushort2>(), dims, vsz, trunc_dist_, max_weight_);
+    device::TsdfVolume volume(data_.ptr<ushort2>(), dims, vsz, trunc_dist_, max_weight_);//device命名空间下的TsdfVolume对象
     device::clear_volume(volume);
 }
 
+//合成
 void kfusion::cuda::TsdfVolume::integrate(const Dists& dists, const Affine3f& camera_pose, const Intr& intr)
 {
     Affine3f vol2cam = camera_pose.inv() * pose_;
@@ -87,7 +121,7 @@ void kfusion::cuda::TsdfVolume::integrate(const Dists& dists, const Affine3f& ca
     device::TsdfVolume volume(data_.ptr<ushort2>(), dims, vsz, trunc_dist_, max_weight_);
     device::integrate(dists, volume, aff, proj);
 }
-
+//光照，深度数据（会崩溃）
 void kfusion::cuda::TsdfVolume::raycast(const Affine3f& camera_pose, const Intr& intr, Depth& depth, Normals& normals)
 {
     DeviceArray2D<device::Normal>& n = (DeviceArray2D<device::Normal>&)normals;
@@ -106,7 +140,7 @@ void kfusion::cuda::TsdfVolume::raycast(const Affine3f& camera_pose, const Intr&
     device::raycast(volume, aff, Rinv, reproj, depth, n, raycast_step_factor_, gradient_delta_factor_);
 
 }
-
+//光照，点云数据
 void kfusion::cuda::TsdfVolume::raycast(const Affine3f& camera_pose, const Intr& intr, Cloud& points, Normals& normals)
 {
     device::Normals& n = (device::Normals&)normals;

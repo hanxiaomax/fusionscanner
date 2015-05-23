@@ -40,13 +40,13 @@ private slots:
 	void on_ToolstopBtn_triggered();//停止扫描
 	void on_TooldeleteBtn_triggered();//软件复位
 	void on_actionSaveCloud_triggered();//保存点云
-
-
 	void resetToDefault();//重置初始化扫描参数
 	void onShowCloudBtn();
 private:
 	void timerEvent(QTimerEvent *event);
 	void showInViewer(const cv::Mat& depth,glViewer *viewer);
+	kfusion::KinFuParams setKinfuParams();//通过面板设置kinfu参数
+	QString to_QString(string s){return QString::fromLocal8Bit(s.c_str());};//转换string到QString
 	
 };
 
