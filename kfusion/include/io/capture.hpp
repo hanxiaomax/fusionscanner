@@ -4,6 +4,7 @@
 #include <opencv2/core/core.hpp>
 #include <string>
 /*OpenNI…Ë±∏øÿ÷∆*/
+
 struct kinectParams{
 	int beginRange;
 	int endRange;
@@ -44,9 +45,10 @@ namespace kfusion
         struct Impl;
         cv::Ptr<Impl> impl_;
         void getParams ();
-		void filter(cv::Mat &depth,int xRES,int yRES,int beginRange,int endRange);
 		int _beginRange;
 		int _endRange;
+		void filter(cv::Mat &depth,int xRES,int yRES,int beginRange,int endRange);
+		
 
     };
 }

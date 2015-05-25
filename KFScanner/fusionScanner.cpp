@@ -26,7 +26,7 @@ fusionScanner::fusionScanner(OpenNISource& source,KinFuParams &params)
 	 time_ms(0),
 	 fusionstart(false)
 {
-	KinFuParams p = params;
+	KinFuParams p = params;//可以删掉？
 	kinfu_sp = KinFu::Ptr( new KinFu(p) );//创建Kinfu对象
 	kinfu_sp->PrintKFparms();
 	capture.setRegistration(true);//设置点云配准

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainform.ui'
 **
-** Created: Sat May 23 23:03:44 2015
+** Created: Mon May 25 13:22:19 2015
 **      by: Qt User Interface Compiler version 4.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -535,7 +535,7 @@ public:
         init_toolbox->addItem(page, QString::fromUtf8("\346\211\253\346\217\217\345\217\202\346\225\260"));
         page_2 = new QWidget();
         page_2->setObjectName(QString::fromUtf8("page_2"));
-        page_2->setGeometry(QRect(0, 0, 202, 464));
+        page_2->setGeometry(QRect(0, 0, 273, 529));
         gridLayout_14 = new QGridLayout(page_2);
         gridLayout_14->setSpacing(6);
         gridLayout_14->setContentsMargins(11, 11, 11, 11);
@@ -725,7 +725,7 @@ public:
         ICP_angel_th_sb->setFont(font3);
         ICP_angel_th_sb->setMaximum(360);
         ICP_angel_th_sb->setSingleStep(0.01);
-        ICP_angel_th_sb->setValue(0.52);
+        ICP_angel_th_sb->setValue(30);
 
         gridLayout_10->addWidget(ICP_angel_th_sb, 3, 2, 2, 1);
 
@@ -1227,7 +1227,7 @@ public:
         QObject::connect(range_slider, SIGNAL(valueChanged(int)), range_value, SLOT(setNum(int)));
 
         mainTab->setCurrentIndex(0);
-        init_toolbox->setCurrentIndex(0);
+        init_toolbox->setCurrentIndex(1);
         toolBox->setCurrentIndex(0);
         toolBox_2->setCurrentIndex(0);
 
@@ -1283,7 +1283,7 @@ public:
         label_6->setText(QApplication::translate("mainformClass", "\345\217\214\350\276\271sigma\346\267\261\345\272\246", 0, QApplication::UnicodeUTF8));
         label_12->setText(QApplication::translate("mainformClass", "ICP\346\210\252\346\226\255\346\267\261\345\272\246\350\267\235\347\246\273", 0, QApplication::UnicodeUTF8));
         label_13->setText(QApplication::translate("mainformClass", "ICP\350\267\235\347\246\273\351\230\200\345\200\274", 0, QApplication::UnicodeUTF8));
-        label_14->setText(QApplication::translate("mainformClass", "ICP\350\247\222\345\272\246\351\230\200\345\200\274", 0, QApplication::UnicodeUTF8));
+        label_14->setText(QApplication::translate("mainformClass", "ICP\350\247\222\345\272\246\351\230\200\345\200\274(\345\272\246)", 0, QApplication::UnicodeUTF8));
         label_16->setText(QApplication::translate("mainformClass", "\346\221\204\345\203\217\346\234\272\346\234\200\345\260\217\344\275\215\347\247\273", 0, QApplication::UnicodeUTF8));
         label_17->setText(QApplication::translate("mainformClass", "TSDF\346\210\252\346\226\255\350\267\235\347\246\273", 0, QApplication::UnicodeUTF8));
         label_15->setText(QApplication::translate("mainformClass", "TSDF\346\234\200\345\244\247\351\207\215\351\207\217", 0, QApplication::UnicodeUTF8));

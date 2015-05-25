@@ -55,14 +55,17 @@ struct kfusion::OpenNISource::Impl
     bool has_image;
 };
 
+//demo使用的初始化方法
 kfusion::OpenNISource::OpenNISource() : depth_focal_length_VGA (0.f), baseline (0.f),
-    shadow_value (0), no_sample_value (0), pixelSize (0.0), max_depth (0) {}
+    shadow_value (0), no_sample_value (0), pixelSize (0.0), max_depth (0) ,_beginRange(100),_endRange(2000){}
 
 //利用默认参数初始化设备
-kfusion::OpenNISource::OpenNISource(int device) :_beginRange(100),_endRange(1000){open (device); }
+kfusion::OpenNISource::OpenNISource(int device) :depth_focal_length_VGA (0.f), baseline (0.f),
+	shadow_value (0), no_sample_value (0), pixelSize (0.0), max_depth (0) ,_beginRange(100),_endRange(2000){open (device); }
 
 //利用自定义参数初始化设备
-kfusion::OpenNISource::OpenNISource(int device,kinectParams &p):_beginRange(p.beginRange),_endRange(p.endRange){open(device);};
+kfusion::OpenNISource::OpenNISource(int device,kinectParams &p):depth_focal_length_VGA (0.f), baseline (0.f),
+	shadow_value (0), no_sample_value (0), pixelSize (0.0), max_depth (0) ,_beginRange(p.beginRange),_endRange(p.endRange){open(device);}
 
 kfusion::OpenNISource::OpenNISource(const string& filename) {open (filename); }
 
@@ -272,10 +275,7 @@ bool kfusion::OpenNISource::grab(cv::Mat& depth, cv::Mat& image)
         cv::Mat(y, x, CV_16U, (void*)pDepth).copyTo(depth);//注意y在x之前，行主序
 		
 
-		
-		//cout<<depth<<endl;//<<操作对于二维矩阵是成立的
-		//cout<<"col:"<<depth.cols<<" "<<"row:"<<depth.rows<<endl;//640*480
-
+		//cout<<_beginRange<<" "<<_endRange<<endl;
    		filter(depth,x,y,_beginRange,_endRange);//保留0~1200范围内的点
     }
     else

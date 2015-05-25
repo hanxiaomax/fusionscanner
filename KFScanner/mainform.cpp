@@ -62,7 +62,7 @@ void mainform::setkinfuToDefault()
 
 	ui.ICP_depthdist_sb->setValue(0.00);
 	ui.ICP_dist_th_sb->setValue(0.10);
-	ui.ICP_angel_th_sb->setValue(0.52);
+	ui.ICP_angel_th_sb->setValue(30);
 
 	ui.cam_min_move_sb->setValue(0.00);
 	ui.tsdf_dist_sb->setValue(0.04);
@@ -75,27 +75,28 @@ void mainform::setkinfuToDefault()
 void mainform::on_connectKinect_triggered()
 {
 	bool use_default_params = false;
-	kinectParams p;
-	p.beginRange = 0;
-	p.endRange = ui.range_slider->value();
+	///设置摄像机参数
+	kinectParams kinectparams;
+	kinectparams.beginRange = 0;
+	kinectparams.endRange = ui.range_slider->value();
+	///检查显卡，若支持，
 	if(checkGPUdevice())
 	{
-		//_capture = new OpenNISource(0,p);
-		//_capture->open(0);
-		_capture = new OpenNISource;
-		_capture->open(0);
+		_capture = new OpenNISource(0,kinectparams);//初始化摄像机
+
 		if (use_default_params)
 		{
 			_scanner = new fusionScanner(*_capture);//创建scanner app实例，注意是一个指针
 		}
 		else
 		{
-			_scanner = new fusionScanner(*_capture,setKinfuParams());
+			_scanner = new fusionScanner(*_capture,setKinfuParams());//参数设置不正确
 
 		}
 	}
 	else
 	{
+//TODO：显卡不支持情况，不能直接退出
 		return;
 	}
 	
