@@ -3,7 +3,11 @@
 #include <kfusion/kinfu.hpp>
 #include <opencv2/core/core.hpp>
 #include <string>
-
+/*OpenNI…Ë±∏øÿ÷∆*/
+struct kinectParams{
+	int beginRange;
+	int endRange;
+};
 namespace kfusion
 {
     class KF_EXPORTS OpenNISource
@@ -15,16 +19,18 @@ namespace kfusion
 
         OpenNISource();
         OpenNISource(int device);
+		OpenNISource(int device,kinectParams &p);
         OpenNISource(const std::string& oni_filename);
 
         void open(int device);
+
         void open(const std::string& oni_filename);
         void release();
 
         ~OpenNISource();
 		
         bool grab(cv::Mat &depth, cv::Mat &image);
-		void filter(cv::Mat &depth,int xRES,int yRES,int threshold_A,int threshold_B);
+		
 
         //parameters taken from camera/oni
         int shadow_value, no_sample_value;
@@ -38,6 +44,9 @@ namespace kfusion
         struct Impl;
         cv::Ptr<Impl> impl_;
         void getParams ();
+		void filter(cv::Mat &depth,int xRES,int yRES,int beginRange,int endRange);
+		int _beginRange;
+		int _endRange;
 
     };
 }

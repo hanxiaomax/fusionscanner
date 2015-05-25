@@ -3,7 +3,7 @@
 #include <cuda.h>
 #include <cstdio>
 #include <iostream>
-
+#include <string>
 
 /*获取可用的CUDA设备个数
   * 没有返回0
@@ -207,6 +207,30 @@ void kf::cuda::printShortCudaDeviceInfo(int device)
         printf(", Driver/Runtime ver.%d.%d/%d.%d\n", driverVersion/1000, driverVersion%100, runtimeVersion/1000, runtimeVersion%100);
     }
     fflush(stdout);
+}
+
+kf::cuda::CUDAinfo kf::cuda::getShortCudaDeviceInfo(int device)
+{
+	CUDAinfo info;
+	
+
+	int driverVersion = 0, runtimeVersion = 0;//存放版本号
+	cudaSafeCall( cudaDriverGetVersion(&driverVersion) );
+	cudaSafeCall( cudaRuntimeGetVersion(&runtimeVersion) );
+
+	
+	cudaDeviceProp prop;
+	cudaSafeCall( cudaGetDeviceProperties(&prop, device) );
+
+	info.device_name = prop.name;
+	info.RAM = (float)prop.totalGlobalMem/1048576.0f;
+	info.core = convertSMVer2Cores(prop.major, prop.minor) * prop.multiProcessorCount;
+	info.driver = to_string(static_cast<long long>(driverVersion/1000))
+				+to_string(static_cast<long long>(driverVersion%100))
+				+to_string(static_cast<long long>(runtimeVersion/1000))
+				+to_string(static_cast<long long>(runtimeVersion%100));
+		
+	return info;
 }
 
 //采样时间

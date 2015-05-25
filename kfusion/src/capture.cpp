@@ -58,8 +58,14 @@ struct kfusion::OpenNISource::Impl
 kfusion::OpenNISource::OpenNISource() : depth_focal_length_VGA (0.f), baseline (0.f),
     shadow_value (0), no_sample_value (0), pixelSize (0.0), max_depth (0) {}
 
-kfusion::OpenNISource::OpenNISource(int device) {open (device); }
+//利用默认参数初始化设备
+kfusion::OpenNISource::OpenNISource(int device) :_beginRange(100),_endRange(1000){open (device); }
+
+//利用自定义参数初始化设备
+kfusion::OpenNISource::OpenNISource(int device,kinectParams &p):_beginRange(p.beginRange),_endRange(p.endRange){open(device);};
+
 kfusion::OpenNISource::OpenNISource(const string& filename) {open (filename); }
+
 kfusion::OpenNISource::~OpenNISource() { release ();}
 
 void kfusion::OpenNISource::open (int device)
@@ -270,7 +276,7 @@ bool kfusion::OpenNISource::grab(cv::Mat& depth, cv::Mat& image)
 		//cout<<depth<<endl;//<<操作对于二维矩阵是成立的
 		//cout<<"col:"<<depth.cols<<" "<<"row:"<<depth.rows<<endl;//640*480
 
-   		filter(depth,x,y,0,1000);//保留0~1200范围内的点
+   		filter(depth,x,y,_beginRange,_endRange);//保留0~1200范围内的点
     }
     else
     {

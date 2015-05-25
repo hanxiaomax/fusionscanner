@@ -17,12 +17,24 @@ namespace kfusion
 {
     namespace cuda//cuda函数，区别于cuda类型
     {
-        KF_EXPORTS int getCudaEnabledDeviceCount();
-        KF_EXPORTS void setDevice(int device);
-        KF_EXPORTS std::string getDeviceName(int device);
-        KF_EXPORTS bool checkIfPreFermiGPU(int device);
-        KF_EXPORTS void printCudaDeviceInfo(int device);
-        KF_EXPORTS void printShortCudaDeviceInfo(int device);
+		KF_EXPORTS struct CUDAinfo
+		{
+			string device_name;
+			string driver;
+			float RAM;
+			int core;
+		};
+        KF_EXPORTS int getCudaEnabledDeviceCount();//获取可用CUDA设备数量
+		
+        KF_EXPORTS void setDevice(int device);//设置CUDA设备
+        KF_EXPORTS std::string getDeviceName(int device);//获取设备名称
+        KF_EXPORTS bool checkIfPreFermiGPU(int device);//检查GUP架构
+        KF_EXPORTS void printCudaDeviceInfo(int device);//打印CUDA设备信息
+        KF_EXPORTS void printShortCudaDeviceInfo(int device);//打印简短的GUDA设备信息
+		KF_EXPORTS CUDAinfo getShortCudaDeviceInfo(int device);//获取简短的CUDA设备信息
+
+		
+
     }
 
     struct KF_EXPORTS KinFuParams //导出类 kinfu参数

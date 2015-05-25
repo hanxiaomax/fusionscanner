@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainform.ui'
 **
-** Created: Fri May 22 22:16:36 2015
+** Created: Sat May 23 23:03:44 2015
 **      by: Qt User Interface Compiler version 4.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -24,13 +24,14 @@
 #include <QtGui/QMainWindow>
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
+#include <QtGui/QProgressBar>
 #include <QtGui/QPushButton>
 #include <QtGui/QRadioButton>
 #include <QtGui/QSlider>
 #include <QtGui/QSpacerItem>
+#include <QtGui/QSpinBox>
 #include <QtGui/QStatusBar>
 #include <QtGui/QTabWidget>
-#include <QtGui/QTextEdit>
 #include <QtGui/QToolBar>
 #include <QtGui/QToolBox>
 #include <QtGui/QVBoxLayout>
@@ -48,14 +49,16 @@ public:
     QAction *TooldeleteBtn;
     QAction *actionSaveCloud;
     QAction *action_ResetKinFuParams;
+    QAction *action_ResetScanParams;
+    QAction *action;
+    QAction *actionKinect;
     QWidget *centralWidget;
-    QGridLayout *gridLayout;
+    QHBoxLayout *horizontalLayout_9;
     QTabWidget *mainTab;
     QWidget *initiation;
-    glViewer *init_viewer;
+    QGridLayout *gridLayout_15;
     QToolBox *init_toolbox;
     QWidget *page;
-    QGridLayout *gridLayout_2;
     QVBoxLayout *verticalLayout;
     QVBoxLayout *verticalLayout_5;
     QHBoxLayout *horizontalLayout_6;
@@ -73,9 +76,27 @@ public:
     QRadioButton *half_rb;
     QRadioButton *hea_rb;
     QSpacerItem *verticalSpacer_2;
-    QHBoxLayout *horizontalLayout_8;
-    QSpacerItem *horizontalSpacer;
-    QPushButton *defaultBtn;
+    QGroupBox *groupBox_7;
+    QGridLayout *gridLayout_16;
+    QLabel *label_29;
+    QLabel *device_info;
+    QLabel *label_31;
+    QHBoxLayout *horizontalLayout_10;
+    QLabel *ram_info;
+    QLabel *label_35;
+    QLabel *core_info;
+    QLabel *label_33;
+    QLabel *driver_info;
+    QGroupBox *groupBox_5;
+    QGridLayout *gridLayout_2;
+    QLabel *label_10;
+    QSpinBox *R_segment_sb;
+    QSpinBox *a_speed_sb;
+    QSpinBox *speed_sb;
+    QLabel *label_11;
+    QSpinBox *segment_sb;
+    QLabel *label_20;
+    QLabel *label_9;
     QWidget *page_2;
     QGridLayout *gridLayout_14;
     QVBoxLayout *verticalLayout_7;
@@ -130,6 +151,7 @@ public:
     QLabel *label_18;
     QSpacerItem *horizontalSpacer_12;
     QDoubleSpinBox *gradient_factor_sb;
+    glViewer *init_viewer;
     QWidget *scan;
     QGridLayout *gridLayout_3;
     QHBoxLayout *horizontalLayout_4;
@@ -141,8 +163,23 @@ public:
     glViewer *deviceViewer;
     QVBoxLayout *verticalLayout_2;
     QGroupBox *groupBox;
+    QWidget *layoutWidget;
+    QHBoxLayout *horizontalLayout_8;
+    QLabel *label_22;
+    QSpacerItem *horizontalSpacer;
+    QLabel *fps;
+    QGroupBox *groupBox_6;
     QGridLayout *gridLayout_4;
-    QTextEdit *textEdit;
+    QLabel *label_23;
+    QLabel *label_24;
+    QLabel *label_25;
+    QLabel *label_26;
+    QLabel *label_27;
+    QProgressBar *progressBar_2;
+    QLabel *speed;
+    QLabel *angular_speed;
+    QLabel *segment;
+    QLabel *R_segement;
     QPushButton *recordBtn;
     QPushButton *stopBtn;
     QPushButton *deleteBtn;
@@ -174,6 +211,7 @@ public:
     QMenu *menu_2;
     QMenu *menu;
     QMenu *menu_3;
+    QMenu *menu_4;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
     QToolBar *toolBar;
@@ -182,7 +220,7 @@ public:
     {
         if (mainformClass->objectName().isEmpty())
             mainformClass->setObjectName(QString::fromUtf8("mainformClass"));
-        mainformClass->resize(922, 721);
+        mainformClass->resize(1148, 771);
         connectKinect = new QAction(mainformClass);
         connectKinect->setObjectName(QString::fromUtf8("connectKinect"));
         connectKinect->setCheckable(true);
@@ -214,12 +252,18 @@ public:
         actionSaveCloud->setObjectName(QString::fromUtf8("actionSaveCloud"));
         action_ResetKinFuParams = new QAction(mainformClass);
         action_ResetKinFuParams->setObjectName(QString::fromUtf8("action_ResetKinFuParams"));
+        action_ResetScanParams = new QAction(mainformClass);
+        action_ResetScanParams->setObjectName(QString::fromUtf8("action_ResetScanParams"));
+        action = new QAction(mainformClass);
+        action->setObjectName(QString::fromUtf8("action"));
+        actionKinect = new QAction(mainformClass);
+        actionKinect->setObjectName(QString::fromUtf8("actionKinect"));
         centralWidget = new QWidget(mainformClass);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
-        gridLayout = new QGridLayout(centralWidget);
-        gridLayout->setSpacing(6);
-        gridLayout->setContentsMargins(11, 11, 11, 11);
-        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        horizontalLayout_9 = new QHBoxLayout(centralWidget);
+        horizontalLayout_9->setSpacing(6);
+        horizontalLayout_9->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_9->setObjectName(QString::fromUtf8("horizontalLayout_9"));
         mainTab = new QTabWidget(centralWidget);
         mainTab->setObjectName(QString::fromUtf8("mainTab"));
         mainTab->setEnabled(true);
@@ -238,17 +282,12 @@ public:
         mainTab->setTabsClosable(false);
         initiation = new QWidget();
         initiation->setObjectName(QString::fromUtf8("initiation"));
-        init_viewer = new glViewer(initiation);
-        init_viewer->setObjectName(QString::fromUtf8("init_viewer"));
-        init_viewer->setGeometry(QRect(10, 10, 581, 557));
-        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-        sizePolicy.setHorizontalStretch(2);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(init_viewer->sizePolicy().hasHeightForWidth());
-        init_viewer->setSizePolicy(sizePolicy);
+        gridLayout_15 = new QGridLayout(initiation);
+        gridLayout_15->setSpacing(6);
+        gridLayout_15->setContentsMargins(11, 11, 11, 11);
+        gridLayout_15->setObjectName(QString::fromUtf8("gridLayout_15"));
         init_toolbox = new QToolBox(initiation);
         init_toolbox->setObjectName(QString::fromUtf8("init_toolbox"));
-        init_toolbox->setGeometry(QRect(600, 10, 289, 561));
         QFont font1;
         font1.setFamily(QString::fromUtf8("\345\276\256\350\275\257\351\233\205\351\273\221"));
         font1.setPointSize(14);
@@ -260,13 +299,10 @@ public:
         init_toolbox->setLineWidth(1);
         page = new QWidget();
         page->setObjectName(QString::fromUtf8("page"));
-        page->setGeometry(QRect(0, 0, 211, 174));
-        gridLayout_2 = new QGridLayout(page);
-        gridLayout_2->setSpacing(6);
-        gridLayout_2->setContentsMargins(11, 11, 11, 11);
-        gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
-        verticalLayout = new QVBoxLayout();
+        page->setGeometry(QRect(0, 0, 273, 529));
+        verticalLayout = new QVBoxLayout(page);
         verticalLayout->setSpacing(6);
+        verticalLayout->setContentsMargins(11, 11, 11, 11);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         verticalLayout_5 = new QVBoxLayout();
         verticalLayout_5->setSpacing(6);
@@ -286,15 +322,15 @@ public:
 
         delay_slider = new QSlider(page);
         delay_slider->setObjectName(QString::fromUtf8("delay_slider"));
-        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Preferred);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(delay_slider->sizePolicy().hasHeightForWidth());
-        delay_slider->setSizePolicy(sizePolicy1);
+        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(delay_slider->sizePolicy().hasHeightForWidth());
+        delay_slider->setSizePolicy(sizePolicy);
         delay_slider->setMinimumSize(QSize(25, 0));
         delay_slider->setMaximum(15);
         delay_slider->setPageStep(5);
-        delay_slider->setValue(5);
+        delay_slider->setValue(0);
         delay_slider->setOrientation(Qt::Horizontal);
 
         horizontalLayout_6->addWidget(delay_slider);
@@ -329,8 +365,8 @@ public:
 
         range_slider = new QSlider(page);
         range_slider->setObjectName(QString::fromUtf8("range_slider"));
-        sizePolicy1.setHeightForWidth(range_slider->sizePolicy().hasHeightForWidth());
-        range_slider->setSizePolicy(sizePolicy1);
+        sizePolicy.setHeightForWidth(range_slider->sizePolicy().hasHeightForWidth());
+        range_slider->setSizePolicy(sizePolicy);
         range_slider->setMaximum(2000);
         range_slider->setSingleStep(50);
         range_slider->setPageStep(500);
@@ -381,32 +417,125 @@ public:
 
         verticalLayout->addLayout(horizontalLayout);
 
-        verticalSpacer_2 = new QSpacerItem(14, 268, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout->addItem(verticalSpacer_2);
 
-        horizontalLayout_8 = new QHBoxLayout();
-        horizontalLayout_8->setSpacing(6);
-        horizontalLayout_8->setObjectName(QString::fromUtf8("horizontalLayout_8"));
-        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        groupBox_7 = new QGroupBox(page);
+        groupBox_7->setObjectName(QString::fromUtf8("groupBox_7"));
+        groupBox_7->setFont(font3);
+        gridLayout_16 = new QGridLayout(groupBox_7);
+        gridLayout_16->setSpacing(6);
+        gridLayout_16->setContentsMargins(11, 11, 11, 11);
+        gridLayout_16->setObjectName(QString::fromUtf8("gridLayout_16"));
+        label_29 = new QLabel(groupBox_7);
+        label_29->setObjectName(QString::fromUtf8("label_29"));
 
-        horizontalLayout_8->addItem(horizontalSpacer);
+        gridLayout_16->addWidget(label_29, 0, 0, 1, 1);
 
-        defaultBtn = new QPushButton(page);
-        defaultBtn->setObjectName(QString::fromUtf8("defaultBtn"));
+        device_info = new QLabel(groupBox_7);
+        device_info->setObjectName(QString::fromUtf8("device_info"));
+        device_info->setAlignment(Qt::AlignCenter);
 
-        horizontalLayout_8->addWidget(defaultBtn);
+        gridLayout_16->addWidget(device_info, 0, 1, 1, 1);
+
+        label_31 = new QLabel(groupBox_7);
+        label_31->setObjectName(QString::fromUtf8("label_31"));
+
+        gridLayout_16->addWidget(label_31, 1, 0, 1, 1);
+
+        horizontalLayout_10 = new QHBoxLayout();
+        horizontalLayout_10->setSpacing(6);
+        horizontalLayout_10->setObjectName(QString::fromUtf8("horizontalLayout_10"));
+        ram_info = new QLabel(groupBox_7);
+        ram_info->setObjectName(QString::fromUtf8("ram_info"));
+        ram_info->setAlignment(Qt::AlignCenter);
+
+        horizontalLayout_10->addWidget(ram_info);
+
+        label_35 = new QLabel(groupBox_7);
+        label_35->setObjectName(QString::fromUtf8("label_35"));
+        label_35->setAlignment(Qt::AlignCenter);
+
+        horizontalLayout_10->addWidget(label_35);
+
+        core_info = new QLabel(groupBox_7);
+        core_info->setObjectName(QString::fromUtf8("core_info"));
+        core_info->setAlignment(Qt::AlignCenter);
+
+        horizontalLayout_10->addWidget(core_info);
 
 
-        verticalLayout->addLayout(horizontalLayout_8);
+        gridLayout_16->addLayout(horizontalLayout_10, 1, 1, 1, 1);
+
+        label_33 = new QLabel(groupBox_7);
+        label_33->setObjectName(QString::fromUtf8("label_33"));
+
+        gridLayout_16->addWidget(label_33, 2, 0, 1, 1);
+
+        driver_info = new QLabel(groupBox_7);
+        driver_info->setObjectName(QString::fromUtf8("driver_info"));
+        driver_info->setAlignment(Qt::AlignCenter);
+
+        gridLayout_16->addWidget(driver_info, 2, 1, 1, 1);
 
 
-        gridLayout_2->addLayout(verticalLayout, 0, 0, 1, 1);
+        verticalLayout->addWidget(groupBox_7);
+
+        groupBox_5 = new QGroupBox(page);
+        groupBox_5->setObjectName(QString::fromUtf8("groupBox_5"));
+        groupBox_5->setFont(font3);
+        gridLayout_2 = new QGridLayout(groupBox_5);
+        gridLayout_2->setSpacing(6);
+        gridLayout_2->setContentsMargins(11, 11, 11, 11);
+        gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
+        label_10 = new QLabel(groupBox_5);
+        label_10->setObjectName(QString::fromUtf8("label_10"));
+
+        gridLayout_2->addWidget(label_10, 1, 0, 1, 1);
+
+        R_segment_sb = new QSpinBox(groupBox_5);
+        R_segment_sb->setObjectName(QString::fromUtf8("R_segment_sb"));
+
+        gridLayout_2->addWidget(R_segment_sb, 3, 1, 1, 1);
+
+        a_speed_sb = new QSpinBox(groupBox_5);
+        a_speed_sb->setObjectName(QString::fromUtf8("a_speed_sb"));
+
+        gridLayout_2->addWidget(a_speed_sb, 1, 1, 1, 1);
+
+        speed_sb = new QSpinBox(groupBox_5);
+        speed_sb->setObjectName(QString::fromUtf8("speed_sb"));
+
+        gridLayout_2->addWidget(speed_sb, 0, 1, 1, 1);
+
+        label_11 = new QLabel(groupBox_5);
+        label_11->setObjectName(QString::fromUtf8("label_11"));
+
+        gridLayout_2->addWidget(label_11, 2, 0, 1, 1);
+
+        segment_sb = new QSpinBox(groupBox_5);
+        segment_sb->setObjectName(QString::fromUtf8("segment_sb"));
+
+        gridLayout_2->addWidget(segment_sb, 2, 1, 1, 1);
+
+        label_20 = new QLabel(groupBox_5);
+        label_20->setObjectName(QString::fromUtf8("label_20"));
+
+        gridLayout_2->addWidget(label_20, 3, 0, 1, 1);
+
+        label_9 = new QLabel(groupBox_5);
+        label_9->setObjectName(QString::fromUtf8("label_9"));
+
+        gridLayout_2->addWidget(label_9, 0, 0, 1, 1);
+
+
+        verticalLayout->addWidget(groupBox_5);
 
         init_toolbox->addItem(page, QString::fromUtf8("\346\211\253\346\217\217\345\217\202\346\225\260"));
         page_2 = new QWidget();
         page_2->setObjectName(QString::fromUtf8("page_2"));
-        page_2->setGeometry(QRect(0, 0, 287, 481));
+        page_2->setGeometry(QRect(0, 0, 202, 464));
         gridLayout_14 = new QGridLayout(page_2);
         gridLayout_14->setSpacing(6);
         gridLayout_14->setContentsMargins(11, 11, 11, 11);
@@ -716,6 +845,21 @@ public:
         gridLayout_14->addLayout(verticalLayout_7, 0, 0, 1, 1);
 
         init_toolbox->addItem(page_2, QString::fromUtf8("Kinfu\345\217\202\346\225\260"));
+
+        gridLayout_15->addWidget(init_toolbox, 0, 1, 1, 1);
+
+        init_viewer = new glViewer(initiation);
+        init_viewer->setObjectName(QString::fromUtf8("init_viewer"));
+        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy1.setHorizontalStretch(2);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(init_viewer->sizePolicy().hasHeightForWidth());
+        init_viewer->setSizePolicy(sizePolicy1);
+
+        gridLayout_15->addWidget(init_viewer, 0, 0, 1, 1);
+
+        gridLayout_15->setColumnStretch(0, 3);
+        gridLayout_15->setColumnStretch(1, 1);
         mainTab->addTab(initiation, QString());
         scan = new QWidget();
         scan->setObjectName(QString::fromUtf8("scan"));
@@ -731,8 +875,8 @@ public:
         verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
         fusionViewer = new glViewer(scan);
         fusionViewer->setObjectName(QString::fromUtf8("fusionViewer"));
-        sizePolicy.setHeightForWidth(fusionViewer->sizePolicy().hasHeightForWidth());
-        fusionViewer->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(fusionViewer->sizePolicy().hasHeightForWidth());
+        fusionViewer->setSizePolicy(sizePolicy1);
 
         verticalLayout_3->addWidget(fusionViewer);
 
@@ -741,22 +885,22 @@ public:
         horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
         depthViewer = new glViewer(scan);
         depthViewer->setObjectName(QString::fromUtf8("depthViewer"));
-        sizePolicy.setHeightForWidth(depthViewer->sizePolicy().hasHeightForWidth());
-        depthViewer->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(depthViewer->sizePolicy().hasHeightForWidth());
+        depthViewer->setSizePolicy(sizePolicy1);
 
         horizontalLayout_3->addWidget(depthViewer);
 
         RGBViewer = new glViewer(scan);
         RGBViewer->setObjectName(QString::fromUtf8("RGBViewer"));
-        sizePolicy.setHeightForWidth(RGBViewer->sizePolicy().hasHeightForWidth());
-        RGBViewer->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(RGBViewer->sizePolicy().hasHeightForWidth());
+        RGBViewer->setSizePolicy(sizePolicy1);
 
         horizontalLayout_3->addWidget(RGBViewer);
 
         deviceViewer = new glViewer(scan);
         deviceViewer->setObjectName(QString::fromUtf8("deviceViewer"));
-        sizePolicy.setHeightForWidth(deviceViewer->sizePolicy().hasHeightForWidth());
-        deviceViewer->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(deviceViewer->sizePolicy().hasHeightForWidth());
+        deviceViewer->setSizePolicy(sizePolicy1);
 
         horizontalLayout_3->addWidget(deviceViewer);
 
@@ -773,17 +917,103 @@ public:
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         groupBox = new QGroupBox(scan);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
-        gridLayout_4 = new QGridLayout(groupBox);
-        gridLayout_4->setSpacing(6);
-        gridLayout_4->setContentsMargins(11, 11, 11, 11);
-        gridLayout_4->setObjectName(QString::fromUtf8("gridLayout_4"));
-        textEdit = new QTextEdit(groupBox);
-        textEdit->setObjectName(QString::fromUtf8("textEdit"));
+        groupBox->setFont(font2);
+        layoutWidget = new QWidget(groupBox);
+        layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
+        layoutWidget->setGeometry(QRect(10, 36, 251, 31));
+        horizontalLayout_8 = new QHBoxLayout(layoutWidget);
+        horizontalLayout_8->setSpacing(6);
+        horizontalLayout_8->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_8->setObjectName(QString::fromUtf8("horizontalLayout_8"));
+        horizontalLayout_8->setContentsMargins(0, 0, 0, 0);
+        label_22 = new QLabel(layoutWidget);
+        label_22->setObjectName(QString::fromUtf8("label_22"));
+        QFont font4;
+        font4.setBold(false);
+        font4.setWeight(50);
+        label_22->setFont(font4);
 
-        gridLayout_4->addWidget(textEdit, 0, 0, 1, 1);
+        horizontalLayout_8->addWidget(label_22);
+
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_8->addItem(horizontalSpacer);
+
+        fps = new QLabel(layoutWidget);
+        fps->setObjectName(QString::fromUtf8("fps"));
+        fps->setFont(font4);
+
+        horizontalLayout_8->addWidget(fps);
 
 
         verticalLayout_2->addWidget(groupBox);
+
+        groupBox_6 = new QGroupBox(scan);
+        groupBox_6->setObjectName(QString::fromUtf8("groupBox_6"));
+        groupBox_6->setFont(font2);
+        gridLayout_4 = new QGridLayout(groupBox_6);
+        gridLayout_4->setSpacing(6);
+        gridLayout_4->setContentsMargins(11, 11, 11, 11);
+        gridLayout_4->setObjectName(QString::fromUtf8("gridLayout_4"));
+        label_23 = new QLabel(groupBox_6);
+        label_23->setObjectName(QString::fromUtf8("label_23"));
+
+        gridLayout_4->addWidget(label_23, 1, 0, 1, 1);
+
+        label_24 = new QLabel(groupBox_6);
+        label_24->setObjectName(QString::fromUtf8("label_24"));
+
+        gridLayout_4->addWidget(label_24, 2, 0, 1, 1);
+
+        label_25 = new QLabel(groupBox_6);
+        label_25->setObjectName(QString::fromUtf8("label_25"));
+
+        gridLayout_4->addWidget(label_25, 3, 0, 1, 1);
+
+        label_26 = new QLabel(groupBox_6);
+        label_26->setObjectName(QString::fromUtf8("label_26"));
+
+        gridLayout_4->addWidget(label_26, 0, 0, 1, 1);
+
+        label_27 = new QLabel(groupBox_6);
+        label_27->setObjectName(QString::fromUtf8("label_27"));
+
+        gridLayout_4->addWidget(label_27, 4, 0, 1, 1);
+
+        progressBar_2 = new QProgressBar(groupBox_6);
+        progressBar_2->setObjectName(QString::fromUtf8("progressBar_2"));
+        progressBar_2->setValue(0);
+        progressBar_2->setTextVisible(false);
+        progressBar_2->setTextDirection(QProgressBar::TopToBottom);
+
+        gridLayout_4->addWidget(progressBar_2, 4, 1, 1, 1);
+
+        speed = new QLabel(groupBox_6);
+        speed->setObjectName(QString::fromUtf8("speed"));
+        speed->setAlignment(Qt::AlignCenter);
+
+        gridLayout_4->addWidget(speed, 0, 1, 1, 1);
+
+        angular_speed = new QLabel(groupBox_6);
+        angular_speed->setObjectName(QString::fromUtf8("angular_speed"));
+        angular_speed->setAlignment(Qt::AlignCenter);
+
+        gridLayout_4->addWidget(angular_speed, 1, 1, 1, 1);
+
+        segment = new QLabel(groupBox_6);
+        segment->setObjectName(QString::fromUtf8("segment"));
+        segment->setAlignment(Qt::AlignCenter);
+
+        gridLayout_4->addWidget(segment, 2, 1, 1, 1);
+
+        R_segement = new QLabel(groupBox_6);
+        R_segement->setObjectName(QString::fromUtf8("R_segement"));
+        R_segement->setAlignment(Qt::AlignCenter);
+
+        gridLayout_4->addWidget(R_segement, 3, 1, 1, 1);
+
+
+        verticalLayout_2->addWidget(groupBox_6);
 
         recordBtn = new QPushButton(scan);
         recordBtn->setObjectName(QString::fromUtf8("recordBtn"));
@@ -828,8 +1058,8 @@ public:
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
         init_viewer_6 = new glViewer(reconstruction);
         init_viewer_6->setObjectName(QString::fromUtf8("init_viewer_6"));
-        sizePolicy.setHeightForWidth(init_viewer_6->sizePolicy().hasHeightForWidth());
-        init_viewer_6->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(init_viewer_6->sizePolicy().hasHeightForWidth());
+        init_viewer_6->setSizePolicy(sizePolicy1);
 
         horizontalLayout_2->addWidget(init_viewer_6);
 
@@ -841,21 +1071,21 @@ public:
         gridLayout_6->setObjectName(QString::fromUtf8("gridLayout_6"));
         toolBox = new QToolBox(groupBox_2);
         toolBox->setObjectName(QString::fromUtf8("toolBox"));
-        QFont font4;
-        font4.setFamily(QString::fromUtf8("\345\276\256\350\275\257\351\233\205\351\273\221"));
-        font4.setPointSize(11);
-        font4.setBold(false);
-        font4.setWeight(50);
-        toolBox->setFont(font4);
+        QFont font5;
+        font5.setFamily(QString::fromUtf8("\345\276\256\350\275\257\351\233\205\351\273\221"));
+        font5.setPointSize(11);
+        font5.setBold(false);
+        font5.setWeight(50);
+        toolBox->setFont(font5);
         page_3 = new QWidget();
         page_3->setObjectName(QString::fromUtf8("page_3"));
         page_3->setGeometry(QRect(0, 0, 98, 28));
         pushButton = new QPushButton(page_3);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setGeometry(QRect(50, 40, 171, 71));
+        pushButton->setGeometry(QRect(80, 40, 171, 71));
         pushButton_2 = new QPushButton(page_3);
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
-        pushButton_2->setGeometry(QRect(50, 150, 171, 71));
+        pushButton_2->setGeometry(QRect(80, 150, 171, 71));
         toolBox->addItem(page_3, QString::fromUtf8("\346\223\215\344\275\234"));
         page_4 = new QWidget();
         page_4->setObjectName(QString::fromUtf8("page_4"));
@@ -884,8 +1114,8 @@ public:
         horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
         init_viewer_2 = new glViewer(process);
         init_viewer_2->setObjectName(QString::fromUtf8("init_viewer_2"));
-        sizePolicy.setHeightForWidth(init_viewer_2->sizePolicy().hasHeightForWidth());
-        init_viewer_2->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(init_viewer_2->sizePolicy().hasHeightForWidth());
+        init_viewer_2->setSizePolicy(sizePolicy1);
 
         horizontalLayout_5->addWidget(init_viewer_2);
 
@@ -900,11 +1130,11 @@ public:
         gridLayout_8->setObjectName(QString::fromUtf8("gridLayout_8"));
         toolBox_2 = new QToolBox(groupBox_3);
         toolBox_2->setObjectName(QString::fromUtf8("toolBox_2"));
-        QFont font5;
-        font5.setPointSize(11);
-        font5.setBold(false);
-        font5.setWeight(50);
-        toolBox_2->setFont(font5);
+        QFont font6;
+        font6.setPointSize(11);
+        font6.setBold(false);
+        font6.setWeight(50);
+        toolBox_2->setFont(font6);
         page_5 = new QWidget();
         page_5->setObjectName(QString::fromUtf8("page_5"));
         page_5->setGeometry(QRect(0, 0, 98, 28));
@@ -940,18 +1170,20 @@ public:
 
         mainTab->addTab(process, QString());
 
-        gridLayout->addWidget(mainTab, 0, 0, 1, 1);
+        horizontalLayout_9->addWidget(mainTab);
 
         mainformClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(mainformClass);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 922, 23));
+        menuBar->setGeometry(QRect(0, 0, 1148, 23));
         menu_2 = new QMenu(menuBar);
         menu_2->setObjectName(QString::fromUtf8("menu_2"));
         menu = new QMenu(menuBar);
         menu->setObjectName(QString::fromUtf8("menu"));
         menu_3 = new QMenu(menuBar);
         menu_3->setObjectName(QString::fromUtf8("menu_3"));
+        menu_4 = new QMenu(menuBar);
+        menu_4->setObjectName(QString::fromUtf8("menu_4"));
         mainformClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(mainformClass);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
@@ -972,11 +1204,15 @@ public:
         menuBar->addAction(menu_2->menuAction());
         menuBar->addAction(menu->menuAction());
         menuBar->addAction(menu_3->menuAction());
+        menuBar->addAction(menu_4->menuAction());
         menu_2->addAction(ToolstartBtn);
         menu_2->addAction(ToolstopBtn);
         menu_2->addAction(TooldeleteBtn);
         menu->addAction(actionSaveCloud);
         menu_3->addAction(action_ResetKinFuParams);
+        menu_3->addAction(action_ResetScanParams);
+        menu_4->addAction(action);
+        menu_4->addAction(actionKinect);
         mainToolBar->addAction(connectKinect);
         mainToolBar->addAction(connectlifter);
         mainToolBar->addSeparator();
@@ -991,7 +1227,7 @@ public:
         QObject::connect(range_slider, SIGNAL(valueChanged(int)), range_value, SLOT(setNum(int)));
 
         mainTab->setCurrentIndex(0);
-        init_toolbox->setCurrentIndex(1);
+        init_toolbox->setCurrentIndex(0);
         toolBox->setCurrentIndex(0);
         toolBox_2->setCurrentIndex(0);
 
@@ -1009,8 +1245,11 @@ public:
         TooldeleteBtn->setText(QApplication::translate("mainformClass", "\346\270\205\351\231\244", 0, QApplication::UnicodeUTF8));
         actionSaveCloud->setText(QApplication::translate("mainformClass", "\344\277\235\345\255\230\347\202\271\344\272\221", 0, QApplication::UnicodeUTF8));
         action_ResetKinFuParams->setText(QApplication::translate("mainformClass", "\351\207\215\347\275\256KinFu\345\217\202\346\225\260", 0, QApplication::UnicodeUTF8));
+        action_ResetScanParams->setText(QApplication::translate("mainformClass", "\351\207\215\347\275\256\346\211\253\346\217\217\345\217\202\346\225\260", 0, QApplication::UnicodeUTF8));
+        action->setText(QApplication::translate("mainformClass", "GPU\344\277\241\346\201\257", 0, QApplication::UnicodeUTF8));
+        actionKinect->setText(QApplication::translate("mainformClass", "Kinect\344\277\241\346\201\257", 0, QApplication::UnicodeUTF8));
         delaylabel->setText(QApplication::translate("mainformClass", "\345\220\257\345\212\250\345\273\266\346\227\266", 0, QApplication::UnicodeUTF8));
-        delay_value->setText(QApplication::translate("mainformClass", "5", 0, QApplication::UnicodeUTF8));
+        delay_value->setText(QApplication::translate("mainformClass", "0", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("mainformClass", "s", 0, QApplication::UnicodeUTF8));
         rangelabel->setText(QApplication::translate("mainformClass", "\346\211\253\346\217\217\350\214\203\345\233\264", 0, QApplication::UnicodeUTF8));
         range_value->setText(QApplication::translate("mainformClass", "1500", 0, QApplication::UnicodeUTF8));
@@ -1018,7 +1257,20 @@ public:
         full_rb->setText(QApplication::translate("mainformClass", "\345\205\250\350\272\253", 0, QApplication::UnicodeUTF8));
         half_rb->setText(QApplication::translate("mainformClass", "\345\215\212\350\272\253", 0, QApplication::UnicodeUTF8));
         hea_rb->setText(QApplication::translate("mainformClass", "\345\244\264\345\203\217", 0, QApplication::UnicodeUTF8));
-        defaultBtn->setText(QApplication::translate("mainformClass", "\346\201\242\345\244\215\351\273\230\350\256\244", 0, QApplication::UnicodeUTF8));
+        groupBox_7->setTitle(QApplication::translate("mainformClass", "GPU\344\277\241\346\201\257", 0, QApplication::UnicodeUTF8));
+        label_29->setText(QApplication::translate("mainformClass", "\345\275\223\345\211\215\350\256\276\345\244\207", 0, QApplication::UnicodeUTF8));
+        device_info->setText(QApplication::translate("mainformClass", "TextLabel", 0, QApplication::UnicodeUTF8));
+        label_31->setText(QApplication::translate("mainformClass", "\346\230\276\345\255\230/\346\240\270\346\225\260", 0, QApplication::UnicodeUTF8));
+        ram_info->setText(QApplication::translate("mainformClass", "TextLabel", 0, QApplication::UnicodeUTF8));
+        label_35->setText(QApplication::translate("mainformClass", "/", 0, QApplication::UnicodeUTF8));
+        core_info->setText(QApplication::translate("mainformClass", "TextLabel", 0, QApplication::UnicodeUTF8));
+        label_33->setText(QApplication::translate("mainformClass", "CUDA\347\211\210\346\234\254", 0, QApplication::UnicodeUTF8));
+        driver_info->setText(QApplication::translate("mainformClass", "TextLabel", 0, QApplication::UnicodeUTF8));
+        groupBox_5->setTitle(QApplication::translate("mainformClass", "\345\215\207\351\231\215\345\217\260\345\217\202\346\225\260", 0, QApplication::UnicodeUTF8));
+        label_10->setText(QApplication::translate("mainformClass", "\350\247\222\351\200\237\345\272\246", 0, QApplication::UnicodeUTF8));
+        label_11->setText(QApplication::translate("mainformClass", "\345\236\202\347\233\264\345\210\206\346\256\265", 0, QApplication::UnicodeUTF8));
+        label_20->setText(QApplication::translate("mainformClass", "\345\234\206\345\221\250\345\210\206\346\256\265", 0, QApplication::UnicodeUTF8));
+        label_9->setText(QApplication::translate("mainformClass", "\351\200\237\345\272\246", 0, QApplication::UnicodeUTF8));
         init_toolbox->setItemText(init_toolbox->indexOf(page), QApplication::translate("mainformClass", "\346\211\253\346\217\217\345\217\202\346\225\260", 0, QApplication::UnicodeUTF8));
         label_3->setText(QApplication::translate("mainformClass", "\345\210\206\350\276\250\347\216\207", 0, QApplication::UnicodeUTF8));
         res_value_label->setText(QApplication::translate("mainformClass", "0", 0, QApplication::UnicodeUTF8));
@@ -1039,7 +1291,20 @@ public:
         label_18->setText(QApplication::translate("mainformClass", "\346\242\257\345\272\246\345\217\230\345\214\226\345\233\240\346\225\260", 0, QApplication::UnicodeUTF8));
         init_toolbox->setItemText(init_toolbox->indexOf(page_2), QApplication::translate("mainformClass", "Kinfu\345\217\202\346\225\260", 0, QApplication::UnicodeUTF8));
         mainTab->setTabText(mainTab->indexOf(initiation), QApplication::translate("mainformClass", "\345\210\235\345\247\213\345\214\226", 0, QApplication::UnicodeUTF8));
-        groupBox->setTitle(QApplication::translate("mainformClass", "\346\216\247\345\210\266\345\217\260\350\276\223\345\207\272", 0, QApplication::UnicodeUTF8));
+        groupBox->setTitle(QApplication::translate("mainformClass", "\347\212\266\346\200\201", 0, QApplication::UnicodeUTF8));
+        label_22->setText(QApplication::translate("mainformClass", "FPS", 0, QApplication::UnicodeUTF8));
+        fps->setText(QApplication::translate("mainformClass", "TextLabel", 0, QApplication::UnicodeUTF8));
+        groupBox_6->setTitle(QApplication::translate("mainformClass", "\345\215\207\351\231\215\345\217\260\345\217\202\346\225\260\345\217\212\347\212\266\346\200\201", 0, QApplication::UnicodeUTF8));
+        label_23->setText(QApplication::translate("mainformClass", "\350\247\222\351\200\237\345\272\246", 0, QApplication::UnicodeUTF8));
+        label_24->setText(QApplication::translate("mainformClass", "\345\236\202\347\233\264\345\210\206\346\256\265", 0, QApplication::UnicodeUTF8));
+        label_25->setText(QApplication::translate("mainformClass", "\345\234\206\345\221\250\345\210\206\346\256\265", 0, QApplication::UnicodeUTF8));
+        label_26->setText(QApplication::translate("mainformClass", "\351\200\237\345\272\246", 0, QApplication::UnicodeUTF8));
+        label_27->setText(QApplication::translate("mainformClass", "\346\211\253\346\217\217\350\277\233\345\272\246", 0, QApplication::UnicodeUTF8));
+        progressBar_2->setFormat(QApplication::translate("mainformClass", "%p%", 0, QApplication::UnicodeUTF8));
+        speed->setText(QApplication::translate("mainformClass", "0", 0, QApplication::UnicodeUTF8));
+        angular_speed->setText(QApplication::translate("mainformClass", "0", 0, QApplication::UnicodeUTF8));
+        segment->setText(QApplication::translate("mainformClass", "3", 0, QApplication::UnicodeUTF8));
+        R_segement->setText(QApplication::translate("mainformClass", "3", 0, QApplication::UnicodeUTF8));
         recordBtn->setText(QApplication::translate("mainformClass", "\345\274\200\345\247\213", 0, QApplication::UnicodeUTF8));
         stopBtn->setText(QApplication::translate("mainformClass", "\345\201\234\346\255\242", 0, QApplication::UnicodeUTF8));
         deleteBtn->setText(QApplication::translate("mainformClass", "\346\270\205\351\231\244", 0, QApplication::UnicodeUTF8));
@@ -1060,6 +1325,7 @@ public:
         menu_2->setTitle(QApplication::translate("mainformClass", "\346\211\253\346\217\217", 0, QApplication::UnicodeUTF8));
         menu->setTitle(QApplication::translate("mainformClass", "\346\226\207\344\273\266", 0, QApplication::UnicodeUTF8));
         menu_3->setTitle(QApplication::translate("mainformClass", "\351\207\215\347\275\256\345\217\202\346\225\260", 0, QApplication::UnicodeUTF8));
+        menu_4->setTitle(QApplication::translate("mainformClass", "\345\205\263\344\272\216", 0, QApplication::UnicodeUTF8));
         toolBar->setWindowTitle(QApplication::translate("mainformClass", "toolBar", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
