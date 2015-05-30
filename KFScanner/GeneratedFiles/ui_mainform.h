@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainform.ui'
 **
-** Created: Mon May 25 13:22:19 2015
+** Created: Thu May 28 15:40:48 2015
 **      by: Qt User Interface Compiler version 4.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -78,6 +78,7 @@ public:
     QSpacerItem *verticalSpacer_2;
     QGroupBox *groupBox_7;
     QGridLayout *gridLayout_16;
+    QLabel *label_21;
     QLabel *label_29;
     QLabel *device_info;
     QLabel *label_31;
@@ -87,6 +88,7 @@ public:
     QLabel *core_info;
     QLabel *label_33;
     QLabel *driver_info;
+    QLabel *computeCap;
     QGroupBox *groupBox_5;
     QGridLayout *gridLayout_2;
     QLabel *label_10;
@@ -428,6 +430,11 @@ public:
         gridLayout_16->setSpacing(6);
         gridLayout_16->setContentsMargins(11, 11, 11, 11);
         gridLayout_16->setObjectName(QString::fromUtf8("gridLayout_16"));
+        label_21 = new QLabel(groupBox_7);
+        label_21->setObjectName(QString::fromUtf8("label_21"));
+
+        gridLayout_16->addWidget(label_21, 2, 0, 1, 1);
+
         label_29 = new QLabel(groupBox_7);
         label_29->setObjectName(QString::fromUtf8("label_29"));
 
@@ -471,13 +478,19 @@ public:
         label_33 = new QLabel(groupBox_7);
         label_33->setObjectName(QString::fromUtf8("label_33"));
 
-        gridLayout_16->addWidget(label_33, 2, 0, 1, 1);
+        gridLayout_16->addWidget(label_33, 4, 0, 1, 1);
 
         driver_info = new QLabel(groupBox_7);
         driver_info->setObjectName(QString::fromUtf8("driver_info"));
         driver_info->setAlignment(Qt::AlignCenter);
 
-        gridLayout_16->addWidget(driver_info, 2, 1, 1, 1);
+        gridLayout_16->addWidget(driver_info, 4, 1, 1, 1);
+
+        computeCap = new QLabel(groupBox_7);
+        computeCap->setObjectName(QString::fromUtf8("computeCap"));
+        computeCap->setAlignment(Qt::AlignCenter);
+
+        gridLayout_16->addWidget(computeCap, 2, 1, 1, 1);
 
 
         verticalLayout->addWidget(groupBox_7);
@@ -535,7 +548,7 @@ public:
         init_toolbox->addItem(page, QString::fromUtf8("\346\211\253\346\217\217\345\217\202\346\225\260"));
         page_2 = new QWidget();
         page_2->setObjectName(QString::fromUtf8("page_2"));
-        page_2->setGeometry(QRect(0, 0, 273, 529));
+        page_2->setGeometry(QRect(0, 0, 202, 464));
         gridLayout_14 = new QGridLayout(page_2);
         gridLayout_14->setSpacing(6);
         gridLayout_14->setContentsMargins(11, 11, 11, 11);
@@ -1079,7 +1092,7 @@ public:
         toolBox->setFont(font5);
         page_3 = new QWidget();
         page_3->setObjectName(QString::fromUtf8("page_3"));
-        page_3->setGeometry(QRect(0, 0, 98, 28));
+        page_3->setGeometry(QRect(0, 0, 346, 519));
         pushButton = new QPushButton(page_3);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
         pushButton->setGeometry(QRect(80, 40, 171, 71));
@@ -1137,7 +1150,7 @@ public:
         toolBox_2->setFont(font6);
         page_5 = new QWidget();
         page_5->setObjectName(QString::fromUtf8("page_5"));
-        page_5->setGeometry(QRect(0, 0, 98, 28));
+        page_5->setGeometry(QRect(0, 0, 344, 251));
         toolBox_2->addItem(page_5, QString::fromUtf8("\346\250\241\345\236\213\347\256\200\345\214\226"));
         page_6 = new QWidget();
         page_6->setObjectName(QString::fromUtf8("page_6"));
@@ -1226,8 +1239,8 @@ public:
         QObject::connect(delay_slider, SIGNAL(valueChanged(int)), delay_value, SLOT(setNum(int)));
         QObject::connect(range_slider, SIGNAL(valueChanged(int)), range_value, SLOT(setNum(int)));
 
-        mainTab->setCurrentIndex(0);
-        init_toolbox->setCurrentIndex(1);
+        mainTab->setCurrentIndex(3);
+        init_toolbox->setCurrentIndex(0);
         toolBox->setCurrentIndex(0);
         toolBox_2->setCurrentIndex(0);
 
@@ -1258,6 +1271,7 @@ public:
         half_rb->setText(QApplication::translate("mainformClass", "\345\215\212\350\272\253", 0, QApplication::UnicodeUTF8));
         hea_rb->setText(QApplication::translate("mainformClass", "\345\244\264\345\203\217", 0, QApplication::UnicodeUTF8));
         groupBox_7->setTitle(QApplication::translate("mainformClass", "GPU\344\277\241\346\201\257", 0, QApplication::UnicodeUTF8));
+        label_21->setText(QApplication::translate("mainformClass", "\350\256\241\347\256\227\350\203\275\345\212\233", 0, QApplication::UnicodeUTF8));
         label_29->setText(QApplication::translate("mainformClass", "\345\275\223\345\211\215\350\256\276\345\244\207", 0, QApplication::UnicodeUTF8));
         device_info->setText(QApplication::translate("mainformClass", "TextLabel", 0, QApplication::UnicodeUTF8));
         label_31->setText(QApplication::translate("mainformClass", "\346\230\276\345\255\230/\346\240\270\346\225\260", 0, QApplication::UnicodeUTF8));
@@ -1266,6 +1280,7 @@ public:
         core_info->setText(QApplication::translate("mainformClass", "TextLabel", 0, QApplication::UnicodeUTF8));
         label_33->setText(QApplication::translate("mainformClass", "CUDA\347\211\210\346\234\254", 0, QApplication::UnicodeUTF8));
         driver_info->setText(QApplication::translate("mainformClass", "TextLabel", 0, QApplication::UnicodeUTF8));
+        computeCap->setText(QApplication::translate("mainformClass", "TextLabel", 0, QApplication::UnicodeUTF8));
         groupBox_5->setTitle(QApplication::translate("mainformClass", "\345\215\207\351\231\215\345\217\260\345\217\202\346\225\260", 0, QApplication::UnicodeUTF8));
         label_10->setText(QApplication::translate("mainformClass", "\350\247\222\351\200\237\345\272\246", 0, QApplication::UnicodeUTF8));
         label_11->setText(QApplication::translate("mainformClass", "\345\236\202\347\233\264\345\210\206\346\256\265", 0, QApplication::UnicodeUTF8));

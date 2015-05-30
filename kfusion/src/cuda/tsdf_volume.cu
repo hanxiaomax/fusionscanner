@@ -1,7 +1,9 @@
 #include "device.hpp"
 #include "texture_binder.hpp"
 #include <iostream>
-
+/*************************************
+ *  简要描述: tsdf volume所需的CUDA函数
+ ************************************/  
 
 using namespace kfusion::device;
 
@@ -158,6 +160,11 @@ namespace kfusion
             tfar  = fminf(fminf(tmax.x, tmax.y), fminf(tmax.x, tmax.z));
         }
 
+		/*----------------------------------------*
+		 *  功能描述: 计算插值
+		 *	参数：
+		 *	参数：
+		 ----------------------------------------*/ 
         template<typename Vol>
         __kf_device__ float interpolate(const Vol& volume, const float3& p_voxels)
         {
@@ -165,9 +172,10 @@ namespace kfusion
 
             //rounding to negative infinity
             int3 g = make_int3(__float2int_rd (cf.x), __float2int_rd (cf.y), __float2int_rd (cf.z));
-
+			
             if (g.x < 0 || g.x >= volume.dims.x - 1 || g.y < 0 || g.y >= volume.dims.y - 1 || g.z < 0 || g.z >= volume.dims.z - 1)
-                return numeric_limits<float>::quiet_NaN();
+				//printf("[%d %d %d]",g.x,g.y,g.z);
+                return 0;//numeric_limits<float>::quiet_NaN();
 
             float a = cf.x - g.x;
             float b = cf.y - g.y;
@@ -209,7 +217,12 @@ namespace kfusion
                 int z = __float2int_rn (p.z * voxel_size_inv.z);
                 return unpack_tsdf(*volume(x, y, z));
             }
-
+			/*----------------------------------------*
+			 *  功能描述: 重载操作符()
+			 *	参数: 深度数据
+			 *	参数：法向量
+			 *  depth(normals)
+			 ----------------------------------------*/ 
             __kf_device__
             void operator()(PtrStepSz<ushort> depth, PtrStep<Normal> normals) const
             {
@@ -252,6 +265,8 @@ namespace kfusion
                     next += vstep;
 
                     tsdf_next = fetch_tsdf(next);
+
+
                     if (tsdf_curr < 0.f && tsdf_next > 0.f)
                         break;
 
@@ -266,7 +281,7 @@ namespace kfusion
                         float3 normal = compute_normal(vertex);
 
 						
-                        if (!isnan(normal.x * normal.y * normal.z))
+                        if (!isnan(normal.x * normal.y * normal.z))//判断是否是无效值
                         {
                             normal = Rinv * normal;
                             vertex = Rinv * (vertex - aff.t);
@@ -278,7 +293,12 @@ namespace kfusion
                     }
                 } /* for (;;) */
             }
-
+			/*----------------------------------------*
+			 *  功能描述: 重载操作符()
+			 *	参数: 点
+			 *	参数：法向量
+			 *  depth(normals)
+			 ----------------------------------------*/ 
             __kf_device__
             void operator()(PtrStepSz<Point> points, PtrStep<Normal> normals) const
             {
@@ -346,16 +366,19 @@ namespace kfusion
                 } /* for (;;) */
             }
 
-			/*计算法线*/
+			/*----------------------------------------*
+			 *  功能描述:	计算单位法向量
+			 *	参数：		float3 点坐标
+			 ----------------------------------------*/ 
             __kf_device__
             float3 compute_normal(const float3& p) const
             {
-                float3 n;
+                float3 n;//存放法向量
 
                 float Fx1 = interpolate(volume, make_float3(p.x + gradient_delta.x, p.y, p.z) * voxel_size_inv);
                 float Fx2 = interpolate(volume, make_float3(p.x - gradient_delta.x, p.y, p.z) * voxel_size_inv);
                 n.x = __fdividef(Fx1 - Fx2, gradient_delta.x);
-
+				
                 float Fy1 = interpolate(volume, make_float3(p.x, p.y + gradient_delta.y, p.z) * voxel_size_inv);
                 float Fy2 = interpolate(volume, make_float3(p.x, p.y - gradient_delta.y, p.z) * voxel_size_inv);
                 n.y = __fdividef(Fy1 - Fy2, gradient_delta.y);
@@ -364,6 +387,10 @@ namespace kfusion
                 float Fz2 = interpolate(volume, make_float3(p.x, p.y, p.z - gradient_delta.z) * voxel_size_inv);
                 n.z = __fdividef(Fz1 - Fz2, gradient_delta.z);
 
+				if(isnan(n.x))
+				{
+					printf("[%f %f]",Fx1,Fx2);
+				}
                 return normalized (n);
             }
         };
@@ -665,13 +692,15 @@ namespace kfusion
             Aff3f aff;
             Mat3f Rinv;
 
+			//构造函数
             ExtractNormals(const TsdfVolume& vol) : volume(vol)
             {
-                voxel_size_inv.x = 1.f/volume.voxel_size.x;
+                voxel_size_inv.x = 1.f/volume.voxel_size.x;//逆
                 voxel_size_inv.y = 1.f/volume.voxel_size.y;
                 voxel_size_inv.z = 1.f/volume.voxel_size.z;
             }
 
+			///获取体素
             __kf_device__ int3 getVoxel (const float3& p) const
             {
                 //rounding to nearest even
@@ -735,11 +764,17 @@ namespace kfusion
             }
         };
 
+		/////////核函数的声明
         __global__ void extract_normals_kernel (const ExtractNormals en, float4* output) { en(output); }
     }
 }
 
-//获取点云，返回大小，第三个参数为输出
+/*-------------------------------------* 
+*	功能描述:	抽取点云
+*	参数：		TsdfVolume 体
+*	参数：		仿射变换矩阵
+*	参数：		PtrSz<Point> 输出结果
+--------------------------------------*/ 
 size_t kfusion::device::extractCloud (const TsdfVolume& volume, const Aff3f& aff, PtrSz<Point> output)
 {
     typedef FullScan6 FS;
@@ -758,6 +793,16 @@ size_t kfusion::device::extractCloud (const TsdfVolume& volume, const Aff3f& aff
     return (size_t)size;
 }
 
+
+/*-------------------------------------* 
+*	功能描述:	抽取法向量
+*	参数：		TsdfVolume 体
+*	参数：		PtrSz<Point> 点
+*	参数：		仿射变换矩阵
+*	参数：		
+*	参数：		梯度因子
+*	参数：		float4 输出结果
+--------------------------------------*/ 
 void kfusion::device::extractNormals (const TsdfVolume& volume, const PtrSz<Point>& points, const Aff3f& aff, const Mat3f& Rinv, float gradient_delta_factor, float4* output)
 {
     ExtractNormals en(volume);
@@ -766,10 +811,11 @@ void kfusion::device::extractNormals (const TsdfVolume& volume, const PtrSz<Poin
     en.aff = aff;
     en.Rinv = Rinv;
 
-    dim3 block (256);
+    dim3 block (256);//
     dim3 grid (divUp ((int)points.size, block.x));
 
-    extract_normals_kernel<<<grid, block>>>(en, output);
+	//  Kernel<<<Dg,Db, Ns, S>>>(param list);
+    extract_normals_kernel<<<grid, block>>>(en, output);//核函数
     cudaSafeCall ( cudaGetLastError () );
     cudaSafeCall (cudaDeviceSynchronize ());
 }

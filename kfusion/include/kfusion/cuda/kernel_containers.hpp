@@ -1,14 +1,20 @@
 #pragma once
+/*************************************
+ *  简要描述: 定义一些CUDA核函数
+ ************************************/  
 
-#if defined(__CUDACC__)
+
+#if defined(__CUDACC__)//检查是否启动了NVCC编译
     #define __kf_hdevice__ __host__ __device__ __forceinline__
     #define __kf_device__ __device__ __forceinline__
-#else
+#else//如果没有启动则把这些前缀定义为空白
     #define __kf_hdevice__
     #define __kf_device__
 #endif  
 
 #include <cstddef>
+
+
 
 namespace kfusion
 {

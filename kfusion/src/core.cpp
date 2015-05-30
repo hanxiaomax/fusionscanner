@@ -5,10 +5,13 @@
 #include <iostream>
 #include <string>
 
-/*获取可用的CUDA设备个数
-  * 没有返回0
-  *驱动版本过低返回-1
-*/
+
+
+
+/*--------------------------------------------------------* 
+*	功能描述: 设置将要使用的CUDA设备
+*	返回值：没有可用设备返回0，驱动版本低返回-1，否则返回1
+----------------------------------------------------------*/ 
 int kf::cuda::getCudaEnabledDeviceCount()
 {
     int count;
@@ -26,7 +29,10 @@ int kf::cuda::getCudaEnabledDeviceCount()
     return count;  
 }
 
-//设置将要使用的CUDA设备
+/*-------------------------------------------* 
+*	功能描述: 设置将要使用的CUDA设备
+*	参数：设备代号
+--------------------------------------------*/ 
 void kf::cuda::setDevice(int device)
 {
     cudaSafeCall( cudaSetDevice( device ) );
@@ -40,7 +46,10 @@ std::string kf::cuda::getDeviceName(int device)
 
     return prop.name;
 }
-//检查显卡架构
+
+/*-------------------------------------------* 
+*  功能描述: 检查显卡架构
+--------------------------------------------*/ 
 bool kf::cuda::checkIfPreFermiGPU(int device)
 {
   if (device < 0)
@@ -64,9 +73,15 @@ namespace
         kfusion::cuda::error("driver API error", __FILE__, __LINE__);
     }
 
-	//转换sm到核心数量
+	/*-------------------------------------------* 
+	*	功能描述: 转换sm到核心数量
+	*	参数：计算能力主版本号
+	*	参数：计算能力次版本号
+	*	返回：核心数或0
+	--------------------------------------------*/ 
     inline int convertSMVer2Cores(int major, int minor)
     {
+		cout<<major<<"."<<minor<<endl;
         // Defines for GPU Architecture types (using the SM version to determine the # of cores per SM
         typedef struct {
             int SM; // 0xMm (hexidecimal notation), M = SM Major version, and m = SM minor version
@@ -86,7 +101,10 @@ namespace
         return 0;
     }
 }
-//输出CUDA设备的信息
+
+/*-------------------------------------------* 
+*  功能描述: 输出CUDA设备的信息
+--------------------------------------------*/ 
 void kf::cuda::printCudaDeviceInfo(int device)
 {
     int count = getCudaEnabledDeviceCount();
@@ -183,7 +201,9 @@ void kf::cuda::printCudaDeviceInfo(int device)
     fflush(stdout);
 }
 
-//输出CUDA设备的简短信息
+/*-------------------------------------------* 
+*  功能描述: 输出CUDA设备的简短信息
+--------------------------------------------*/
 void kf::cuda::printShortCudaDeviceInfo(int device)
 {
     int count = getCudaEnabledDeviceCount();
@@ -209,6 +229,10 @@ void kf::cuda::printShortCudaDeviceInfo(int device)
     fflush(stdout);
 }
 
+
+/*-------------------------------------------* 
+*  功能描述: 获取CUDA设备的简短信息
+--------------------------------------------*/
 kf::cuda::CUDAinfo kf::cuda::getShortCudaDeviceInfo(int device)
 {
 	CUDAinfo info;
@@ -225,19 +249,24 @@ kf::cuda::CUDAinfo kf::cuda::getShortCudaDeviceInfo(int device)
 	info.device_name = prop.name;
 	info.RAM = (float)prop.totalGlobalMem/1048576.0f;
 	info.core = convertSMVer2Cores(prop.major, prop.minor) * prop.multiProcessorCount;
-	info.driver = to_string(static_cast<long long>(driverVersion/1000))
-				+to_string(static_cast<long long>(driverVersion%100))
-				+to_string(static_cast<long long>(runtimeVersion/1000))
-				+to_string(static_cast<long long>(runtimeVersion%100));
+	info.computerCap = to_string(static_cast<long long>(prop.major))+"."+to_string(static_cast<long long>(prop.minor));
+	info.driver = to_string(static_cast<long long>(driverVersion/1000))+
+	"."+to_string(static_cast<long long>(driverVersion%100));
+
 		
 	return info;
 }
 
-//采样时间
+/*-------------------------------------------* 
+*  功能描述: 采样时间类构造函数，启动计数器
+--------------------------------------------*/
 kf::SampledScopeTime::SampledScopeTime(double& time_ms) : time_ms_(time_ms)
 {
     start = (double)cv::getTickCount();
 }
+/*-------------------------------------------* 
+*  功能描述: 采样时间类析构函数，获取时间并输出
+--------------------------------------------*/
 kf::SampledScopeTime::~SampledScopeTime()
 {
     static int i_ = 0;
@@ -249,17 +278,27 @@ kf::SampledScopeTime::~SampledScopeTime()
     }
     ++i_;
 }
-//获取当前流逝的时间
+
+/*-------------------------------------------* 
+*  功能描述: 获取当前流逝的时间
+--------------------------------------------*/
 double kf::SampledScopeTime::getTime()
 {
     return ((double)cv::getTickCount() - start)*1000.0/cv::getTickFrequency();
 }
-//构造某个时间域并开始计数
+
+
+/*-------------------------------------------* 
+*  功能描述: 构造某个时间域并开始计数
+--------------------------------------------*/
 kf::ScopeTime::ScopeTime(const char *name_) : name(name_)
 {
     start = (double)cv::getTickCount();
 }
-//析构某个时间域并获取时间
+
+/*-------------------------------------------* 
+*  功能描述: 析构某个时间域并获取时间
+--------------------------------------------*/
 kf::ScopeTime::~ScopeTime()
 {
     double time_ms =  ((double)cv::getTickCount() - start)*1000.0/cv::getTickFrequency();
@@ -267,7 +306,9 @@ kf::ScopeTime::~ScopeTime()
 }
 
 
-/*通知生成器具体实现*/
+/*-------------------------------------------* 
+*  功能描述: 通知生成器具体实现
+--------------------------------------------*/
 void kf::InfoBox::printInfo(const string info,int infotype)//定义中不再定义默认参数
 {
 	switch (infotype)

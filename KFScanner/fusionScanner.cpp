@@ -4,6 +4,14 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
+/**************************************
+ *  简要描述: 扫描仪类，实现扫描仪的逻辑
+ **************************************/ 
+
+/*-------------------------------------* 
+*	功能描述: 构造函数
+*	参数：	  作为输入源的摄像机		
+--------------------------------------*/  
 fusionScanner::fusionScanner(OpenNISource& source)
 	:capture(source),
 	time_ms(0),
@@ -20,14 +28,18 @@ fusionScanner::fusionScanner(OpenNISource& source)
 }
 
 
-//带自定义参数的构造函数
+/*-------------------------------------* 
+*	功能描述: 构造函数
+*	参数：	  作为输入源的摄像机
+*	参数：	  kinfu参数
+--------------------------------------*/  
 fusionScanner::fusionScanner(OpenNISource& source,KinFuParams &params)
 	:capture(source),
 	 time_ms(0),
 	 fusionstart(false)
 {
-	KinFuParams p = params;//可以删掉？
-	kinfu_sp = KinFu::Ptr( new KinFu(p) );//创建Kinfu对象
+	//KinFuParams p = params;//可以删掉？
+	kinfu_sp = KinFu::Ptr( new KinFu(params) );//创建Kinfu对象
 	kinfu_sp->PrintKFparms();
 	capture.setRegistration(true);//设置点云配准
 	cv::viz::WCube cube(cv::Vec3d::all(0), cv::Vec3d(params.volume_size), true, cv::viz::Color::apricot());//坐标系？
@@ -36,29 +48,41 @@ fusionScanner::fusionScanner(OpenNISource& source,KinFuParams &params)
 
 }
 
-
+/*-------------------------------------* 
+*	功能描述: 析构函数
+--------------------------------------*/ 
 fusionScanner::~fusionScanner(void)
 {
 
 }
 
-
+/*-------------------------------------* 
+*	功能描述: 开始融合
+--------------------------------------*/ 
 void fusionScanner::fusionStart()
 {
 	fusionstart=true;
 }
 
+/*-------------------------------------* 
+*	功能描述: 停止融合
+--------------------------------------*/ 
 void fusionScanner::fusionHold()
 {
 	fusionstart=false;
 }
+/*-------------------------------------* 
+*	功能描述: 重置相机
+--------------------------------------*/ 
 void fusionScanner::fusionReset()
 {
 	kinfu_sp->reset();
 	clean_raycasted();
 }
 
-//获取更新数据
+/*-------------------------------------* 
+*	功能描述: 更新扫描数据
+--------------------------------------*/ 
 void fusionScanner::update(){
 	if (fusionstart)
 	{
@@ -71,7 +95,7 @@ void fusionScanner::update(){
 			(void)fps;
 			kinfu(depth_device_)   ;//kinfu算法处理，成功返回true
 		}
-		show_raycasted(kinfu);
+		creat_raycasted(kinfu);
 		//viz.setViewerPose(kinfu_sp->getCameraPose());
 		viz.spinOnce(3, true);
 	}
@@ -79,11 +103,12 @@ void fusionScanner::update(){
 	{
 		capture.grab(depth, image);
 	}
-
 }
 
-
-void fusionScanner::show_raycasted(KinFu& kinfu)
+/*-------------------------------------* 
+*	功能描述: 创建光照渲染后的图像数据
+--------------------------------------*/ 
+void fusionScanner::creat_raycasted(KinFu& kinfu)
 {		int mode=1;
         kinfu.renderImage(view_device_, mode);
 
@@ -95,7 +120,10 @@ void fusionScanner::clean_raycasted()
 {		
 	view_host_.release();
 }
-
+/*-------------------------------------* 
+*	功能描述: 获取点云
+*	参数：	  是否写入到文件
+--------------------------------------*/ 
 void fusionScanner::take_cloud(bool writetofile)
 {
 	/*获取点云相关*/ 
@@ -103,22 +131,14 @@ void fusionScanner::take_cloud(bool writetofile)
 		KinFu& kinfu=*kinfu_sp;
 		cuda::DeviceArray<Point> cloud = kinfu.tsdf().fetchCloud(cloud_buffer);//GPU内存中的一维矩阵
 		cuda::DeviceArray<Point> normal = kinfu.tsdf().fetchNormals(cloud,normal_buffer);//传入的是cloud不是cloud_buffer，后者无法正确download
-
-		
-
-
 		cv::Mat cloud_host(1, (int)cloud.size(), CV_32FC4);//一维矩阵，存放无序点云(1行，n列) CV_32FC4 32位浮点4通道
 		cv::Mat normal_host(1, (int)cloud.size(), CV_32FC4);
-
 
 		cloud.download(cloud_host.ptr<Point>());
 		normal.download(normal_host.ptr<Normal>());
 
 		InfoBox infobox("take_cloud");
 		infobox.printInfo("点云获取:",InfoBox::SUC);
-
-
-
 		if (writetofile)
 		{
 			/*把点云数据写入ply文件*/
@@ -129,19 +149,13 @@ void fusionScanner::take_cloud(bool writetofile)
 				PLYw .write("cloud_file-n.ply",cloud,normal);
 			}
 
-			// 			/*把点云数据写入pcd文件*/
+			/*把点云数据写入pcd文件*/
 			{
 				ScopeTime st("pcd writer");
 				PCDFilewriter PCDw;
 				PCDw.write("cloud_file.pcd",cloud,normal);
 			}
 		}
-
-		// 
-		// 
-		// 	/*显示点云或有颜色的点云*/
-		// 
-		// 	//viz.showWidget("cloud", cv::viz::WCloud(cloud_host));//显示点云
 		viz.showWidget("cloud", cv::viz::WPaintedCloud(cloud_host));//显示有颜色的点云
 		// 	viz.showWidget("normal",cv::viz::WCloudNormals(cloud_host,normal_host));//显示法线（法线是否已经计算？）
 	

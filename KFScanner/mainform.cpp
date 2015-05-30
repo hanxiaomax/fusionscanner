@@ -1,14 +1,19 @@
 #include "mainform.h"
 #include <QtGui/QDialog>
 #include <string> 
-
+/*************************************
+ *  简要描述: GUI界面逻辑
+ ************************************/  
 using namespace kfusion;
 using namespace std;
 
 
+/*-------------------------------------------* 
+*  功能描述: 构造函数完成界面初始化和默认设置
+-------------------------------------------*/  
 mainform::mainform(QWidget *parent, Qt::WFlags flags)
-	: QMainWindow(parent, flags)
-	//ui(Ui::mainformClass())//如果ui是对象的话这里其实没有必要，初始化已经完成
+	: QMainWindow(parent, flags),
+	ui(Ui::mainformClass())//如果ui是对象的话这里其实没有必要，初始化已经完成
 
 {
 	/*指针初始化*/
@@ -36,6 +41,9 @@ mainform::~mainform()
 	
 }
 
+/*-------------------------------------* 
+*  功能描述: 设置面板上的扫描参数到默认
+--------------------------------------*/  
 void mainform::setScanToDefault()
 {
 	ui.delay_slider->setValue(0);
@@ -45,15 +53,10 @@ void mainform::setScanToDefault()
 	ui.a_speed_sb->setValue(50);
 	ui.segment_sb->setValue(3);
 	ui.R_segment_sb->setValue(1);
-
-// 	ui.speed->setText("222");
-// 	ui.angular_speed->setText("222");
-// 	ui.segment->setText("222");
-	//ui.R_segement->setText();
-
-	
 }
-
+/*----------------------------------------*
+ *  功能描述: 设置面板上的kinfu参数到默认
+ ----------------------------------------*/  
 void mainform::setkinfuToDefault()
 {
 	ui.sigma_depth_sb->setValue(0.04);
@@ -66,12 +69,36 @@ void mainform::setkinfuToDefault()
 
 	ui.cam_min_move_sb->setValue(0.00);
 	ui.tsdf_dist_sb->setValue(0.04);
-	ui.tsdf_max_weight_sb->setValue(64.0);
+	ui.tsdf_max_weight_sb->setValue(150.0);//64-->150
 	ui.raycast_factor_sb->setValue(0.75);
 	ui.gradient_factor_sb->setValue(0.50);
 
 }
 
+/*----------------------------------------*
+ *  功能描述: 保存点云按钮触发槽函数
+ ----------------------------------------*/ 
+void mainform::on_actionSaveCloud_triggered()
+{
+	_scanner->take_cloud(true);
+}
+/*----------------------------------------*
+ *  功能描述: 重置kinfu参数按钮触发槽函数
+ ----------------------------------------*/ 
+void mainform::on_action_ResetKinFuParams_triggered()
+{
+	setkinfuToDefault();
+}
+/*----------------------------------------*
+ *  功能描述: 重置扫描参数按钮触发槽函数
+ ----------------------------------------*/ 
+void mainform::on_action_ResetScanParams_triggered()
+{
+	setScanToDefault();
+}
+/*----------------------------------------*
+ *  功能描述: Kinect按钮触发槽函数
+ ----------------------------------------*/ 
 void mainform::on_connectKinect_triggered()
 {
 	bool use_default_params = false;
@@ -90,18 +117,19 @@ void mainform::on_connectKinect_triggered()
 		}
 		else
 		{
-			_scanner = new fusionScanner(*_capture,setKinfuParams());//参数设置不正确
+			_scanner = new fusionScanner(*_capture,setKinfuParams());
 
 		}
 	}
 	else
 	{
-//TODO：显卡不支持情况，不能直接退出
+//TODO：显卡不支持情况下不应该直接退出
 		return;
 	}
-	
-	
 }
+/*----------------------------------------*
+ *  功能描述: 开始录制按钮触发槽函数
+ ----------------------------------------*/ 
 void mainform::on_ToolstartBtn_triggered()
 {
 	unsigned int delay=ui.delay_slider->value()*1000;//毫秒变为秒
@@ -109,12 +137,16 @@ void mainform::on_ToolstartBtn_triggered()
 	delayTimer=startTimer(delay);//fusionstart延时启动定时器，触发一次
 }
 
-//停止扫描:停止更新fusion数据
+/*----------------------------------------*
+ *  功能描述: 停止录制按钮触发槽函数
+ ----------------------------------------*/ 
 void mainform::on_ToolstopBtn_triggered()
 {
 	_scanner->fusionHold();
 }
-
+/*----------------------------------------*
+ *  功能描述: 复位摄像机按钮触发槽函数
+ ----------------------------------------*/ 
 void mainform::on_TooldeleteBtn_triggered()
 {
 
@@ -122,13 +154,18 @@ void mainform::on_TooldeleteBtn_triggered()
 	//ui.fusionViewer->updateScene();//只有在派生类中才可以通过派生类对象访问基类的protected成员。
 	//showInViewer(_scanner->view_host_,ui.fusionViewer);
 }
-
+/*----------------------------------------*
+ *  功能描述: 显示点云按钮触发槽函数
+ ----------------------------------------*/ 
 void mainform::onShowCloudBtn()
 {
 	_scanner->take_cloud();
 }
 
-
+/*----------------------------------------*
+ *  功能描述: 定时器事件处理函数
+ *  参数：QTimerEvent *event
+ ----------------------------------------*/ 
 void mainform::timerEvent(QTimerEvent *event)
 {
 
@@ -141,20 +178,19 @@ void mainform::timerEvent(QTimerEvent *event)
 		}	
 		showInViewer(_scanner->image,ui.RGBViewer);
 		showInViewer(_scanner->depth,ui.depthViewer);
-
 	}
 	if (event->timerId()==delayTimer)
 	{
 		killTimer(delayTimer);//出发一次后关掉定时器
 		_scanner->fusionStart();
 	}
-
 }
-/*在glview中显示二维数据
-params:
-	cv::Mat& data
-	glViewer *viewer
-*/
+
+/*----------------------------------------*
+ *  功能描述: 在Viewer中显示二维图像
+ *  参数：data		图像数据
+ *  参数：*viewer	glviewer控件
+ ----------------------------------------*/ 
 void mainform::showInViewer(const cv::Mat& data,glViewer *viewer)
 {
 	if (data.channels()==1)//对深度数据进行变换
@@ -166,26 +202,16 @@ void mainform::showInViewer(const cv::Mat& data,glViewer *viewer)
 	}
 	else{
 		viewer->showImage(data);
-	}
-		
+	}	
 }
 
 
 
-void mainform::on_actionSaveCloud_triggered()
-{
-	_scanner->take_cloud(true);
-}
 
-void mainform::on_action_ResetKinFuParams_triggered()
-{
-	setkinfuToDefault();
-}
-void mainform::on_action_ResetScanParams_triggered()
-{
-	setScanToDefault();
-}
-
+/*---------------------------------------------*
+ *  功能描述: 从面板获取kinfu参数
+ *  返回值：kfusion::KinFuParams类型
+ --------------------------------------------*/ 
 kfusion::KinFuParams  mainform::setKinfuParams()
 {
 	KinFuParams p;
@@ -243,12 +269,16 @@ void mainform::setScanParams(kinectParams &kp)
 
 }
 
+/*---------------------------------------------*
+ *  功能描述:	检查GPU设备
+ *  返回值：	可以使用则返回1，否则返回0
+ --------------------------------------------*/ 
 int mainform::checkGPUdevice()
 {
 	int device = 0;
 
 	cuda::setDevice (device);//设置GPU：0
-	cuda::printShortCudaDeviceInfo (device);//打印GPU信息
+	//cuda::printShortCudaDeviceInfo (device);//打印GPU信息
 
 	//检查GPU架构是否支持
 	if(cuda::checkIfPreFermiGPU(device))
@@ -261,13 +291,15 @@ int mainform::checkGPUdevice()
 	setGPUinfo();
 	return 1;
 }
-
+/*---------------------------------------------*
+ *  功能描述: 设置GUP信息到面板
+ --------------------------------------------*/ 
 void mainform::setGPUinfo()
 {
 	kf::cuda::CUDAinfo p = kf::cuda::getShortCudaDeviceInfo(0);
 	ui.device_info->setText(to_QString(p.device_name));
 	ui.ram_info->setText(to_QString(to_string(static_cast<long long>(p.RAM))));
 	ui.core_info->setText(to_QString(to_string(static_cast<long long>(p.core))));
+	ui.computeCap->setText(to_QString(p.computerCap));
 	ui.driver_info->setText(to_QString(p.driver));
-
 }

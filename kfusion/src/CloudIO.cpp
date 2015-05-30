@@ -155,16 +155,16 @@ string PCDFilewriter::headerGenerator(cuda::DeviceArray<Point> &cloud,bool withN
 	if (withNormal)
 	{
 		oss<<"\nFIELDS x y z normal_x normal_y normal_z";
-		oss<<"\nSIZE 4 4 4";
-		oss<<"\nTYPE F F F";
-		oss<<"\nCOUNT 1 1 1";
+		oss<<"\nSIZE 4 4 4 4 4 4";
+		oss<<"\nTYPE F F F F F F";
+		oss<<"\nCOUNT 1 1 1 1 1 1";
 	}
 	else
 	{
 		oss<<"\nFIELDS x y z";
-		oss<<"\nSIZE 4 4 4 4 4 4";
-		oss<<"\nTYPE F F F F F F";
-		oss<<"\nCOUNT 1 1 1 1 1 1";
+		oss<<"\nSIZE 4 4 4";
+		oss<<"\nTYPE F F F";
+		oss<<"\nCOUNT 1 1 1";
 	}
 	
 	

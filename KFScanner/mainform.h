@@ -12,8 +12,6 @@
 #include <fstream>
 #include "fusionScanner.h"
 //#include <QTimer>
-/*Ö÷´°¿Ú*/
-
 
 class mainform : public QMainWindow
 {

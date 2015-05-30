@@ -23,6 +23,7 @@ namespace kfusion
 			string driver;
 			float RAM;
 			int core;
+			string computerCap;
 		};
         KF_EXPORTS int getCudaEnabledDeviceCount();//获取可用CUDA设备数量
 		

@@ -5,6 +5,9 @@
 #include <io/capture.hpp>
 #include <kfusion/CloudIO.h>
 #include <fstream>
+
+
+
 using namespace kfusion;
 
 
@@ -43,7 +46,7 @@ public:
 	void take_cloud(bool writetofile=false);//默认参数应该在声明时给出
 	
 private:
-	void show_raycasted(KinFu& kinfu);//创建融合结果显示矩阵
+	void creat_raycasted(KinFu& kinfu);//创建融合结果显示矩阵
 	void clean_raycasted();
 	
 };
