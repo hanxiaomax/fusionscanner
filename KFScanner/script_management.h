@@ -14,9 +14,14 @@ private slots:
 	void on_AddVbtn_clicked();
 	void on_AddLbtn_clicked();
 	void on_AddTbtn_clicked();
-	void reEnable();
+	void on_newScriptBtn_clicked();
+	void on_deleteBtn_clicked();
+	void updateScript();//当lineedit有变化时触发，会自动trim脚本使其有效
+	void readScript();//combo box变化时触发
 private:
-	//QString script
 	void resetAddBtn();
+	QString trimScript(QString script);
+	bool scriptExist(QString filename);
+	void init_scriptList();
 };
 

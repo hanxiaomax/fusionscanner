@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'script_management.h'
 **
-** Created: Mon Jun 1 20:50:30 2015
+** Created: Tue Jun 2 14:55:35 2015
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_script_Dialog[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       5,   14, // methods
+       8,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -36,6 +36,9 @@ static const uint qt_meta_data_script_Dialog[] = {
       57,   14,   14,   14, 0x08,
       78,   14,   14,   14, 0x08,
       99,   14,   14,   14, 0x08,
+     125,   14,   14,   14, 0x08,
+     148,   14,   14,   14, 0x08,
+     163,   14,   14,   14, 0x08,
 
        0        // eod
 };
@@ -43,7 +46,9 @@ static const uint qt_meta_data_script_Dialog[] = {
 static const char qt_meta_stringdata_script_Dialog[] = {
     "script_Dialog\0\0on_AddRbtn_clicked()\0"
     "on_AddVbtn_clicked()\0on_AddLbtn_clicked()\0"
-    "on_AddTbtn_clicked()\0reEnable()\0"
+    "on_AddTbtn_clicked()\0on_newScriptBtn_clicked()\0"
+    "on_deleteBtn_clicked()\0updateScript()\0"
+    "readScript()\0"
 };
 
 void script_Dialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -56,7 +61,10 @@ void script_Dialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
         case 1: _t->on_AddVbtn_clicked(); break;
         case 2: _t->on_AddLbtn_clicked(); break;
         case 3: _t->on_AddTbtn_clicked(); break;
-        case 4: _t->reEnable(); break;
+        case 4: _t->on_newScriptBtn_clicked(); break;
+        case 5: _t->on_deleteBtn_clicked(); break;
+        case 6: _t->updateScript(); break;
+        case 7: _t->readScript(); break;
         default: ;
         }
     }
@@ -97,9 +105,9 @@ int script_Dialog::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 5)
+        if (_id < 8)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 5;
+        _id -= 8;
     }
     return _id;
 }
