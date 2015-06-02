@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainform.h'
 **
-** Created: Tue May 26 15:48:25 2015
+** Created: Mon Jun 1 16:57:44 2015
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_mainform[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       8,   14, // methods
+      11,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -39,6 +39,9 @@ static const uint qt_meta_data_mainform[] = {
      154,    9,    9,    9, 0x08,
      193,    9,    9,    9, 0x08,
      231,    9,    9,    9, 0x08,
+     256,    9,    9,    9, 0x08,
+     284,    9,    9,    9, 0x08,
+     310,    9,    9,    9, 0x08,
 
        0        // eod
 };
@@ -51,7 +54,10 @@ static const char qt_meta_stringdata_mainform[] = {
     "on_actionSaveCloud_triggered()\0"
     "on_action_ResetKinFuParams_triggered()\0"
     "on_action_ResetScanParams_triggered()\0"
-    "onShowCloudBtn()\0"
+    "on_scanPortBtn_clicked()\0"
+    "on_connectPortBtn_clicked()\0"
+    "on_newScriptBtn_clicked()\0"
+    "on_resetMachineBtn_clicked()\0"
 };
 
 void mainform::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -67,7 +73,10 @@ void mainform::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 4: _t->on_actionSaveCloud_triggered(); break;
         case 5: _t->on_action_ResetKinFuParams_triggered(); break;
         case 6: _t->on_action_ResetScanParams_triggered(); break;
-        case 7: _t->onShowCloudBtn(); break;
+        case 7: _t->on_scanPortBtn_clicked(); break;
+        case 8: _t->on_connectPortBtn_clicked(); break;
+        case 9: _t->on_newScriptBtn_clicked(); break;
+        case 10: _t->on_resetMachineBtn_clicked(); break;
         default: ;
         }
     }
@@ -106,9 +115,9 @@ int mainform::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 8)
+        if (_id < 11)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 8;
+        _id -= 11;
     }
     return _id;
 }

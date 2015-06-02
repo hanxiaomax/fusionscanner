@@ -1,34 +1,49 @@
 #include "mainform.h"
 #include <QtGui/QDialog>
 #include <string> 
+#include <QSettings>
+#include <QMessageBox>
+#include <QTextCodec> 
+#include <QTime>
 /*************************************
  *  简要描述: GUI界面逻辑
  ************************************/  
 using namespace kfusion;
 using namespace std;
 
+void sleep(unsigned int msec);
 
 /*-------------------------------------------* 
 *  功能描述: 构造函数完成界面初始化和默认设置
 -------------------------------------------*/  
 mainform::mainform(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags),
-	ui(Ui::mainformClass())//如果ui是对象的话这里其实没有必要，初始化已经完成
-
+	ui(Ui::mainformClass()),//如果ui是对象的话这里其实没有必要，初始化已经完成
+	port(new QextSerialPort()),//初始化串口对象
+	isOpen(false)//串口初始状态
 {
 	/*指针初始化*/
-	_scanner=NULL;
-	_capture=NULL;
+	_scanner = 0;
+	_capture = 0;
+	sd = 0;
+	///////////////////////////////
 
 	ui.setupUi(this);
+	QTextCodec::setCodecForTr(QTextCodec::codecForLocale());//设定字符集以显示中文
 	/*设置mainTab*/
 	ui.mainTab->setCurrentIndex(0);///要在setupUi之后
 	ui.init_toolbox->setCurrentIndex(0);
 	setScanToDefault();
 	setkinfuToDefault();
 
-	/////////////////////////////////////////////////////////////////
-	connect(ui.showCloudBtn,SIGNAL(clicked()),this,SLOT(onShowCloudBtn()));//等价于on_ShowCloudBtn_clicked(),所以槽的命名不能是这个，否则会发射两次信号
+	
+	ui.port_list->clear();
+	ui.port_list->addItems(findAvailablePort());
+	
+	ui.runBtn->setDisabled(true);
+	ui.stopBtn->setDisabled(true);
+	
+	Serital_Timer = new QTimer();
 
 }
 
@@ -38,7 +53,7 @@ mainform::~mainform()
 	{
 		_capture->release();
 	}
-	
+	port->close();//断开串口连接
 }
 
 /*-------------------------------------* 
@@ -110,15 +125,11 @@ void mainform::on_connectKinect_triggered()
 	if(checkGPUdevice())
 	{
 		_capture = new OpenNISource(0,kinectparams);//初始化摄像机
-
-		if (use_default_params)
-		{
+		if (use_default_params){
 			_scanner = new fusionScanner(*_capture);//创建scanner app实例，注意是一个指针
 		}
-		else
-		{
+		else{
 			_scanner = new fusionScanner(*_capture,setKinfuParams());
-
 		}
 	}
 	else
@@ -154,21 +165,104 @@ void mainform::on_TooldeleteBtn_triggered()
 	//ui.fusionViewer->updateScene();//只有在派生类中才可以通过派生类对象访问基类的protected成员。
 	//showInViewer(_scanner->view_host_,ui.fusionViewer);
 }
+
 /*----------------------------------------*
- *  功能描述: 显示点云按钮触发槽函数
+ *  功能描述: 扫描串口按钮触发槽函数
  ----------------------------------------*/ 
-void mainform::onShowCloudBtn()
+void mainform::on_scanPortBtn_clicked()
 {
-	_scanner->take_cloud();
+	QStringList comList = findAvailablePort();
+	if (comList.empty()){
+		QMessageBox::information(NULL, tr("警告"), tr("没有可用的端口，请检查蓝牙适配器是否插入"));
+	}
+	else
+	{
+		ui.port_list->clear();
+		ui.port_list->addItems(comList);
+	}
+	
+}
+/*----------------------------------------*
+ *  功能描述: 连接串口按钮触发槽函数
+ ----------------------------------------*/ 
+void mainform::on_connectPortBtn_clicked()
+{
+	QString port_name = ui.port_list->currentText();//获取选择的内容COM13
+	QString m_port = port_name.right(port_name.length()-3);//截取数字部分
+	if(m_port.toInt()>9)//10以上的端口要加一个前缀
+	{
+		QString prefix = "\\\\.\\";
+		prefix.append(port_name);
+		port->setPortName(prefix);
+	}
+	else
+	{
+		port->setPortName(port_name);
+	}
+	if (isOpen)
+	{
+		int r = QMessageBox::warning(this,tr("警告"), tr("确定要断开连接吗？"),QMessageBox::Yes|QMessageBox::No);
+		if(r==QMessageBox::Yes)
+		{
+			port->close();
+			isOpen = false;
+			ui.portStatus->setText(tr("未连接"));
+			ui.connectPortBtn->setText(tr("连接端口"));
+			ui.portStatus->setStyleSheet("background-color:rgb(255,99,71);color:rgb(255,255,255)");
+			port->write("~PC");
+			ui.port_list->setDisabled(false);
+			ui.runBtn->setDisabled(true);
+			ui.stopBtn->setDisabled(true);
+		}
+	}
+	else
+	{
+		if(!port->open(QIODevice::ReadWrite))
+			QMessageBox::information(this, tr("警告"), tr("无法打开端口，请检查连接情况或重新扫描端口"));
+		else
+		{
+			port->setBaudRate(BAUD57600);//波特率9600
+			port->setStopBits(STOP_1);//1位停止位
+			port->setDataBits(DATA_8);//8位数据位
+			port->setParity(PAR_NONE);//奇偶校验设置
+			ui.port_list->setDisabled(true);
+			ui.portStatus->setText(tr("已连接"));
+			ui.portStatus->setStyleSheet("background-color:rgb(0,255,0)");
+			ui.connectPortBtn->setText(tr("关闭端口"));
+			isOpen = true;
+			port->write("PC");
+			//Serital_Timer->start(100);
+			ui.runBtn->setDisabled(false);
+			ui.stopBtn->setDisabled(false);
+		}
+	}
+	
 }
 
+/*----------------------------------------*
+ *  功能描述: 运动脚本管理按钮触发槽函数
+ ----------------------------------------*/ 
+void mainform::on_newScriptBtn_clicked()
+{
+	if (!sd)
+		sd = new script_Dialog(this);
+	sd->show();
+	sd->raise();
+	sd->activateWindow();
+}
+void mainform::on_resetMachineBtn_clicked()
+{
+	port->write("RUN");
+	sleep(100);
+	port->write("R1V150L30T100");
+
+}
 /*----------------------------------------*
  *  功能描述: 定时器事件处理函数
  *  参数：QTimerEvent *event
  ----------------------------------------*/ 
 void mainform::timerEvent(QTimerEvent *event)
 {
-
 	if (event->timerId()==updateTimer)
 	{
 		_scanner->update();//更新数据
@@ -302,4 +396,88 @@ void mainform::setGPUinfo()
 	ui.core_info->setText(to_QString(to_string(static_cast<long long>(p.core))));
 	ui.computeCap->setText(to_QString(p.computerCap));
 	ui.driver_info->setText(to_QString(p.driver));
+}
+
+
+/*---------------------------------------------*
+ *  功能描述: 查找可以使用的串口
+ *	返回值	：包含所有可以串口名的列表
+ --------------------------------------------*/ 
+QStringList mainform::findAvailablePort()
+{
+	QString path="HKEY_LOCAL_MACHINE\\HARDWARE\\DEVICEMAP\\SERIALCOMM";
+	QSettings *settings=new QSettings(path,QSettings::NativeFormat);
+	
+	QStringList key=settings->allKeys();
+	QStringList comlist ;
+
+	int kk = key.size();
+	comlist.clear();
+	for(int i=0;i<kk;i++)
+	{
+		comlist << _getCom(i,"value");
+	}
+	return comlist;
+}
+
+QString mainform::_getCom(int index ,QString keyorvalue)
+{
+	QString commresult="";
+	QString strkey="HARDWARE\\DEVICEMAP\\SERIALCOMM";//子键路径
+	int a=strkey.toWCharArray(subkey);
+	subkey[a]=L'\0';
+	if(RegOpenKeyEx(HKEY_LOCAL_MACHINE,subkey,0,KEY_READ|KEY_QUERY_VALUE,&hKey)!=0)
+	{
+		QString error="Cannot open regedit!";
+	}
+
+	QString keymessage="";//键名
+	QString message="";
+	QString valuemessage="";//键值
+	indexnum=index;//要读取键值的索引号
+
+	keysize=sizeof(keyname);
+	valuesize=sizeof(keyvalue);
+
+	if(::RegEnumValue(hKey,indexnum,keyname,&keysize,0,&type,(BYTE*)keyvalue,&valuesize)==0)
+	{
+		//读取键名
+		for(int i=0;i<keysize;i++)
+		{
+			message=QString::fromStdWString(keyname);
+			keymessage.append(message);
+		}
+		//读取键值
+		for(int j=0;j<valuesize;j++)
+		{
+			if(keyvalue[j]!=0x00)
+			{
+				valuemessage.append(keyvalue[j]);
+			}
+		}
+
+		if(keyorvalue=="key")
+		{
+			commresult=keymessage;
+		}
+		if(keyorvalue=="value")
+		{
+			commresult=valuemessage;
+		}
+	}
+	else
+	{
+		commresult="nokey";
+	}
+	::RegCloseKey(hKey);//关闭注册表
+	return commresult;
+}
+
+//////////////////////////////////////////////////
+//毫秒级别延时函数
+void sleep(unsigned int msec)
+{
+	QTime dieTime = QTime::currentTime().addMSecs(msec);
+	while( QTime::currentTime() < dieTime )
+		QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 }

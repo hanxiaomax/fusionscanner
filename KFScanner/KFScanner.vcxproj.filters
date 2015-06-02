@@ -56,6 +56,18 @@
     <ClCompile Include="GL2Dviewer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="script_management.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_script_management.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_script_management.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_script_management.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="mainform.h">
@@ -65,6 +77,15 @@
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="mainform.qrc">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="script_management.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="script_management.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="script_management.qrc">
       <Filter>Resource Files</Filter>
     </CustomBuild>
   </ItemGroup>
@@ -78,5 +99,13 @@
     <ClInclude Include="GL2Dviewer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_script_management.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images\add.png">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

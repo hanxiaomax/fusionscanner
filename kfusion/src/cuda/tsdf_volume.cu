@@ -175,7 +175,7 @@ namespace kfusion
 			
             if (g.x < 0 || g.x >= volume.dims.x - 1 || g.y < 0 || g.y >= volume.dims.y - 1 || g.z < 0 || g.z >= volume.dims.z - 1)
 				//printf("[%d %d %d]",g.x,g.y,g.z);
-                return 0;//numeric_limits<float>::quiet_NaN();
+                return numeric_limits<float>::quiet_NaN();
 
             float a = cf.x - g.x;
             float b = cf.y - g.y;
