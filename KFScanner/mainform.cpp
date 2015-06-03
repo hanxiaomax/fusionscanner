@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QTextCodec> 
 #include <QTime>
+#include <io.h>
 /*************************************
  *  简要描述: GUI界面逻辑
  ************************************/  
@@ -29,6 +30,7 @@ mainform::mainform(QWidget *parent, Qt::WFlags flags)
 	///////////////////////////////
 
 	ui.setupUi(this);
+	
 	QTextCodec::setCodecForTr(QTextCodec::codecForLocale());//设定字符集以显示中文
 	/*设置mainTab*/
 	ui.mainTab->setCurrentIndex(0);///要在setupUi之后
@@ -39,11 +41,12 @@ mainform::mainform(QWidget *parent, Qt::WFlags flags)
 	
 	ui.port_list->clear();
 	ui.port_list->addItems(findAvailablePort());
-	
+	init_scriptList();
 	ui.runBtn->setDisabled(true);
-	ui.stopBtn->setDisabled(true);
+	
 	
 	Serital_Timer = new QTimer();
+	
 
 }
 
@@ -212,7 +215,7 @@ void mainform::on_connectPortBtn_clicked()
 			port->write("~PC");
 			ui.port_list->setDisabled(false);
 			ui.runBtn->setDisabled(true);
-			ui.stopBtn->setDisabled(true);
+
 		}
 	}
 	else
@@ -233,7 +236,6 @@ void mainform::on_connectPortBtn_clicked()
 			port->write("PC");
 			//Serital_Timer->start(100);
 			ui.runBtn->setDisabled(false);
-			ui.stopBtn->setDisabled(false);
 		}
 	}
 	
@@ -246,9 +248,16 @@ void mainform::on_newScriptBtn_clicked()
 {
 	if (!sd)
 		sd = new script_Dialog(this);
+	///////
+	connect(sd,SIGNAL(onNewScriptBtn(const QString &)),this,SLOT(addCombox(QString)));//必须先实现sd才能连接
+	connect(sd,SIGNAL(onDeleteBtn(int)),this,SLOT(deleteCombox(int)));//必须先实现sd才能连接
+
+
 	sd->show();
 	sd->raise();
 	sd->activateWindow();
+	///////////////////////////
+	//如果是模态的窗口，在这里重新初始化init_scriptList();也是可以的
 }
 void mainform::on_resetMachineBtn_clicked()
 {
@@ -470,9 +479,55 @@ QString mainform::_getCom(int index ,QString keyorvalue)
 		commresult="nokey";
 	}
 	::RegCloseKey(hKey);//关闭注册表
+
 	return commresult;
 }
 
+/*------------------------------------------------------------------*
+ *  功能描述: 查找scripts文件夹下全部文件名，并初始化combo box
+ *  参考资料：http://blog.csdn.net/xuejiren/article/details/37040827
+ -------------------------------------------------------------------*/ 
+void mainform::init_scriptList()
+{
+	vector<string> files; 
+	long   hFile   =   0;  
+	string path = "scripts/";//要查找的目录
+	struct _finddata_t fileinfo;  //结构体，存放文件信息
+	string p;  
+	if((hFile = _findfirst(p.assign(path).append("\\*").c_str(),&fileinfo)) !=  -1)  
+	{  
+		do  
+		{  
+			files.push_back(fileinfo.name);//把找到的文件名加入到files中
+
+		}while(_findnext(hFile, &fileinfo)  == 0);  
+		_findclose(hFile);  
+	}
+	ui.script_combox->clear();
+	for (int i = 0 ; i<files.size() ; i++)//一次添加到combo box
+	{
+		if (!(files[i]==".."||files[i]=="."))//跳过目录..,保留.
+			ui.script_combox->addItem(files[i].c_str());
+	}
+}
+
+/*------------------------------------------------------------------*
+ *  功能描述:	添加新建的文件到combox
+ *  参数：		从信号传递过来的文件名
+ -------------------------------------------------------------------*/ 
+void mainform::addCombox(QString filename)
+{
+	ui.script_combox->addItem(filename);
+}
+
+/*------------------------------------------------------------------*
+ *  功能描述:	从combox删除
+ *  参数：		从信号传递过来的文件名
+ -------------------------------------------------------------------*/ 
+void mainform::deleteCombox(int index)
+{
+	ui.script_combox->removeItem(index);
+}
 //////////////////////////////////////////////////
 //毫秒级别延时函数
 void sleep(unsigned int msec)
@@ -481,3 +536,4 @@ void sleep(unsigned int msec)
 	while( QTime::currentTime() < dieTime )
 		QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 }
+

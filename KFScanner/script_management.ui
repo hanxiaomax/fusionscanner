@@ -14,7 +14,7 @@
    <string>运动脚本管理</string>
   </property>
   <property name="modal">
-   <bool>true</bool>
+   <bool>false</bool>
   </property>
   <layout class="QGridLayout" name="_2">
    <property name="leftMargin">

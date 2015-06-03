@@ -4,7 +4,8 @@
 #include <fstream>
 #include <io.h>
 #include <stdio.h>
-
+#include <QTextCodec> 
+#include <QDebug>
 using namespace std;
 
 
@@ -16,6 +17,7 @@ script_Dialog::script_Dialog(QWidget *parent):QDialog(parent)
 	setupUi(this);
 	resetAddBtn();//重置按钮状态
 	init_scriptList();
+
 	connect(scriptEdit,SIGNAL(textChanged(const QString &)),this,SLOT(updateScript()));//必须是textChanged(const QString &)，updateScript()要是接受者的成员函数
 	connect(script_cb,SIGNAL(currentIndexChanged(const QString &)),this,SLOT(readScript()));//下拉菜单更改后读入脚本字符串
 }
@@ -25,22 +27,37 @@ script_Dialog::~script_Dialog(void)
 {
 }
 
-
+/*------------------------------------------------------------------*
+ *  功能描述: 点击新建按钮后出发的槽函数
+ *	检查文件是否存在，写入脚本字符串，保存文件，发射信号更新主面板
+ -------------------------------------------------------------------*/ 
 void script_Dialog::on_newScriptBtn_clicked()
 {
+	
 	if (filenameEdit->text().isEmpty())
 		QMessageBox::warning(this,tr("警告"), tr("请输入文件名"),QMessageBox::Yes);
 	else{
 		try{
+			
 			QString filename = filenameEdit->text();
 			ifstream fin("scripts/"+filename.toStdString()+".txt");//首先判断文件是否存在
 			if (!fin)//如果不存在
 			{
 				if (!scriptEdit->text().isEmpty())
 				{
-					ofstream f("scripts/"+filename.toStdString()+".txt");
-					f<<scriptEdit->text().toStdString();//写入脚本
-					script_cb->addItem(filename);
+					string fn ="scripts/"+filename.toStdString()+".txt";
+					ofstream f(fn);
+					if (f)
+					{					
+						f<<scriptEdit->text().toStdString();//写入脚本
+						script_cb->addItem(filename);
+						QMessageBox::warning(this,tr("成功"), tr("脚本创建成功"),QMessageBox::Yes);
+						emit onNewScriptBtn(filename+".txt");//发生信号，传递新建的文件名并在主面板上更新
+					}
+					else
+					{
+						QMessageBox::warning(this,tr("失败"), tr("不支持中文名"),QMessageBox::Yes);
+					}
 				}
 				else
 					QMessageBox::warning(this,tr("警告"), tr("没有可以写入的脚本"),QMessageBox::Yes);
@@ -55,6 +72,10 @@ void script_Dialog::on_newScriptBtn_clicked()
 	}
 	
 }
+
+/*-------------------------------------------*
+ *  功能描述: 点击删除按钮后出发的槽函数
+ --------------------------------------------*/ 
 void script_Dialog::on_deleteBtn_clicked()
 {
 	string filename = script_cb->currentText().toStdString();
@@ -63,6 +84,7 @@ void script_Dialog::on_deleteBtn_clicked()
 		{
 			remove(("scripts/"+filename).c_str());//必须要转换成一个C指针形式，因为remove是C的函数
 			script_cb->removeItem(script_cb->currentIndex());
+			emit onDeleteBtn(script_cb->currentIndex());
 			scriptEdit->clear();
 		}
 	}
@@ -102,10 +124,10 @@ void script_Dialog::resetAddBtn()
 	AddLbtn->setDisabled(true);
 	AddTbtn->setDisabled(true);
 }
-/*---------------------------------------------*
+/*------------------------------------------------*
  *  功能描述:	处理脚本字符串，使其末尾不包含字符
  *	返回值：	QString 移除无用字符后的结果 
- ---------------------------------------------*/ 
+ -------------------------------------------------*/ 
 QString script_Dialog::trimScript(QString script)
 {
 	QString lastChar=script.right(1);//返回最后一个字符
@@ -146,6 +168,7 @@ void script_Dialog::init_scriptList()
 		}while(_findnext(hFile, &fileinfo)  == 0);  
 		_findclose(hFile);  
 	}
+	script_cb->clear();
 	for (int i = 0 ; i<files.size() ; i++)//一次添加到combo box
 	{
 		if (!(files[i]==".."))//跳过目录..,保留.
@@ -153,14 +176,12 @@ void script_Dialog::init_scriptList()
 	}
 }
 
-/*------------------------------------------------*
+/*--------------------------------------------*
  *  功能描述: SLOT 当切换combox的时候读入脚本
- -------------------------------------------------*/ 
+ ---------------------------------------------*/ 
 void script_Dialog::readScript()
 {
-	
 	string filename = script_cb->currentText().toStdString();
-	
 	if (filename!=".")
 	{
 		ifstream f("scripts/"+filename);
@@ -168,5 +189,4 @@ void script_Dialog::readScript()
 		f>>script;
 		scriptEdit->setText(QString::fromStdString(script));
 	}
-	
 }

@@ -14,6 +14,7 @@
 #include "fusionScanner.h"
 #include <QTimer>
 #include "3rdparty/qextserialport/qextserialport.h"//第三方串口库
+
 class mainform : public QMainWindow
 {
 	Q_OBJECT
@@ -55,6 +56,8 @@ private slots:
 	void on_connectPortBtn_clicked();
 	void on_newScriptBtn_clicked();
 	void on_resetMachineBtn_clicked();
+	void addCombox(QString filename);
+	void deleteCombox(int index);
 private:
 	void timerEvent(QTimerEvent *event);
 	void showInViewer(const cv::Mat& depth,glViewer *viewer);
@@ -67,6 +70,7 @@ private:
 	void setGPUinfo();//设置GPU信息
 	QStringList findAvailablePort();//查找全部可用端口
 	QString _getCom(int index ,QString keyorvalue);//查找端口
+	void init_scriptList();
 };
 
 #endif // MAINFORM_H

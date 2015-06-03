@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainform.h'
 **
-** Created: Mon Jun 1 16:57:44 2015
+** Created: Wed Jun 3 10:48:52 2015
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_mainform[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      11,   14, // methods
+      13,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -42,6 +42,8 @@ static const uint qt_meta_data_mainform[] = {
      256,    9,    9,    9, 0x08,
      284,    9,    9,    9, 0x08,
      310,    9,    9,    9, 0x08,
+     348,  339,    9,    9, 0x08,
+     373,  367,    9,    9, 0x08,
 
        0        // eod
 };
@@ -57,7 +59,8 @@ static const char qt_meta_stringdata_mainform[] = {
     "on_scanPortBtn_clicked()\0"
     "on_connectPortBtn_clicked()\0"
     "on_newScriptBtn_clicked()\0"
-    "on_resetMachineBtn_clicked()\0"
+    "on_resetMachineBtn_clicked()\0filename\0"
+    "addCombox(QString)\0index\0deleteCombox(int)\0"
 };
 
 void mainform::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -77,10 +80,11 @@ void mainform::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 8: _t->on_connectPortBtn_clicked(); break;
         case 9: _t->on_newScriptBtn_clicked(); break;
         case 10: _t->on_resetMachineBtn_clicked(); break;
+        case 11: _t->addCombox((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 12: _t->deleteCombox((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
     }
-    Q_UNUSED(_a);
 }
 
 const QMetaObjectExtraData mainform::staticMetaObjectExtraData = {
@@ -115,9 +119,9 @@ int mainform::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 11)
+        if (_id < 13)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 11;
+        _id -= 13;
     }
     return _id;
 }

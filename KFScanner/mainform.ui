@@ -35,7 +35,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <property name="iconSize">
        <size>
@@ -115,7 +115,7 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="0" column="2">
+                 <item row="0" column="1">
                   <widget class="QComboBox" name="port_list">
                    <property name="font">
                     <font>
@@ -123,19 +123,6 @@
                     </font>
                    </property>
                   </widget>
-                 </item>
-                 <item row="1" column="1">
-                  <spacer name="horizontalSpacer_17">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
                  </item>
                  <item row="1" column="0">
                   <widget class="QLabel" name="label_30">
@@ -149,27 +136,14 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="1" column="2">
-                  <widget class="QComboBox" name="script_cb">
+                 <item row="1" column="1">
+                  <widget class="QComboBox" name="script_combox">
                    <property name="font">
                     <font>
                      <pointsize>10</pointsize>
                     </font>
                    </property>
                   </widget>
-                 </item>
-                 <item row="0" column="1">
-                  <spacer name="horizontalSpacer_16">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
                  </item>
                 </layout>
                </item>
@@ -296,26 +270,6 @@ color: rgb(255, 255, 255);</string>
                    </property>
                   </widget>
                  </item>
-                 <item>
-                  <spacer name="horizontalSpacer_19">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="stopBtn">
-                   <property name="text">
-                    <string>停止</string>
-                   </property>
-                  </widget>
-                 </item>
                 </layout>
                </item>
                <item row="1" column="0">
@@ -342,8 +296,8 @@ color: rgb(255, 255, 255);</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>240</width>
-             <height>435</height>
+             <width>273</width>
+             <height>490</height>
             </rect>
            </property>
            <attribute name="label">
@@ -714,8 +668,8 @@ color: rgb(255, 255, 255);</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>202</width>
-             <height>464</height>
+             <width>273</width>
+             <height>490</height>
             </rect>
            </property>
            <attribute name="label">
@@ -1709,8 +1663,8 @@ color: rgb(255, 255, 255);</string>
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>98</width>
-                  <height>28</height>
+                  <width>346</width>
+                  <height>519</height>
                  </rect>
                 </property>
                 <attribute name="label">

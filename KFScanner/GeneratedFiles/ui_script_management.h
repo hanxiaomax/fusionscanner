@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'script_management.ui'
 **
-** Created: Tue Jun 2 13:46:23 2015
+** Created: Tue Jun 2 16:51:54 2015
 **      by: Qt User Interface Compiler version 4.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -85,7 +85,7 @@ public:
         if (sctiptDialog->objectName().isEmpty())
             sctiptDialog->setObjectName(QString::fromUtf8("sctiptDialog"));
         sctiptDialog->resize(510, 247);
-        sctiptDialog->setModal(true);
+        sctiptDialog->setModal(false);
         _2 = new QGridLayout(sctiptDialog);
         _2->setObjectName(QString::fromUtf8("_2"));
         _2->setContentsMargins(9, -1, -1, -1);

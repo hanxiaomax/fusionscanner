@@ -1,6 +1,8 @@
 #pragma once
 #include "ui_script_management.h"
 #include <QDialog>
+
+using namespace std;
 class script_Dialog :
 	public QDialog,public Ui::sctiptDialog
 {
@@ -23,5 +25,9 @@ private:
 	QString trimScript(QString script);
 	bool scriptExist(QString filename);
 	void init_scriptList();
+signals:
+	///////除非需要自动建立连接，否则不要使用on_开头的名字定义函数
+	void onNewScriptBtn(const QString & filename);//定义一个信号，不需要实现
+	void onDeleteBtn(int index);
 };
 

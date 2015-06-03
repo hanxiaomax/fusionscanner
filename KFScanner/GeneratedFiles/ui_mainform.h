@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainform.ui'
 **
-** Created: Mon Jun 1 16:57:44 2015
+** Created: Wed Jun 3 10:51:33 2015
 **      by: Qt User Interface Compiler version 4.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -68,10 +68,8 @@ public:
     QGridLayout *gridLayout;
     QLabel *label_28;
     QComboBox *port_list;
-    QSpacerItem *horizontalSpacer_17;
     QLabel *label_30;
-    QComboBox *script_cb;
-    QSpacerItem *horizontalSpacer_16;
+    QComboBox *script_combox;
     QHBoxLayout *horizontalLayout_9;
     QLabel *portStatus_label;
     QLabel *portStatus;
@@ -84,8 +82,6 @@ public:
     QGridLayout *gridLayout_19;
     QHBoxLayout *horizontalLayout_11;
     QPushButton *runBtn;
-    QSpacerItem *horizontalSpacer_19;
-    QPushButton *stopBtn;
     QSpacerItem *verticalSpacer_5;
     QWidget *page;
     QVBoxLayout *verticalLayout;
@@ -353,11 +349,7 @@ public:
         port_list->setObjectName(QString::fromUtf8("port_list"));
         port_list->setFont(font2);
 
-        gridLayout->addWidget(port_list, 0, 2, 1, 1);
-
-        horizontalSpacer_17 = new QSpacerItem(20, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        gridLayout->addItem(horizontalSpacer_17, 1, 1, 1, 1);
+        gridLayout->addWidget(port_list, 0, 1, 1, 1);
 
         label_30 = new QLabel(groupBox_8);
         label_30->setObjectName(QString::fromUtf8("label_30"));
@@ -365,15 +357,11 @@ public:
 
         gridLayout->addWidget(label_30, 1, 0, 1, 1);
 
-        script_cb = new QComboBox(groupBox_8);
-        script_cb->setObjectName(QString::fromUtf8("script_cb"));
-        script_cb->setFont(font2);
+        script_combox = new QComboBox(groupBox_8);
+        script_combox->setObjectName(QString::fromUtf8("script_combox"));
+        script_combox->setFont(font2);
 
-        gridLayout->addWidget(script_cb, 1, 2, 1, 1);
-
-        horizontalSpacer_16 = new QSpacerItem(20, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        gridLayout->addItem(horizontalSpacer_16, 0, 1, 1, 1);
+        gridLayout->addWidget(script_combox, 1, 1, 1, 1);
 
 
         verticalLayout_8->addLayout(gridLayout);
@@ -451,15 +439,6 @@ public:
 
         horizontalLayout_11->addWidget(runBtn);
 
-        horizontalSpacer_19 = new QSpacerItem(20, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout_11->addItem(horizontalSpacer_19);
-
-        stopBtn = new QPushButton(groupBox_9);
-        stopBtn->setObjectName(QString::fromUtf8("stopBtn"));
-
-        horizontalLayout_11->addWidget(stopBtn);
-
 
         gridLayout_19->addLayout(horizontalLayout_11, 0, 0, 1, 1);
 
@@ -473,7 +452,7 @@ public:
         init_toolbox->addItem(page_8, QString::fromUtf8("\345\215\207\351\231\215\345\217\260\351\205\215\347\275\256"));
         page = new QWidget();
         page->setObjectName(QString::fromUtf8("page"));
-        page->setGeometry(QRect(0, 0, 240, 435));
+        page->setGeometry(QRect(0, 0, 273, 490));
         verticalLayout = new QVBoxLayout(page);
         verticalLayout->setSpacing(6);
         verticalLayout->setContentsMargins(11, 11, 11, 11);
@@ -718,7 +697,7 @@ public:
         init_toolbox->addItem(page, QString::fromUtf8("\346\211\253\346\217\217\345\217\202\346\225\260"));
         page_2 = new QWidget();
         page_2->setObjectName(QString::fromUtf8("page_2"));
-        page_2->setGeometry(QRect(0, 0, 202, 464));
+        page_2->setGeometry(QRect(0, 0, 273, 490));
         gridLayout_14 = new QGridLayout(page_2);
         gridLayout_14->setSpacing(6);
         gridLayout_14->setContentsMargins(11, 11, 11, 11);
@@ -1239,7 +1218,7 @@ public:
         toolBox->setFont(font5);
         page_3 = new QWidget();
         page_3->setObjectName(QString::fromUtf8("page_3"));
-        page_3->setGeometry(QRect(0, 0, 98, 28));
+        page_3->setGeometry(QRect(0, 0, 346, 519));
         pushButton = new QPushButton(page_3);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
         pushButton->setGeometry(QRect(80, 40, 171, 71));
@@ -1367,7 +1346,7 @@ public:
         QObject::connect(delay_slider, SIGNAL(valueChanged(int)), delay_value, SLOT(setNum(int)));
         QObject::connect(range_slider, SIGNAL(valueChanged(int)), range_value, SLOT(setNum(int)));
 
-        mainTab->setCurrentIndex(0);
+        mainTab->setCurrentIndex(3);
         init_toolbox->setCurrentIndex(0);
         toolBox->setCurrentIndex(0);
 
@@ -1401,7 +1380,6 @@ public:
         newScriptBtn->setText(QApplication::translate("mainformClass", "\350\277\220\345\212\250\350\204\232\346\234\254\347\256\241\347\220\206", 0, QApplication::UnicodeUTF8));
         groupBox_9->setTitle(QString());
         runBtn->setText(QApplication::translate("mainformClass", "\350\277\220\350\241\214", 0, QApplication::UnicodeUTF8));
-        stopBtn->setText(QApplication::translate("mainformClass", "\345\201\234\346\255\242", 0, QApplication::UnicodeUTF8));
         init_toolbox->setItemText(init_toolbox->indexOf(page_8), QApplication::translate("mainformClass", "\345\215\207\351\231\215\345\217\260\351\205\215\347\275\256", 0, QApplication::UnicodeUTF8));
         delaylabel->setText(QApplication::translate("mainformClass", "\345\220\257\345\212\250\345\273\266\346\227\266", 0, QApplication::UnicodeUTF8));
         delay_value->setText(QApplication::translate("mainformClass", "0", 0, QApplication::UnicodeUTF8));
