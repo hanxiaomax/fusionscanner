@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainform.ui'
 **
-** Created: Wed Jun 3 10:51:33 2015
+** Created: Wed Jun 3 15:23:23 2015
 **      by: Qt User Interface Compiler version 4.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -27,10 +27,8 @@
 #include <QtGui/QMenuBar>
 #include <QtGui/QProgressBar>
 #include <QtGui/QPushButton>
-#include <QtGui/QRadioButton>
 #include <QtGui/QSlider>
 #include <QtGui/QSpacerItem>
-#include <QtGui/QSpinBox>
 #include <QtGui/QStatusBar>
 #include <QtGui/QTabWidget>
 #include <QtGui/QToolBar>
@@ -55,6 +53,7 @@ public:
     QAction *actionKinect;
     QAction *action_2;
     QAction *action_3;
+    QAction *action_Kinect;
     QWidget *centralWidget;
     QGridLayout *gridLayout_18;
     QTabWidget *mainTab;
@@ -96,34 +95,20 @@ public:
     QSlider *range_slider;
     QLabel *range_value;
     QLabel *label_2;
-    QHBoxLayout *horizontalLayout;
-    QRadioButton *full_rb;
-    QRadioButton *half_rb;
-    QRadioButton *hea_rb;
     QSpacerItem *verticalSpacer_2;
     QGroupBox *groupBox_7;
     QGridLayout *gridLayout_16;
-    QLabel *label_21;
-    QLabel *label_29;
-    QLabel *device_info;
-    QLabel *label_31;
     QHBoxLayout *horizontalLayout_10;
     QLabel *ram_info;
     QLabel *label_35;
     QLabel *core_info;
-    QLabel *label_33;
-    QLabel *driver_info;
+    QLabel *device_info;
+    QLabel *label_31;
+    QLabel *label_29;
     QLabel *computeCap;
-    QGroupBox *groupBox_5;
-    QGridLayout *gridLayout_2;
-    QLabel *label_10;
-    QSpinBox *R_segment_sb;
-    QSpinBox *a_speed_sb;
-    QSpinBox *speed_sb;
-    QLabel *label_11;
-    QSpinBox *segment_sb;
-    QLabel *label_20;
-    QLabel *label_9;
+    QLabel *label_33;
+    QLabel *label_21;
+    QLabel *driver_info;
     QWidget *page_2;
     QGridLayout *gridLayout_14;
     QVBoxLayout *verticalLayout_7;
@@ -282,6 +267,8 @@ public:
         action_2->setObjectName(QString::fromUtf8("action_2"));
         action_3 = new QAction(mainformClass);
         action_3->setObjectName(QString::fromUtf8("action_3"));
+        action_Kinect = new QAction(mainformClass);
+        action_Kinect->setObjectName(QString::fromUtf8("action_Kinect"));
         centralWidget = new QWidget(mainformClass);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         gridLayout_18 = new QGridLayout(centralWidget);
@@ -546,28 +533,6 @@ public:
 
         verticalLayout->addLayout(verticalLayout_5);
 
-        horizontalLayout = new QHBoxLayout();
-        horizontalLayout->setSpacing(3);
-        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        full_rb = new QRadioButton(page);
-        full_rb->setObjectName(QString::fromUtf8("full_rb"));
-        full_rb->setChecked(true);
-
-        horizontalLayout->addWidget(full_rb);
-
-        half_rb = new QRadioButton(page);
-        half_rb->setObjectName(QString::fromUtf8("half_rb"));
-
-        horizontalLayout->addWidget(half_rb);
-
-        hea_rb = new QRadioButton(page);
-        hea_rb->setObjectName(QString::fromUtf8("hea_rb"));
-
-        horizontalLayout->addWidget(hea_rb);
-
-
-        verticalLayout->addLayout(horizontalLayout);
-
         verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout->addItem(verticalSpacer_2);
@@ -579,27 +544,6 @@ public:
         gridLayout_16->setSpacing(6);
         gridLayout_16->setContentsMargins(11, 11, 11, 11);
         gridLayout_16->setObjectName(QString::fromUtf8("gridLayout_16"));
-        label_21 = new QLabel(groupBox_7);
-        label_21->setObjectName(QString::fromUtf8("label_21"));
-
-        gridLayout_16->addWidget(label_21, 2, 0, 1, 1);
-
-        label_29 = new QLabel(groupBox_7);
-        label_29->setObjectName(QString::fromUtf8("label_29"));
-
-        gridLayout_16->addWidget(label_29, 0, 0, 1, 1);
-
-        device_info = new QLabel(groupBox_7);
-        device_info->setObjectName(QString::fromUtf8("device_info"));
-        device_info->setAlignment(Qt::AlignCenter);
-
-        gridLayout_16->addWidget(device_info, 0, 1, 1, 1);
-
-        label_31 = new QLabel(groupBox_7);
-        label_31->setObjectName(QString::fromUtf8("label_31"));
-
-        gridLayout_16->addWidget(label_31, 1, 0, 1, 1);
-
         horizontalLayout_10 = new QHBoxLayout();
         horizontalLayout_10->setSpacing(6);
         horizontalLayout_10->setObjectName(QString::fromUtf8("horizontalLayout_10"));
@@ -624,16 +568,21 @@ public:
 
         gridLayout_16->addLayout(horizontalLayout_10, 1, 1, 1, 1);
 
-        label_33 = new QLabel(groupBox_7);
-        label_33->setObjectName(QString::fromUtf8("label_33"));
+        device_info = new QLabel(groupBox_7);
+        device_info->setObjectName(QString::fromUtf8("device_info"));
+        device_info->setAlignment(Qt::AlignCenter);
 
-        gridLayout_16->addWidget(label_33, 4, 0, 1, 1);
+        gridLayout_16->addWidget(device_info, 0, 1, 1, 1);
 
-        driver_info = new QLabel(groupBox_7);
-        driver_info->setObjectName(QString::fromUtf8("driver_info"));
-        driver_info->setAlignment(Qt::AlignCenter);
+        label_31 = new QLabel(groupBox_7);
+        label_31->setObjectName(QString::fromUtf8("label_31"));
 
-        gridLayout_16->addWidget(driver_info, 4, 1, 1, 1);
+        gridLayout_16->addWidget(label_31, 1, 0, 1, 1);
+
+        label_29 = new QLabel(groupBox_7);
+        label_29->setObjectName(QString::fromUtf8("label_29"));
+
+        gridLayout_16->addWidget(label_29, 0, 0, 1, 1);
 
         computeCap = new QLabel(groupBox_7);
         computeCap->setObjectName(QString::fromUtf8("computeCap"));
@@ -641,58 +590,24 @@ public:
 
         gridLayout_16->addWidget(computeCap, 2, 1, 1, 1);
 
+        label_33 = new QLabel(groupBox_7);
+        label_33->setObjectName(QString::fromUtf8("label_33"));
+
+        gridLayout_16->addWidget(label_33, 4, 0, 1, 1);
+
+        label_21 = new QLabel(groupBox_7);
+        label_21->setObjectName(QString::fromUtf8("label_21"));
+
+        gridLayout_16->addWidget(label_21, 2, 0, 1, 1);
+
+        driver_info = new QLabel(groupBox_7);
+        driver_info->setObjectName(QString::fromUtf8("driver_info"));
+        driver_info->setAlignment(Qt::AlignCenter);
+
+        gridLayout_16->addWidget(driver_info, 4, 1, 1, 1);
+
 
         verticalLayout->addWidget(groupBox_7);
-
-        groupBox_5 = new QGroupBox(page);
-        groupBox_5->setObjectName(QString::fromUtf8("groupBox_5"));
-        groupBox_5->setFont(font2);
-        gridLayout_2 = new QGridLayout(groupBox_5);
-        gridLayout_2->setSpacing(6);
-        gridLayout_2->setContentsMargins(11, 11, 11, 11);
-        gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
-        label_10 = new QLabel(groupBox_5);
-        label_10->setObjectName(QString::fromUtf8("label_10"));
-
-        gridLayout_2->addWidget(label_10, 1, 0, 1, 1);
-
-        R_segment_sb = new QSpinBox(groupBox_5);
-        R_segment_sb->setObjectName(QString::fromUtf8("R_segment_sb"));
-
-        gridLayout_2->addWidget(R_segment_sb, 3, 1, 1, 1);
-
-        a_speed_sb = new QSpinBox(groupBox_5);
-        a_speed_sb->setObjectName(QString::fromUtf8("a_speed_sb"));
-
-        gridLayout_2->addWidget(a_speed_sb, 1, 1, 1, 1);
-
-        speed_sb = new QSpinBox(groupBox_5);
-        speed_sb->setObjectName(QString::fromUtf8("speed_sb"));
-
-        gridLayout_2->addWidget(speed_sb, 0, 1, 1, 1);
-
-        label_11 = new QLabel(groupBox_5);
-        label_11->setObjectName(QString::fromUtf8("label_11"));
-
-        gridLayout_2->addWidget(label_11, 2, 0, 1, 1);
-
-        segment_sb = new QSpinBox(groupBox_5);
-        segment_sb->setObjectName(QString::fromUtf8("segment_sb"));
-
-        gridLayout_2->addWidget(segment_sb, 2, 1, 1, 1);
-
-        label_20 = new QLabel(groupBox_5);
-        label_20->setObjectName(QString::fromUtf8("label_20"));
-
-        gridLayout_2->addWidget(label_20, 3, 0, 1, 1);
-
-        label_9 = new QLabel(groupBox_5);
-        label_9->setObjectName(QString::fromUtf8("label_9"));
-
-        gridLayout_2->addWidget(label_9, 0, 0, 1, 1);
-
-
-        verticalLayout->addWidget(groupBox_5);
 
         init_toolbox->addItem(page, QString::fromUtf8("\346\211\253\346\217\217\345\217\202\346\225\260"));
         page_2 = new QWidget();
@@ -1228,7 +1143,7 @@ public:
         toolBox->addItem(page_3, QString::fromUtf8("\346\223\215\344\275\234"));
         page_4 = new QWidget();
         page_4->setObjectName(QString::fromUtf8("page_4"));
-        page_4->setGeometry(QRect(0, 0, 98, 28));
+        page_4->setGeometry(QRect(0, 0, 100, 30));
         toolBox->addItem(page_4, QString::fromUtf8("\351\207\215\345\273\272\345\217\202\346\225\260"));
 
         gridLayout_6->addWidget(toolBox, 0, 1, 1, 1);
@@ -1331,10 +1246,11 @@ public:
         menu_3->addAction(action_ResetScanParams);
         menu_4->addAction(action);
         menu_4->addAction(actionKinect);
+        menu_5->addAction(action_Kinect);
+        menu_5->addSeparator();
         menu_5->addAction(action_2);
         menu_5->addAction(action_3);
         mainToolBar->addAction(connectKinect);
-        mainToolBar->addAction(connectlifter);
         mainToolBar->addSeparator();
         toolBar->addAction(ToolstartBtn);
         toolBar->addAction(ToolstopBtn);
@@ -1346,7 +1262,7 @@ public:
         QObject::connect(delay_slider, SIGNAL(valueChanged(int)), delay_value, SLOT(setNum(int)));
         QObject::connect(range_slider, SIGNAL(valueChanged(int)), range_value, SLOT(setNum(int)));
 
-        mainTab->setCurrentIndex(3);
+        mainTab->setCurrentIndex(0);
         init_toolbox->setCurrentIndex(0);
         toolBox->setCurrentIndex(0);
 
@@ -1369,6 +1285,7 @@ public:
         actionKinect->setText(QApplication::translate("mainformClass", "Kinect\344\277\241\346\201\257", 0, QApplication::UnicodeUTF8));
         action_2->setText(QApplication::translate("mainformClass", "\346\211\253\346\217\217\347\253\257\345\217\243", 0, QApplication::UnicodeUTF8));
         action_3->setText(QApplication::translate("mainformClass", "\350\277\236\346\216\245\347\253\257\345\217\243", 0, QApplication::UnicodeUTF8));
+        action_Kinect->setText(QApplication::translate("mainformClass", "\350\277\236\346\216\245Kinect", 0, QApplication::UnicodeUTF8));
         groupBox_8->setTitle(QString());
         label_28->setText(QApplication::translate("mainformClass", "\347\253\257\345\217\243", 0, QApplication::UnicodeUTF8));
         label_30->setText(QApplication::translate("mainformClass", "\350\277\220\345\212\250\350\204\232\346\234\254", 0, QApplication::UnicodeUTF8));
@@ -1387,25 +1304,17 @@ public:
         rangelabel->setText(QApplication::translate("mainformClass", "\346\211\253\346\217\217\350\214\203\345\233\264", 0, QApplication::UnicodeUTF8));
         range_value->setText(QApplication::translate("mainformClass", "1500", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("mainformClass", "mm", 0, QApplication::UnicodeUTF8));
-        full_rb->setText(QApplication::translate("mainformClass", "\345\205\250\350\272\253", 0, QApplication::UnicodeUTF8));
-        half_rb->setText(QApplication::translate("mainformClass", "\345\215\212\350\272\253", 0, QApplication::UnicodeUTF8));
-        hea_rb->setText(QApplication::translate("mainformClass", "\345\244\264\345\203\217", 0, QApplication::UnicodeUTF8));
         groupBox_7->setTitle(QApplication::translate("mainformClass", "GPU\344\277\241\346\201\257", 0, QApplication::UnicodeUTF8));
-        label_21->setText(QApplication::translate("mainformClass", "\350\256\241\347\256\227\350\203\275\345\212\233", 0, QApplication::UnicodeUTF8));
-        label_29->setText(QApplication::translate("mainformClass", "\345\275\223\345\211\215\350\256\276\345\244\207", 0, QApplication::UnicodeUTF8));
-        device_info->setText(QApplication::translate("mainformClass", "TextLabel", 0, QApplication::UnicodeUTF8));
-        label_31->setText(QApplication::translate("mainformClass", "\346\230\276\345\255\230/\346\240\270\346\225\260", 0, QApplication::UnicodeUTF8));
         ram_info->setText(QApplication::translate("mainformClass", "TextLabel", 0, QApplication::UnicodeUTF8));
         label_35->setText(QApplication::translate("mainformClass", "/", 0, QApplication::UnicodeUTF8));
         core_info->setText(QApplication::translate("mainformClass", "TextLabel", 0, QApplication::UnicodeUTF8));
-        label_33->setText(QApplication::translate("mainformClass", "CUDA\347\211\210\346\234\254", 0, QApplication::UnicodeUTF8));
-        driver_info->setText(QApplication::translate("mainformClass", "TextLabel", 0, QApplication::UnicodeUTF8));
+        device_info->setText(QApplication::translate("mainformClass", "TextLabel", 0, QApplication::UnicodeUTF8));
+        label_31->setText(QApplication::translate("mainformClass", "\346\230\276\345\255\230/\346\240\270\346\225\260", 0, QApplication::UnicodeUTF8));
+        label_29->setText(QApplication::translate("mainformClass", "\345\275\223\345\211\215\350\256\276\345\244\207", 0, QApplication::UnicodeUTF8));
         computeCap->setText(QApplication::translate("mainformClass", "TextLabel", 0, QApplication::UnicodeUTF8));
-        groupBox_5->setTitle(QApplication::translate("mainformClass", "\345\215\207\351\231\215\345\217\260\345\217\202\346\225\260", 0, QApplication::UnicodeUTF8));
-        label_10->setText(QApplication::translate("mainformClass", "\350\247\222\351\200\237\345\272\246", 0, QApplication::UnicodeUTF8));
-        label_11->setText(QApplication::translate("mainformClass", "\345\236\202\347\233\264\345\210\206\346\256\265", 0, QApplication::UnicodeUTF8));
-        label_20->setText(QApplication::translate("mainformClass", "\345\234\206\345\221\250\345\210\206\346\256\265", 0, QApplication::UnicodeUTF8));
-        label_9->setText(QApplication::translate("mainformClass", "\351\200\237\345\272\246", 0, QApplication::UnicodeUTF8));
+        label_33->setText(QApplication::translate("mainformClass", "CUDA\347\211\210\346\234\254", 0, QApplication::UnicodeUTF8));
+        label_21->setText(QApplication::translate("mainformClass", "\350\256\241\347\256\227\350\203\275\345\212\233", 0, QApplication::UnicodeUTF8));
+        driver_info->setText(QApplication::translate("mainformClass", "TextLabel", 0, QApplication::UnicodeUTF8));
         init_toolbox->setItemText(init_toolbox->indexOf(page), QApplication::translate("mainformClass", "\346\211\253\346\217\217\345\217\202\346\225\260", 0, QApplication::UnicodeUTF8));
         label_3->setText(QApplication::translate("mainformClass", "\345\210\206\350\276\250\347\216\207", 0, QApplication::UnicodeUTF8));
         res_value_label->setText(QApplication::translate("mainformClass", "0", 0, QApplication::UnicodeUTF8));

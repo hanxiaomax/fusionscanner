@@ -23,31 +23,27 @@ mainform::mainform(QWidget *parent, Qt::WFlags flags)
 	port(new QextSerialPort()),//初始化串口对象
 	isOpen(false)//串口初始状态
 {
-	/*指针初始化*/
+	//////指针初始化
 	_scanner = 0;
 	_capture = 0;
 	sd = 0;
-	///////////////////////////////
-
+	/////////////////////////////////////////////////
 	ui.setupUi(this);
-	
 	QTextCodec::setCodecForTr(QTextCodec::codecForLocale());//设定字符集以显示中文
-	/*设置mainTab*/
+	/////设置mainTab
 	ui.mainTab->setCurrentIndex(0);///要在setupUi之后
 	ui.init_toolbox->setCurrentIndex(0);
-	setScanToDefault();
-	setkinfuToDefault();
-
-	
+	setScanToDefault();//设置默认扫描参数
+	setkinfuToDefault();//设置默认kinfu参数
+	////串口列表相关初始化
 	ui.port_list->clear();
 	ui.port_list->addItems(findAvailablePort());
 	init_scriptList();
 	ui.runBtn->setDisabled(true);
+	//////////////////////////////////////
 	
+	//Serital_Timer = new QTimer();
 	
-	Serital_Timer = new QTimer();
-	
-
 }
 
 mainform::~mainform()
@@ -66,11 +62,6 @@ void mainform::setScanToDefault()
 {
 	ui.delay_slider->setValue(0);
 	ui.range_slider->setValue(1500);
-	ui.full_rb->setChecked(true);
-	ui.speed_sb->setValue(50);
-	ui.a_speed_sb->setValue(50);
-	ui.segment_sb->setValue(3);
-	ui.R_segment_sb->setValue(1);
 }
 /*----------------------------------------*
  *  功能描述: 设置面板上的kinfu参数到默认
@@ -174,7 +165,7 @@ void mainform::on_TooldeleteBtn_triggered()
  ----------------------------------------*/ 
 void mainform::on_scanPortBtn_clicked()
 {
-	QStringList comList = findAvailablePort();
+	QStringList comList = findAvailablePort();//返回全部可用串口
 	if (comList.empty()){
 		QMessageBox::information(NULL, tr("警告"), tr("没有可用的端口，请检查蓝牙适配器是否插入"));
 	}
@@ -238,7 +229,6 @@ void mainform::on_connectPortBtn_clicked()
 			ui.runBtn->setDisabled(false);
 		}
 	}
-	
 }
 
 /*----------------------------------------*
@@ -317,7 +307,7 @@ void mainform::showInViewer(const cv::Mat& data,glViewer *viewer)
  --------------------------------------------*/ 
 kfusion::KinFuParams  mainform::setKinfuParams()
 {
-	KinFuParams p;
+	KinFuParams p; 
 	const int iters[] = {10, 5, 4, 0};
 	const int levels = sizeof(iters)/sizeof(iters[0]);//ICP迭代层数
 

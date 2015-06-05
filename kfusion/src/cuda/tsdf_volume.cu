@@ -1,6 +1,6 @@
 #include "device.hpp"
 #include "texture_binder.hpp"
-#include <iostream>
+
 /*************************************
  *  简要描述: tsdf volume所需的CUDA函数
  ************************************/  
@@ -387,10 +387,10 @@ namespace kfusion
                 float Fz2 = interpolate(volume, make_float3(p.x, p.y, p.z - gradient_delta.z) * voxel_size_inv);
                 n.z = __fdividef(Fz1 - Fz2, gradient_delta.z);
 
-				if(isnan(n.x))
-				{
-					printf("[%f %f]",Fx1,Fx2);
-				}
+// 				if(isnan(n.x))
+// 				{
+// 					printf("[%f %f]",Fx1,Fx2);
+// 				}
                 return normalized (n);
             }
         };

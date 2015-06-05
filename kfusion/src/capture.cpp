@@ -263,7 +263,7 @@ bool kfusion::OpenNISource::grab(cv::Mat& depth, cv::Mat& image)
     _status = impl_->context.WaitAndUpdateAll ();
     if (_status != XN_STATUS_OK)
         return printf ("Read failed: %s\n", xnGetStatusString (_status)), false;
-
+	 
 	/*获取深度数据,只能得到z方向的数据*/
     if (impl_->has_depth)
     {
@@ -276,7 +276,8 @@ bool kfusion::OpenNISource::grab(cv::Mat& depth, cv::Mat& image)
 		
 
 		//cout<<_beginRange<<" "<<_endRange<<endl;
-   		filter(depth,x,y,_beginRange,_endRange);//保留0~1200范围内的点
+   		//filter(depth,x,y,_beginRange,_endRange);//保留0~1200范围内的点
+		filter(depth,x,y,0,1800);//保留0~1200范围内的点
     }
     else
     {
