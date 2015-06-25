@@ -72,7 +72,7 @@ void mainform::setkinfuToDefault()
 	ui.sigma_spatial_sb->setValue(4.5);
 	ui.sigma_k_size_sb->setValue(7.00);
 
-	ui.ICP_depthdist_sb->setValue(0.00);
+	ui.ICP_depthdist_sb->setValue(1.50);
 	ui.ICP_dist_th_sb->setValue(0.10);
 	ui.ICP_angel_th_sb->setValue(30);
 
