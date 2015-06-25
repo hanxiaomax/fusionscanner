@@ -31,7 +31,8 @@ namespace kfusion
             if (cudaSuccess != err)//如果不成功，成功的话cudaSuccess=0
                 error(cudaGetErrorString(err), file, line, func);
         }        
-
+		//向上取整除法，用于多开启线程。实际上是求最小整数倍
+		//过多开启的线程是有害的，在核函数中需要判断线程的偏移是否合理
         static inline int divUp(int total, int grain) { return (total + grain - 1) / grain; }
     }
 

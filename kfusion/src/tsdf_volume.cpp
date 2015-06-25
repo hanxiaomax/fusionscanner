@@ -22,8 +22,8 @@ kfusion::cuda::TsdfVolume::Entry::half kfusion::cuda::TsdfVolume::Entry::float2h
 kfusion::cuda::TsdfVolume::TsdfVolume(const Vec3i& dims) 
 	:	data_(), //CUDA data
 		trunc_dist_(0.03f), //截断距离
-		max_weight_(10000), //最大重量
-		dims_(dims),//维数
+		max_weight_(64), //最大权重////////////////////////////////////////////////////////////////////////////////////////////////
+		dims_(dims),//各轴的体素数量
 		size_(Vec3f::all(3.f)),//大小（Vec3f类型，初值为[3,3,3]） 
 		pose_(Affine3f::Identity()), 
 		gradient_delta_factor_(0.75f), 
@@ -48,21 +48,31 @@ void kfusion::cuda::TsdfVolume::printTSDFparams()
 kfusion::cuda::TsdfVolume::~TsdfVolume() {}
 
 
-//创建TSDF体
+/*--------------------------------------------------* 
+*	功能描述:	创建TSDF
+*	参数：		三个轴方向的体素维数（个数）
+--------------------------------------------------*/ 
 void kfusion::cuda::TsdfVolume::create(const Vec3i& dims)
 {
     dims_ = dims;
-    int voxels_number = dims_[0] * dims_[1] * dims_[2];//计算体素个数
+    int voxels_number = dims_[0] * dims_[1] * dims_[2];//计算TSDF中体素的个数
     data_.create(voxels_number * sizeof(int));//创建CUDA数据需要的空间
     setTruncDist(trunc_dist_);//设置截断距离
-    clear();
+    clear();//volume对象
 }
 
-//获取维数
+/*--------------------------------------------------* 
+*	功能描述:	获取各轴维数
+*	返回值：	各轴维数
+--------------------------------------------------*/ 
 Vec3i kfusion::cuda::TsdfVolume::getDims() const
 { return dims_; }
 
-//获取体素大小
+
+/*--------------------------------------------------* 
+*	功能描述:	获取体素的大小（各轴尺寸/各轴的维数）
+*	返回值：	float向量，表示每个轴上体素的大小
+--------------------------------------------------*/  
 Vec3f kfusion::cuda::TsdfVolume::getVoxelSize() const//const防止函数调用改变数据
 {
     return Vec3f(size_[0]/dims_[0], size_[1]/dims_[1], size_[2]/dims_[2]);
@@ -80,6 +90,7 @@ void kfusion::cuda::TsdfVolume::setSize(const Vec3f& size)
 { size_ = size; setTruncDist(trunc_dist_); }
 
 //获取截断距离
+//PCL是动态设置的，此处我们固定为0.03
 float kfusion::cuda::TsdfVolume::getTruncDist() const { return trunc_dist_; }
 //设置截断距离
 void kfusion::cuda::TsdfVolume::setTruncDist(float distance)

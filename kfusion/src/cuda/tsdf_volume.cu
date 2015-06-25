@@ -8,24 +8,27 @@
 using namespace kfusion::device;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/// Volume initialization
+/// Volume 初始化
 
 namespace kfusion
 {
     namespace device
     {
+		//clear volume核函数
         __global__ void clear_volume_kernel(TsdfVolume tsdf)
         {
-            int x = threadIdx.x + blockIdx.x * blockDim.x;
+			//使用线程索引计算数据索引
+            int x = threadIdx.x + blockIdx.x * blockDim.x;//x线程块中，x线程的索引
             int y = threadIdx.y + blockIdx.y * blockDim.y;
-
+			//判断线程索引是否超过了实际的值（因为线程实际上是多开了一些的，使用多余线程的索引计算得到的x可能会越界）
             if (x < tsdf.dims.x && y < tsdf.dims.y)
             {
-                ushort2 *beg = tsdf.beg(x, y);
-                ushort2 *end = beg + tsdf.dims.x * tsdf.dims.y * tsdf.dims.z;
+                ushort2 *beg = tsdf.beg(x, y);//起点（每个线程实际上是不同的起点）
+                ushort2 *end = beg + tsdf.dims.x * tsdf.dims.y * tsdf.dims.z;//终点
 
+				//512*512个线程，所以zstep每次把指针移动512*512
                 for(ushort2* pos = beg; pos != end; pos = tsdf.zstep(pos))
-                    *pos = pack_tsdf (0.f, 0);
+                    *pos = pack_tsdf (0.f, 0);//对tsdf进行初始化打包，赋值为0，权重为0
             }
         }
     }
@@ -33,12 +36,13 @@ namespace kfusion
 
 void kfusion::device::clear_volume(TsdfVolume volume)
 {
-    dim3 block (32, 8);
+    dim3 block (32, 8);//每个block中线程的数量，每行32个线程*每列8个线程，一共32*8=256个线程
     dim3 grid (1, 1, 1);
-    grid.x = divUp (volume.dims.x, block.x);
-    grid.y = divUp (volume.dims.y, block.y);
+    grid.x = divUp (volume.dims.x, block.x);//grid中block的数量（行）	16
+    grid.y = divUp (volume.dims.y, block.y);//grid中block的数量（列）	64
+	//grid.z为1
 
-    clear_volume_kernel<<<grid, block>>>(volume);
+    clear_volume_kernel<<<grid, block>>>(volume);//核函数调用
     cudaSafeCall ( cudaGetLastError () );
 }
 
