@@ -74,17 +74,17 @@ namespace kfusion
             };
         private:
 			void printTSDFparams();//输出全部当前参数
-            CudaData data_;//存放数据
-			//DeviceArray2D<int> volume_;////////////
+            CudaData data_;//TSDF存放在GPU中数据
+
             float trunc_dist_;//截断距离
             int max_weight_;//最大weight
-            Vec3i dims_;
-            Vec3f size_;
+            Vec3i dims_;//体素的维数[512,512,512]
+            Vec3f size_;//volume的尺寸（米）,[3,3,3]
             Affine3f pose_;
 
 
-            float gradient_delta_factor_;
-            float raycast_step_factor_;
+            float gradient_delta_factor_;//梯度变化因素
+            float raycast_step_factor_;//光照步长
         };
     }
 }

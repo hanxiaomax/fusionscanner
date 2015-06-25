@@ -3,8 +3,7 @@
 #include <kfusion/cuda/device_array.hpp>
 #include "safe_call.hpp"
 
-//#define USE_DEPTH
-//internal buffer？
+
 namespace kfusion
 {
     namespace device
@@ -26,26 +25,27 @@ namespace kfusion
         struct Mat3f { float3 data[3]; };
         struct Aff3f { Mat3f R; Vec3f t; };
 
+		//TSDF体
         struct TsdfVolume
         {
         public:
             typedef ushort2 elem_type;
 
-            elem_type *const data;
-            const int3 dims;
-            const float3 voxel_size;
-            const float trunc_dist;
-            const int max_weight;
+            elem_type *const data;//数据容器
+            const int3 dims;//各轴体素个数（分辨率）
+            const float3 voxel_size;//体素的尺寸（size/dim）
+            const float trunc_dist;//截断距离
+            const int max_weight;//最大权重
 
             TsdfVolume(elem_type* data, int3 dims, float3 voxel_size, float trunc_dist, int max_weight);
             //TsdfVolume(const TsdfVolume&);
 
-            __kf_device__ elem_type* operator()(int x, int y, int z);
+            __kf_device__ elem_type* operator()(int x, int y, int z);//获取相应位置的数据
             __kf_device__ const elem_type* operator() (int x, int y, int z) const ;
             __kf_device__ elem_type* beg(int x, int y) const;
             __kf_device__ elem_type* zstep(elem_type *const ptr) const;
         private:
-            TsdfVolume& operator=(const TsdfVolume&);
+            TsdfVolume& operator=(const TsdfVolume&);//拷贝赋值号重载
         };
 
         struct Projector
@@ -124,7 +124,7 @@ namespace kfusion
 		void generateTriangles(const PtrStep<short2>& volume, const DeviceArray2D<int>& occupied_voxels, const float3& volume_size, DeviceArray<Point>& output);
 
 
-        //image proc functions
+        //图像处理函数
         void compute_dists(const Depth& depth, Dists dists, float2 f, float2 c);
 
         void truncateDepth(Depth& depth, float max_dist /*meters*/);
@@ -142,7 +142,7 @@ namespace kfusion
         void renderTangentColors(const Normals& normals, Image& image);
 
 
-        //exctraction functionality
+        //抽取函数
 		
         size_t extractCloud(const TsdfVolume& volume, const Aff3f& aff, PtrSz<Point> output);
         void extractNormals(const TsdfVolume& volume, const PtrSz<Point>& points, const Aff3f& aff, const Mat3f& Rinv, float gradient_delta_factor, float4* output);

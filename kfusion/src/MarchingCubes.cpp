@@ -23,14 +23,13 @@ kfusion::cuda::MarchingCubes::~MarchingCubes(void){}
 
 DeviceArray<Point> kfusion::cuda::MarchingCubes::run(const TsdfVolume& tsdf, DeviceArray<Point>& triangles_buffer)
 {
-	if (triangles_buffer.empty())
-		triangles_buffer.create(DEFAULT_TRIANGLES_BUFFER_SIZE);//创建缓冲
-	occupied_voxels_buffer_.create(3, static_cast<int> (triangles_buffer.size () / 3));    
+// 	if (triangles_buffer.empty())
+// 		triangles_buffer.create(DEFAULT_TRIANGLES_BUFFER_SIZE);//创建缓存
+// 		occupied_voxels_buffer_.create(3, static_cast<int> (triangles_buffer.size () / 3));   //3行
 
 
  	
-//  		device::bindTextures(edgeTable_, triTable_, numVertsTable_);
-//  	
+ // 		device::bindTextures(edgeTable_, triTable_, numVertsTable_);//绑定纹理内存 	
 //  		int active_voxels = device::getOccupiedVoxels(tsdf.data(), occupied_voxels_buffer_);  
 //  		if(!active_voxels)
 //  		{
@@ -52,9 +51,9 @@ DeviceArray<Point> kfusion::cuda::MarchingCubes::run(const TsdfVolume& tsdf, Dev
 }
 
 
-
-// edge table maps 8-bit flag representing which cube vertices are inside
-// the isosurface to 12-bit number indicating which edges are intersected
+//边表，共有256种情况，把8位标示映射到一个12位的数上，确定与等值面相交的边
+//8位数标示8个顶点与面的关系，1表示在外，0表示在内。8位01组合成为一个数，这个数介于0-255之间。
+//这256种点与等值面的关系，对应到下表得到一个12位的数，从而得到12条边与等值面的相交情况
 const int edgeTable[256] = 
 {
 	0x0  , 0x109, 0x203, 0x30a, 0x406, 0x50f, 0x605, 0x70c,
@@ -93,6 +92,8 @@ const int edgeTable[256] =
 
 // triangle table maps same cube vertex index to a list of up to 5 triangles
 // which are built from the interpolated edge vertices
+//三角形表，构成等值面的边序号
+//最多可能需要5个面
 const int triTable[256][16] = 
 {
 	{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
@@ -353,7 +354,7 @@ const int triTable[256][16] =
 	{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}
 };
 
-// number of vertices for each case above
+// 上述三角形表中，每种情况下顶点的数量
 const int numVertsTable[256] = 
 {
 	0,

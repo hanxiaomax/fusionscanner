@@ -3,7 +3,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Kinfu/types implementation
-
+//
 kfusion::Intr::Intr () {}
 kfusion::Intr::Intr (float fx_, float fy_, float cx_, float cy_) : fx(fx_), fy(fy_), cx(cx_), cy(cy_) {}
       
@@ -24,17 +24,17 @@ std::ostream& operator << (std::ostream& os, const kfusion::Intr& intr)
 kfusion::device::TsdfVolume::TsdfVolume(elem_type* _data, int3 _dims, float3 _voxel_size, float _trunc_dist, int _max_weight)
 : data(_data), dims(_dims), voxel_size(_voxel_size), trunc_dist(_trunc_dist), max_weight(_max_weight) {}
 
-//kfusion::device::TsdfVolume::elem_type* kfusionl::device::TsdfVolume::operator()(int x, int y, int z)
-//{ return data + x + y*dims.x + z*dims.y*dims.x; }
-//
-//const kfusion::device::TsdfVolume::elem_type* kfusionl::device::TsdfVolume::operator() (int x, int y, int z) const
-//{ return data + x + y*dims.x + z*dims.y*dims.x; }
-//
-//kfusion::device::TsdfVolume::elem_type* kfusionl::device::TsdfVolume::beg(int x, int y) const
-//{ return data + x + dims.x * y; }
-//
-//kfusion::device::TsdfVolume::elem_type* kfusionl::device::TsdfVolume::zstep(elem_type *const ptr) const
-//{ return data + dims.x * dims.y; }
+// kfusion::device::TsdfVolume::elem_type* kfusionl::device::TsdfVolume::operator()(int x, int y, int z)
+// { return data + x + y*dims.x + z*dims.y*dims.x; }
+// 
+// const kfusion::device::TsdfVolume::elem_type* kfusionl::device::TsdfVolume::operator() (int x, int y, int z) const
+// { return data + x + y*dims.x + z*dims.y*dims.x; }
+// 
+// kfusion::device::TsdfVolume::elem_type* kfusionl::device::TsdfVolume::beg(int x, int y) const
+// { return data + x + dims.x * y; }
+// 
+// kfusion::device::TsdfVolume::elem_type* kfusionl::device::TsdfVolume::zstep(elem_type *const ptr) const
+// { return data + dims.x * dims.y; }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Projector host implementation

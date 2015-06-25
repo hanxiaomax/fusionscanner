@@ -25,10 +25,10 @@ namespace kfusion
 		public:
 			DeviceArray<Point> run(const TsdfVolume& tsdf, DeviceArray<Point>& triangles_buffer);
 		private:
-			DeviceArray<int> edgeTable_;
-			DeviceArray<int> numVertsTable_;
-			DeviceArray<int> triTable_;
-			DeviceArray2D<int> occupied_voxels_buffer_;
+			DeviceArray<int> edgeTable_;//边表
+			DeviceArray<int> numVertsTable_;//顶点个数表
+			DeviceArray<int> triTable_;//三角形表
+			DeviceArray2D<int> occupied_voxels_buffer_;//cell
 		};
 	}
 }
