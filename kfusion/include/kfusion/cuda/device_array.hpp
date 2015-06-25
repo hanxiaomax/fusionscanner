@@ -111,6 +111,7 @@ namespace kfusion
         /** \brief @b DeviceArray2D class
           *
           * \note Typed container for pitched GPU memory with reference counting.
+		  * \note 带引用计数器的模板容器
           *
           * \author Anatoly Baksheev
           */
@@ -124,10 +125,11 @@ namespace kfusion
             /** \brief Element size. */
             enum { elem_size = sizeof(T) };
 
-            /** \brief Empty constructor. */
+			//////构造函数//////////////////////////////////////////////////
             DeviceArray2D();
 
             /** \brief Allocates internal buffer in GPU memory
+				* 在GPU上分配内存
               * \param rows: number of rows to allocate
               * \param cols: number of elements in each row
               * */
@@ -141,29 +143,32 @@ namespace kfusion
               * */
             DeviceArray2D(int rows, int cols, void *data, size_t stepBytes);
 
-            /** \brief Copy constructor. Just increments reference counter. */
+            /** \brief Copy constructor. Just increments reference counter. 拷贝构造函数，引用计数器递增*/
             DeviceArray2D(const DeviceArray2D& other);
 
-            /** \brief Assigment operator. Just increments reference counter. */
+            /** \brief Assigment operator. Just increments reference counter. 拷贝赋值号重载*/
             DeviceArray2D& operator = (const DeviceArray2D& other);
 
             /** \brief Allocates internal buffer in GPU memory. If internal buffer was created before the function recreates it with new size. If new and old sizes are equal it does nothing.
-               * \param rows: number of rows to allocate
+               * 分配GPU缓存，如果已经分配，比较大小，如果相等则不分配，否则重新覆盖
+			   * \param rows: number of rows to allocate
                * \param cols: number of elements in each row
                * */
             void create(int rows, int cols);
 
-            /** \brief Decrements reference counter and releases internal buffer if needed. */
+            /** \brief Decrements reference counter and releases internal buffer if needed. 引用计数器递减并在必要的时候释放 */
             void release();
 
             /** \brief Performs data copying. If destination size differs it will be reallocated.
               * \param other: destination container
+			  * 执行数据的拷贝，如果目标缓存不同则会重新分配
               * */
             void copyTo(DeviceArray2D& other) const;
 
             /** \brief Uploads data to internal buffer in GPU memory. It calls create() inside to ensure that intenal buffer size is enough.
-              * \param host_ptr: pointer to host buffer to upload
-              * \param host_step: stride between two consecutive rows in bytes for host buffer
+              * 上传数据到GPU 内存，在内部调用creat函数以保证空间大小足够
+			  * \param host_ptr: pointer to host buffer to upload 指向上传空间的指针
+              * \param host_step: stride between two consecutive rows in bytes for host buffer 步长
               * \param rows: number of rows to upload
               * \param cols: number of elements in each row
               * */
@@ -195,6 +200,7 @@ namespace kfusion
             void download(std::vector<T, A>& data, int& cols) const;
 
             /** \brief Returns pointer to given row in internal buffer.
+			  * 返回指向内部缓存指定列的指针
               * \param y_arg: row index
               * */
             T* ptr(int y = 0);

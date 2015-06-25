@@ -80,6 +80,8 @@ kfusion::cuda::ProjectiveICP::~ProjectiveICP() {}
 float kfusion::cuda::ProjectiveICP::getDistThreshold() const
 { return dist_thres_; }
 
+
+//
 void kfusion::cuda::ProjectiveICP::setDistThreshold(float distance)
 { dist_thres_ = distance; }
 

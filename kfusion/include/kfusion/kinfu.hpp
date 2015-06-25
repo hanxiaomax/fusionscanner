@@ -46,25 +46,25 @@ namespace kfusion
 
         int cols;  //pixels
         int rows;  //pixels
-
-        Intr intr;  //Camera parameters
+		
+        Intr intr;  //Camera parameters//相机Intrinsics参数
 
         Vec3i volume_dims; //number of voxels
         Vec3f volume_size; //meters
-        Affine3f volume_pose; //meters, inital pose
+        Affine3f volume_pose; //meters, inital pose 初始化姿态
 
         float bilateral_sigma_depth;   //meters
         float bilateral_sigma_spatial;   //pixels
         int   bilateral_kernel_size;   //pixels
 
-        float icp_truncate_depth_dist; //meters
-        float icp_dist_thres;          //meters
+        float icp_truncate_depth_dist; //meters 截断深度（过滤超过此值的深度数据）
+        float icp_dist_thres;          //meters 深度阀值（过滤低于此值的深度数据）
         float icp_angle_thres;         //radians
         std::vector<int> icp_iter_num; //iterations for level index 0,1,..,3
 
         float tsdf_min_camera_movement; //meters, integrate only if exceedes
         float tsdf_trunc_dist;             //meters;
-        int tsdf_max_weight;               //frames
+        int tsdf_max_weight;               //frames tsdf最大重量（帧为单位）
 
         float raycast_step_factor;   // in voxel sizes
         float gradient_delta_factor; // in voxel sizes

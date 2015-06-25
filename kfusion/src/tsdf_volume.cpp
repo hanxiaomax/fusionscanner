@@ -22,7 +22,7 @@ kfusion::cuda::TsdfVolume::Entry::half kfusion::cuda::TsdfVolume::Entry::float2h
 kfusion::cuda::TsdfVolume::TsdfVolume(const Vec3i& dims) 
 	:	data_(), //CUDA data
 		trunc_dist_(0.03f), //截断距离
-		max_weight_(128), //最大重量
+		max_weight_(10000), //最大重量
 		dims_(dims),//维数
 		size_(Vec3f::all(3.f)),//大小（Vec3f类型，初值为[3,3,3]） 
 		pose_(Affine3f::Identity()), 
@@ -65,13 +65,16 @@ Vec3i kfusion::cuda::TsdfVolume::getDims() const
 //获取体素大小
 Vec3f kfusion::cuda::TsdfVolume::getVoxelSize() const//const防止函数调用改变数据
 {
-	//std::cout<<Vec3f(size_[0]/dims_[0], size_[1]/dims_[1], size_[2]/dims_[2])<<endl;
     return Vec3f(size_[0]/dims_[0], size_[1]/dims_[1], size_[2]/dims_[2]);
 	
 }
 
 const CudaData kfusion::cuda::TsdfVolume::data() const { return data_; }
 CudaData kfusion::cuda::TsdfVolume::data() {  return data_; }
+
+
+//const DeviceArray2D<int> kfusion::cuda::TsdfVolume::getvolume() const { return volume_;}
+
 Vec3f kfusion::cuda::TsdfVolume::getSize() const { return size_; }
 void kfusion::cuda::TsdfVolume::setSize(const Vec3f& size)
 { size_ = size; setTruncDist(trunc_dist_); }

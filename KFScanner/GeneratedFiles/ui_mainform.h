@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainform.ui'
 **
-** Created: Wed Jun 3 15:23:23 2015
+** Created: Thu Jun 11 16:45:05 2015
 **      by: Qt User Interface Compiler version 4.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -310,7 +310,7 @@ public:
         init_toolbox->setLineWidth(1);
         page_8 = new QWidget();
         page_8->setObjectName(QString::fromUtf8("page_8"));
-        page_8->setGeometry(QRect(0, 0, 273, 490));
+        page_8->setGeometry(QRect(0, 0, 174, 324));
         gridLayout_17 = new QGridLayout(page_8);
         gridLayout_17->setSpacing(6);
         gridLayout_17->setContentsMargins(11, 11, 11, 11);
@@ -439,7 +439,7 @@ public:
         init_toolbox->addItem(page_8, QString::fromUtf8("\345\215\207\351\231\215\345\217\260\351\205\215\347\275\256"));
         page = new QWidget();
         page->setObjectName(QString::fromUtf8("page"));
-        page->setGeometry(QRect(0, 0, 273, 490));
+        page->setGeometry(QRect(0, 0, 240, 235));
         verticalLayout = new QVBoxLayout(page);
         verticalLayout->setSpacing(6);
         verticalLayout->setContentsMargins(11, 11, 11, 11);
@@ -870,6 +870,7 @@ public:
         tsdf_max_weight_sb = new QDoubleSpinBox(page_2);
         tsdf_max_weight_sb->setObjectName(QString::fromUtf8("tsdf_max_weight_sb"));
         tsdf_max_weight_sb->setFont(font2);
+        tsdf_max_weight_sb->setMaximum(999999);
         tsdf_max_weight_sb->setValue(64);
 
         gridLayout_11->addWidget(tsdf_max_weight_sb, 2, 2, 1, 1);
@@ -1133,7 +1134,7 @@ public:
         toolBox->setFont(font5);
         page_3 = new QWidget();
         page_3->setObjectName(QString::fromUtf8("page_3"));
-        page_3->setGeometry(QRect(0, 0, 346, 519));
+        page_3->setGeometry(QRect(0, 0, 98, 28));
         pushButton = new QPushButton(page_3);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
         pushButton->setGeometry(QRect(80, 40, 171, 71));
@@ -1143,7 +1144,7 @@ public:
         toolBox->addItem(page_3, QString::fromUtf8("\346\223\215\344\275\234"));
         page_4 = new QWidget();
         page_4->setObjectName(QString::fromUtf8("page_4"));
-        page_4->setGeometry(QRect(0, 0, 100, 30));
+        page_4->setGeometry(QRect(0, 0, 98, 28));
         toolBox->addItem(page_4, QString::fromUtf8("\351\207\215\345\273\272\345\217\202\346\225\260"));
 
         gridLayout_6->addWidget(toolBox, 0, 1, 1, 1);
@@ -1263,7 +1264,7 @@ public:
         QObject::connect(range_slider, SIGNAL(valueChanged(int)), range_value, SLOT(setNum(int)));
 
         mainTab->setCurrentIndex(0);
-        init_toolbox->setCurrentIndex(0);
+        init_toolbox->setCurrentIndex(2);
         toolBox->setCurrentIndex(0);
 
 

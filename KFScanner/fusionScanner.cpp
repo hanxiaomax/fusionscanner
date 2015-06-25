@@ -41,7 +41,7 @@ fusionScanner::fusionScanner(OpenNISource& source,KinFuParams &params)
 	//KinFuParams p = params;//可以删掉？
 	kinfu_sp = KinFu::Ptr( new KinFu(params) );//创建Kinfu对象
 	kinfu_sp->PrintKFparms();
-	capture.setRegistration(true);//设置点云配准
+	capture.setRegistration(true);
 	cv::viz::WCube cube(cv::Vec3d::all(0), cv::Vec3d(params.volume_size), true, cv::viz::Color::apricot());//坐标系？
         viz.showWidget("cube", cube, params.volume_pose);//showWideget()会创建一个窗口部件
         viz.showWidget("coor", cv::viz::WCoordinateSystem(0.1));

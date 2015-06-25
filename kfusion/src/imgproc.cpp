@@ -1,20 +1,44 @@
 #include "precomp.hpp"
 
+
+/***********************************
+* 图像处理模块（GPU实现）
+************************************/
+
+
+
+/*-------------------------------------* 
+*	功能描述: 深度数据双边滤波
+--------------------------------------*/ 
 void kfusion::cuda::depthBilateralFilter(const Depth& in, Depth& out, int kernel_size, float sigma_spatial, float sigma_depth)
 { 
     out.create(in.rows(), in.cols());
     device::bilateralFilter(in, out, kernel_size, sigma_spatial, sigma_depth);
 }
-
+/*----------------------------------------*
+ *  功能描述:   深度数据截断
+ *  参数：		depth 深度数据
+ *  参数：		max_dist 阀值 （单位m）	
+ ----------------------------------------*/ 
 void kfusion::cuda::depthTruncation(Depth& depth, float threshold)
 { device::truncateDepth(depth, threshold); }
 
+
+/*----------------------------------------*
+ *  功能描述:   创建深度金字塔
+ *  参数：		depth	深度数据
+ *  参数：		pyramid 深度数据
+ *	参数：		sigma_depth
+ ----------------------------------------*/ 
 void kfusion::cuda::depthBuildPyramid(const Depth& depth, Depth& pyramid, float sigma_depth)
 { 
     pyramid.create (depth.rows () / 2, depth.cols () / 2);
     device::depthPyr(depth, pyramid, sigma_depth);
 }
 
+/*----------------------------------------*
+ *  功能描述:   等待默认流同步
+ ----------------------------------------*/ 
 void kfusion::cuda::waitAllDefaultStream()
 { cudaSafeCall(cudaDeviceSynchronize() ); }
 
@@ -28,6 +52,9 @@ void kfusion::cuda::computeNormalsAndMaskDepth(const Intr& intr, Depth& depth, N
     device::computeNormalsAndMaskDepth(reproj, depth, n);
 }
 
+/*----------------------------------------*
+ *  功能描述:   计算点云和法向量
+ ----------------------------------------*/ 
 void kfusion::cuda::computePointNormals(const Intr& intr, const Depth& depth, Cloud& points, Normals& normals)
 {
     points.create(depth.rows(), depth.cols());
@@ -40,7 +67,9 @@ void kfusion::cuda::computePointNormals(const Intr& intr, const Depth& depth, Cl
     device::computePointNormals(reproj, depth, p, n);
 }
 
-
+/*----------------------------------------*
+ *  功能描述:   计算距离
+ ----------------------------------------*/ 
 void kfusion::cuda::computeDists(const Depth& depth, Dists& dists, const Intr& intr)
 {
     dists.create(depth.rows(), depth.cols());
@@ -72,7 +101,14 @@ void kfusion::cuda::resizePointsNormals(const Cloud& points, const Normals& norm
     device::resizePointsNormals(pi, ni, po, no);
 }
 
-
+/*----------------------------------------*
+ *  功能描述:   渲染图像（深度）
+ *  参数：		depth	深度数据
+ *  参数：		normals 法线
+ *  参数：		intr	
+ *  参数：		light_pose 光线方向
+ *	参数：		image 图片
+ ----------------------------------------*/ 
 void kfusion::cuda::renderImage(const Depth& depth, const Normals& normals, const Intr& intr, const Vec3f& light_pose, Image& image)
 {
     image.create(depth.rows(), depth.cols());
@@ -86,7 +122,14 @@ void kfusion::cuda::renderImage(const Depth& depth, const Normals& normals, cons
     device::renderImage(d, n, reproj, light, i);
     waitAllDefaultStream();
 }
-
+/*----------------------------------------*
+ *  功能描述:   渲染图像（点云）
+ *  参数：		points	点云数据
+ *  参数：		normals 法线
+ *  参数：		intr	
+ *  参数：		light_pose 光线方向
+ *	参数：		image 图片
+ ----------------------------------------*/ 
 void kfusion::cuda::renderImage(const Cloud& points, const Normals& normals, const Intr& intr, const Vec3f& light_pose, Image& image)
 {
     image.create(points.rows(), points.cols());
@@ -100,7 +143,11 @@ void kfusion::cuda::renderImage(const Cloud& points, const Normals& normals, con
     device::renderImage(p, n, reproj, light, i);
     waitAllDefaultStream();
 }
-
+/*----------------------------------------*
+ *  功能描述:   渲染梯度彩色图像
+ *  参数：		normals 法线
+ *	参数：		image 图片
+ ----------------------------------------*/ 
 void kfusion::cuda::renderTangentColors(const Normals& normals, Image& image)
 {
     image.create(normals.rows(), normals.cols());

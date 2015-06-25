@@ -102,6 +102,9 @@
     <ClInclude Include="GeneratedFiles\ui_script_management.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\kfusion\include\kfusion\types.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\images\add.png">

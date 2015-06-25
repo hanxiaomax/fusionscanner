@@ -28,7 +28,7 @@ namespace kfusion
             ~DeviceMemory();
 
             /** \brief Allocates internal buffer in GPU memory
-              * \param sizeBytes_arg: amount of memory to allocate
+              * \param sizeBytes_arg: amount of memory to allocate 需要分配的内存
               * */
             DeviceMemory(size_t sizeBytes_arg);
 

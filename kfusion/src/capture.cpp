@@ -277,7 +277,7 @@ bool kfusion::OpenNISource::grab(cv::Mat& depth, cv::Mat& image)
 
 		//cout<<_beginRange<<" "<<_endRange<<endl;
    		//filter(depth,x,y,_beginRange,_endRange);//保留0~1200范围内的点
-		filter(depth,x,y,0,1800);//保留0~1200范围内的点
+		//filter(depth,x,y,0,1000);//保留0~1200范围内的点
     }
     else
     {

@@ -152,7 +152,7 @@ struct KinFuApp
 			KinFu& kinfu = *kinfu_;
             bool has_frame = capture_.grab(depth, image);//从source获取深度和图像
             if (!has_frame)//无法取得当前帧
-                return cout << "Can't grab" << endl, false;
+                cout << "Can't grab" << endl, false;
 
 			
             depth_device_.upload(depth.data, depth.step, depth.rows, depth.cols);
@@ -198,6 +198,7 @@ struct KinFuApp
     cv::Mat view_host_;
     cuda::Image view_device_;
     cuda::Depth depth_device_;
+
     cuda::DeviceArray<Point> cloud_buffer;//点云数据缓存
 
 	cuda::DeviceArray<Normal> normal_buffer;

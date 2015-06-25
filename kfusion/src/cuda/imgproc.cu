@@ -58,21 +58,32 @@ void kfusion::device::bilateralFilter (const Depth& src, Depth& dst, int kernel_
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Depth truncation
 
+/*----------------------------------------*
+ *  功能描述:   深度数据截断核函数
+ *  参数：		depth 深度数据
+ *  参数：		max_dist 最大距离	（单位mm）
+ ----------------------------------------*/ 
 namespace kfusion
 {
     namespace device
     {
         __global__ void truncate_depth_kernel(PtrStepSz<ushort> depth, ushort max_dist /*mm*/)
         {
+			//获取像素的索引位
             int x = blockIdx.x * blockDim.x + threadIdx.x;
             int y = blockIdx.y * blockDim.y + threadIdx.y;
 
-            if (x < depth.cols && y < depth.rows)
-                if(depth(y, x) > max_dist)
+            if (x < depth.cols && y < depth.rows)//索引位在depth map内
+                if(depth(y, x) > max_dist)//如果超过截断距离
                     depth(y, x) = 0;
         }
     }
 }
+/*----------------------------------------*
+ *  功能描述:   深度数据截断
+ *  参数：		depth 深度数据
+ *  参数：		max_dist 最大距离	（单位m）
+ ----------------------------------------*/ 
 
 void kfusion::device::truncateDepth(Depth& depth, float max_dist /*meters*/)
 {

@@ -101,7 +101,7 @@ namespace kfusion
             __kf_device__ float3 reproj(float x, float y, float z)  const;
         };
 
-        //tsdf volume functions
+		//TSDF体函数
         void clear_volume(TsdfVolume volume);
         void integrate(const Dists& depth, TsdfVolume& volume, const Aff3f& aff, const Projector& proj);
 
@@ -114,6 +114,14 @@ namespace kfusion
         __kf_device__ ushort2 pack_tsdf(float tsdf, int weight);
         __kf_device__ float unpack_tsdf(ushort2 value, int& weight);
         __kf_device__ float unpack_tsdf(ushort2 value);
+
+
+		//移动立方体算法函数
+		void bindTextures(const int *, const int *triBuf, const int *numVertsBuf);
+		void unbindTextures ();
+		int getOccupiedVoxels (const PtrStep<short2>& volume, DeviceArray2D<int>& occupied_voxels);
+		int computeOffsetsAndTotalVertexes (DeviceArray2D<int>& occupied_voxels);
+		void generateTriangles(const PtrStep<short2>& volume, const DeviceArray2D<int>& occupied_voxels, const float3& volume_size, DeviceArray<Point>& output);
 
 
         //image proc functions
@@ -135,11 +143,15 @@ namespace kfusion
 
 
         //exctraction functionality
+		
         size_t extractCloud(const TsdfVolume& volume, const Aff3f& aff, PtrSz<Point> output);
         void extractNormals(const TsdfVolume& volume, const PtrSz<Point>& points, const Aff3f& aff, const Mat3f& Rinv, float gradient_delta_factor, float4* output);
 
         struct float8  { float x, y, z, w, c1, c2, c3, c4; };
         struct float12 { float x, y, z, w, normal_x, normal_y, normal_z, n4, c1, c2, c3, c4; };
         void mergePointNormal(const DeviceArray<Point>& cloud, const DeviceArray<float8>& normals, const DeviceArray<float12>& output);
+
+		
+
     }
 }

@@ -371,7 +371,7 @@ namespace kfusion
 			 *	参数：		float3 点坐标
 			 ----------------------------------------*/ 
             __kf_device__
-            float3 compute_normal(const float3& p) const
+            float3  compute_normal(const float3& p) const
             {
                 float3 n;//存放法向量
 
@@ -387,10 +387,7 @@ namespace kfusion
                 float Fz2 = interpolate(volume, make_float3(p.x, p.y, p.z - gradient_delta.z) * voxel_size_inv);
                 n.z = __fdividef(Fz1 - Fz2, gradient_delta.z);
 
-// 				if(isnan(n.x))
-// 				{
-// 					printf("[%f %f]",Fx1,Fx2);
-// 				}
+
                 return normalized (n);
             }
         };

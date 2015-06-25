@@ -80,15 +80,15 @@
            <number>1</number>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="page_8">
            <property name="geometry">
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>273</width>
-             <height>490</height>
+             <width>174</width>
+             <height>324</height>
             </rect>
            </property>
            <attribute name="label">
@@ -296,8 +296,8 @@ color: rgb(255, 255, 255);</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>273</width>
-             <height>490</height>
+             <width>240</width>
+             <height>235</height>
             </rect>
            </property>
            <attribute name="label">
@@ -1179,6 +1179,9 @@ color: rgb(255, 255, 255);</string>
                       <pointsize>10</pointsize>
                      </font>
                     </property>
+                    <property name="maximum">
+                     <double>999999.000000000000000</double>
+                    </property>
                     <property name="value">
                      <double>64.000000000000000</double>
                     </property>
@@ -1578,8 +1581,8 @@ color: rgb(255, 255, 255);</string>
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>346</width>
-                  <height>519</height>
+                  <width>98</width>
+                  <height>28</height>
                  </rect>
                 </property>
                 <attribute name="label">
@@ -1617,8 +1620,8 @@ color: rgb(255, 255, 255);</string>
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>100</width>
-                  <height>30</height>
+                  <width>98</width>
+                  <height>28</height>
                  </rect>
                 </property>
                 <attribute name="label">

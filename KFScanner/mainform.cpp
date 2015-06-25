@@ -78,7 +78,7 @@ void mainform::setkinfuToDefault()
 
 	ui.cam_min_move_sb->setValue(0.00);
 	ui.tsdf_dist_sb->setValue(0.04);
-	ui.tsdf_max_weight_sb->setValue(150.0);//64-->150
+	ui.tsdf_max_weight_sb->setValue(64.0);//64-->150
 	ui.raycast_factor_sb->setValue(0.75);
 	ui.gradient_factor_sb->setValue(0.50);
 

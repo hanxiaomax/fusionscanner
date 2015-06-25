@@ -15,19 +15,23 @@ namespace kfusion
 
             void create(const Vec3i& dims);
 
+			///////Getter//////////////////////////////////////
             Vec3i getDims() const;
             Vec3f getVoxelSize() const;
 
             const CudaData data() const;
             CudaData data();
 
+			//const DeviceArray2D<int> getvolume() const;
+
+			///////Getter & Setter//////////////////////////////////////
             Vec3f getSize() const;
             void setSize(const Vec3f& size);
 
             float getTruncDist() const;//获取截断距离
             void setTruncDist(float distance);//设置截断距离
 
-            int getMaxWeight() const;//获取最大重量
+            int getMaxWeight() const;//获取最大重量 //权重
             void setMaxWeight(int weight);//获取最大重量
 
             Affine3f getPose() const;//获取姿态
@@ -41,11 +45,13 @@ namespace kfusion
 
             Vec3i getGridOrigin() const;
             void setGridOrigin(const Vec3i& origin);
+			///////////////////////////////////////////////////////////////////
+
 
             virtual void clear();
             virtual void applyAffine(const Affine3f& affine);
             virtual void integrate(const Dists& dists, const Affine3f& camera_pose, const Intr& intr);//融合
-            virtual void raycast(const Affine3f& camera_pose, const Intr& intr, Depth& depth, Normals& normals);
+            virtual void raycast(const Affine3f& camera_pose, const Intr& intr, Depth& depth, Normals& normals);//执行raycast
             virtual void raycast(const Affine3f& camera_pose, const Intr& intr, Cloud& points, Normals& normals);
 
             void swap(CudaData& data);
@@ -67,14 +73,15 @@ namespace kfusion
                 static half float2half(float value);
             };
         private:
-			void printTSDFparams();
-            CudaData data_;
-
-            float trunc_dist_;
-            int max_weight_;
+			void printTSDFparams();//输出全部当前参数
+            CudaData data_;//存放数据
+			//DeviceArray2D<int> volume_;////////////
+            float trunc_dist_;//截断距离
+            int max_weight_;//最大weight
             Vec3i dims_;
             Vec3f size_;
             Affine3f pose_;
+
 
             float gradient_delta_factor_;
             float raycast_step_factor_;

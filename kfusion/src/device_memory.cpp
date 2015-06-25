@@ -3,6 +3,9 @@
 #include <cassert>
 #include <iostream>
 #include <cstdlib>
+/*********************************
+* DeviceMemory具体实现
+**********************************/
 
 void kfusion::cuda::error(const char *error_string, const char *file, const int line, const char *func)
 {

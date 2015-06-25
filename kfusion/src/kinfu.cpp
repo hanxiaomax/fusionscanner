@@ -5,6 +5,7 @@ using namespace std;
 using namespace kfusion;
 using namespace kfusion::cuda;
 
+//#define USE_DEPTH
 static inline float deg2rad (float alpha) { return alpha * 0.017453293f; }//角度转弧度
 
 /*kfusion::KinFuParams类default_params()的具体实现*/
@@ -29,12 +30,12 @@ kfusion::KinFuParams kfusion::KinFuParams::default_params()//设置默认参数
     p.bilateral_kernel_size = 7;     //pixels
 
 	//迭代最近点ICP参数
-    p.icp_truncate_depth_dist = 0.f;        //meters, disabled //似乎过滤的是近处的数据
-    p.icp_dist_thres = 0.1f;                //meters
-    p.icp_angle_thres = deg2rad(30.f); //radians//参数是角度
+    p.icp_truncate_depth_dist = 0.f;        //meters, disabled	截断深度（过滤超过此值的深度数据）设置为0则不过滤
+    p.icp_dist_thres = 0.1f;                //meters			深度阀值（过滤低于此值的深度数据）
+    p.icp_angle_thres = deg2rad(30.f); //radians				参数是角度
     p.icp_iter_num.assign(iters, iters + levels);
 
-    p.tsdf_min_camera_movement = 0.f; //meters, disabled //进行融合的最小摄像机位移
+    p.tsdf_min_camera_movement = 0.f; //meters, disabled		//进行融合的最小摄像机位移
     p.tsdf_trunc_dist = 0.04f; //meters;
     p.tsdf_max_weight = 64;   //frames
 
@@ -137,7 +138,7 @@ void kfusion::KinFu::PrintKFparms()
 
 	//迭代最近点ICP参数
 	cout<<"----------ICP参数-----------------------"<<endl;
-	cout<<"ICP截断深度距离 :\t"<<params_.icp_truncate_depth_dist<<endl;        //meters, disabled //似乎过滤的是近处的数据
+	cout<<"ICP截断深度距离 :\t"<<params_.icp_truncate_depth_dist<<endl;        //meters, disabled 
 	cout<<"ICP距离阀值 :\t"<<params_.icp_dist_thres<<endl;               //meters
 	cout<<"ICP角度阀值 :\t"<<params_.icp_angle_thres<<endl;//radians//参数是角度
 
@@ -229,7 +230,10 @@ kfusion::Affine3f kfusion::KinFu::getCameraPose (int time) const
     return poses_[time];
 }
 
-
+/*----------------------------------------*
+ *  功能描述:   核心算法操作符
+ 
+ ----------------------------------------*/ 
 bool kfusion::KinFu::operator()(const kfusion::cuda::Depth& depth, const kfusion::cuda::Image& /*image*/)
 {
 	//创建参数的引用
@@ -240,7 +244,7 @@ bool kfusion::KinFu::operator()(const kfusion::cuda::Depth& depth, const kfusion
     cuda::depthBilateralFilter(depth, curr_.depth_pyr[0], p.bilateral_kernel_size, p.bilateral_sigma_spatial, p.bilateral_sigma_depth);//cuda双边滤波
 
 
-    if (p.icp_truncate_depth_dist > 0)
+    if (p.icp_truncate_depth_dist > 0)//如果设置了深度截断距离，则进行截断，0为关闭此功能
         kfusion::cuda::depthTruncation(curr_.depth_pyr[0], p.icp_truncate_depth_dist);
 
     for (int i = 1; i < LEVELS; ++i)

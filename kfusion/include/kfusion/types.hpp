@@ -28,6 +28,7 @@ namespace kfusion
 
     KF_EXPORTS std::ostream& operator << (std::ostream& os, const Intr& intr);//以非成员函数的方式重载操作符，左操作数为os stream
 
+	//点数据结构
     struct Point
     {
         union
@@ -36,10 +37,10 @@ namespace kfusion
             struct { float x, y, z; };
         };
     };
-
+	//法向量使用同点一样的数据结构
     typedef Point Normal;
-
-    struct RGB//颜色值
+	//颜色值数据结构 BGR
+    struct RGB
     {
         union
         {
@@ -47,12 +48,13 @@ namespace kfusion
             int bgra;
         };
     };
-
-    struct PixelRGB//像素颜色值
+	//像素颜色值
+    struct PixelRGB
     {
         unsigned char r, g, b;
     };
 
+	///////用于在CUDA设备上面使用的数据结构
     namespace cuda
     {
         typedef cuda::DeviceMemory CudaData;
@@ -62,6 +64,7 @@ namespace kfusion
         typedef cuda::DeviceArray2D<Normal> Normals;
         typedef cuda::DeviceArray2D<Point> Cloud;
 
+		//帧数据结构
         struct Frame
         {
             bool use_points;
