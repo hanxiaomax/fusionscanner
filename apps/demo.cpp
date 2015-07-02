@@ -75,17 +75,16 @@ struct KinFuApp
         const int mode =3;
 		/*交互模式下，渲染图片，获取观察者姿态，否则不获取，调用重载的renderImage函数*/
         if (iteractive_mode_){
-			cout<<"iteractive_mode_"<<"-->render mode:";	
             kinfu.renderImage(view_device_, viz.getViewerPose(), mode);//viz.getViewerPose()：Returns the current pose of the viewer.
 		}
         else
-		{	//cout<<"Not iteractive_mode_"<<"-->render mode:";
+		{	
             kinfu.renderImage(view_device_, mode);
 		}
 
         view_host_.create(view_device_.rows(), view_device_.cols(), CV_8UC4);//创建矩阵储存像素
         view_device_.download(view_host_.ptr<void>(), view_host_.step);
-		//cout<<view_host_.cols<<" "<<view_host_.rows<<endl;
+
 
         cv::imshow("Scene", view_host_);//在Scene窗口中显示view_host_
     }
@@ -117,16 +116,16 @@ struct KinFuApp
 			{
 				ScopeTime st("ply writer");
 				PLYFilewriter PLYw;
-				PLYw .write("cloud_file.ply",cloud);
-				//PLYw .write("cloud_file-n.ply",cloud,normal);
+				PLYw.write("cloud_file.ply",cloud);
+				PLYw.write("cloud_file-n.ply",cloud,normal);
 			}
 
 // 			/*把点云数据写入pcd文件*/
-			{
-				ScopeTime st("pcd writer");
-				PCDFilewriter PCDw;
-				PCDw.write("cloud_file.pcd",cloud,normal);
-			}
+// 			{
+// 				ScopeTime st("pcd writer");
+// 				PCDFilewriter PCDw;
+// 				PCDw.write("cloud_file.pcd",cloud,normal);
+// 			}
 		}
 		
 		
@@ -135,7 +134,7 @@ struct KinFuApp
 
         //viz.showWidget("cloud", cv::viz::WCloud(cloud_host));//显示点云
         viz.showWidget("cloud", cv::viz::WPaintedCloud(cloud_host));//显示有颜色的点云
-		//viz.showWidget("normal",cv::viz::WCloudNormals(cloud_host,normal_host));//显示法线（法线是否已经计算？）
+		viz.showWidget("normal",cv::viz::WCloudNormals(cloud_host,normal_host,10));//显示法线（法线是否已经计算？）
     }
 
 	/*App执行函数*/

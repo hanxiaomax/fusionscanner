@@ -112,13 +112,15 @@ void kfusion::cuda::TsdfVolume::swap(CudaData& data) { data_.swap(data); }
 void kfusion::cuda::TsdfVolume::applyAffine(const Affine3f& affine) { pose_ = affine * pose_; }
 
 
+/*--------------------------------------------------* 
+*	功能描述:	TSDF volume体初始化
+--------------------------------------------------*/  
 void kfusion::cuda::TsdfVolume::clear()
 { 
     device::Vec3i dims = device_cast<device::Vec3i>(dims_);//类型转换
     device::Vec3f vsz  = device_cast<device::Vec3f>(getVoxelSize());//类型转换
-
     device::TsdfVolume volume(data_.ptr<ushort2>(), dims, vsz, trunc_dist_, max_weight_);//device命名空间下的TsdfVolume对象
-    device::clear_volume(volume);
+    device::clear_volume(volume);//初始化
 }
 
 //合成

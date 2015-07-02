@@ -30,14 +30,14 @@ kfusion::KinFuParams kfusion::KinFuParams::default_params()//设置默认参数
     p.bilateral_kernel_size = 7;     //pixels
 
 	//迭代最近点ICP参数
-    p.icp_truncate_depth_dist = 0.f;        //meters, disabled	截断深度（过滤超过此值的深度数据）设置为0则不过滤
+    p.icp_truncate_depth_dist = 0.0f;        //meters, disabled	截断深度（过滤超过此值的深度数据）设置为0则不过滤
     p.icp_dist_thres = 0.1f;                //meters			深度阀值（过滤低于此值的深度数据）
-    p.icp_angle_thres = deg2rad(30.f); //radians				参数是角度
+    p.icp_angle_thres = deg2rad(10.f); //radians				参数是角度
     p.icp_iter_num.assign(iters, iters + levels);
 
     p.tsdf_min_camera_movement = 0.f; //meters, disabled		//进行融合的最小摄像机位移
     p.tsdf_trunc_dist = 0.04f; //meters;
-    p.tsdf_max_weight = 64;   //frames
+    p.tsdf_max_weight = 100;   //frames
 
     p.raycast_step_factor = 0.75f;  //in voxel sizes
     p.gradient_delta_factor = 0.5f; //in voxel sizes
@@ -232,7 +232,6 @@ kfusion::Affine3f kfusion::KinFu::getCameraPose (int time) const
 
 /*----------------------------------------*
  *  功能描述:   核心算法操作符
- 
  ----------------------------------------*/ 
 bool kfusion::KinFu::operator()(const kfusion::cuda::Depth& depth, const kfusion::cuda::Image& /*image*/)
 {
@@ -352,7 +351,7 @@ void kfusion::KinFu::renderImage(cuda::Image& image, int flag)
 #undef PASS1
 }
 
-/*渲染图片
+/*渲染图像
 //iteractive_mode_模式下三参数renderImage()
 *params：
 	cuda::Image& image		输入图片（引用）
@@ -382,16 +381,13 @@ void kfusion::KinFu::renderImage(cuda::Image& image, const Affine3f& pose, int f
 
 
     if (flag <= 1 || flag > 3){
-		//cout<<flag<<endl;
         cuda::renderImage(PASS1, normals_, params_.intr, params_.light_pose, image);
 	}
     else if (flag == 2){
-		//cout<<flag<<endl;
         cuda::renderTangentColors(normals_, image);
 	}
     else /* if (flag == 3) */
     {
-		//cout<<flag<<endl;
         DeviceArray2D<RGB> i1(p.rows, p.cols, image.ptr(), image.step());
         DeviceArray2D<RGB> i2(p.rows, p.cols, image.ptr() + p.cols, image.step());
 

@@ -5,7 +5,7 @@
 */
 #include <kfusion/CloudIO.h>
 #include <sstream>
-
+#include <cmath>  
 CloudWriter::CloudWriter(void)
 {
 
@@ -72,7 +72,7 @@ string PLYFilewriter::headerGenerator(cuda::DeviceArray<Point> &cloud,bool withN
 * params:点云
 * params:文件流
 */
-int PLYFilewriter::writePoint(cuda::DeviceArray<Point> &cloud ,std::ofstream& fs){
+int PLYFilewriter::writePoint	(cuda::DeviceArray<Point> &cloud ,std::ofstream& fs){
 	
 	infobox.printInfo("正在写入点",InfoBox::INFO);
 	cv::Mat cloud_host(1, (int)cloud.size(), CV_32FC4);//一维矩阵，存放无序点云(1行，n列) CV_32FC4 32位浮点4通道
@@ -191,6 +191,7 @@ int PCDFilewriter::writePoint(cuda::DeviceArray<Point> &cloud ,std::ofstream& fs
 
 	for (int i=0;i<cloud_host.cols;i++)
 	{	
+
 		float x=cloud_host.at<cv::Vec4f>(0,i)[0];
 		float y=cloud_host.at<cv::Vec4f>(0,i)[1];
 		float z=cloud_host.at<cv::Vec4f>(0,i)[2];
@@ -208,6 +209,8 @@ int PCDFilewriter::writePoint_Normal(cuda::DeviceArray<Point> &cloud ,cuda::Devi
 	cv::Mat normal_host(1, (int)cloud.size(), CV_32FC4);
 	cloud.download(cloud_host.ptr<Point>());
 	normal.download(normal_host.ptr<Normal>());
+	const float qnan = numeric_limits<float>::quiet_NaN();
+	int valid_point = 0;
 	for (int i=0;i<cloud_host.cols;i++)
 	{	
 		float x=cloud_host.at<cv::Vec4f>(0,i)[0];
@@ -216,8 +219,11 @@ int PCDFilewriter::writePoint_Normal(cuda::DeviceArray<Point> &cloud ,cuda::Devi
 		float nx=normal_host.at<cv::Vec4f>(0,i)[0];
 		float ny=normal_host.at<cv::Vec4f>(0,i)[1];
 		float nz=normal_host.at<cv::Vec4f>(0,i)[2];
-
-		fs<<x<<" "<<y<<" "<<z<<" "<<nx<<" "<<ny<<" "<<nz<<endl;			
+		if (nx*ny*nz!=qnan)
+		{
+			valid_point++;
+			fs<<x<<" "<<y<<" "<<z<<" "<<nx<<" "<<ny<<" "<<nz<<endl;			
+		}
 	}
 
 	infobox.printInfo("点云数据及其法向量写入完成",InfoBox::INFO);

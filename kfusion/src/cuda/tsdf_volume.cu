@@ -1,11 +1,12 @@
 #include "device.hpp"
 #include "texture_binder.hpp"
-
+#include "iostream"
 /*************************************
  *  简要描述: tsdf volume所需的CUDA函数
  ************************************/  
 
 using namespace kfusion::device;
+using namespace std;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Volume 初始化
@@ -34,6 +35,7 @@ namespace kfusion
     }
 }
 
+//对TSDF volume进行初始化
 void kfusion::device::clear_volume(TsdfVolume volume)
 {
     dim3 block (32, 8);//每个block中线程的数量，每行32个线程*每列8个线程，一共32*8=256个线程
@@ -274,7 +276,7 @@ namespace kfusion
                     if (tsdf_curr < 0.f && tsdf_next > 0.f)
                         break;
 
-                    if (tsdf_curr > 0.f && tsdf_next < 0.f)
+                    if (tsdf_curr > 0.f && tsdf_next < 0.f)//从前向后遍历，当前>0，下一个<0，判断为等值面上的点
                     {
                         float Ft   = interpolate(volume, curr * voxel_size_inv);
                         float Ftdt = interpolate(volume, next * voxel_size_inv);
@@ -282,7 +284,7 @@ namespace kfusion
                         float Ts = tcurr - __fdividef(time_step * Ft, Ftdt - Ft);
 
                         float3 vertex = ray_org + ray_dir * Ts;
-                        float3 normal = compute_normal(vertex);
+                        float3 normal = compute_normal(vertex);//计算顶点法线
 
 						
                         if (!isnan(normal.x * normal.y * normal.z))//判断是否是无效值
@@ -290,8 +292,8 @@ namespace kfusion
                             normal = Rinv * normal;
                             vertex = Rinv * (vertex - aff.t);
 
-                            normals(y, x) = make_float4(normal.x, normal.y, normal.z, 0);
-                            depth(y, x) = static_cast<ushort>(vertex.z * 1000);
+                            normals(y, x) = make_float4(normal.x, normal.y, normal.z, 0);//保存法向量
+                            depth(y, x) = static_cast<ushort>(vertex.z * 1000);//保存深度值
                         }
                         break;
                     }
@@ -355,7 +357,7 @@ namespace kfusion
                         float Ts = tcurr - __fdividef(time_step * Ft, Ftdt - Ft);
 
                         float3 vertex = ray_org + ray_dir * Ts;
-                        float3 normal = compute_normal(vertex);
+                        float3 normal = compute_normal(vertex);//计算顶点的法向量
 
                         if (!isnan(normal.x * normal.y * normal.z))
                         {
@@ -382,7 +384,7 @@ namespace kfusion
                 float Fx1 = interpolate(volume, make_float3(p.x + gradient_delta.x, p.y, p.z) * voxel_size_inv);
                 float Fx2 = interpolate(volume, make_float3(p.x - gradient_delta.x, p.y, p.z) * voxel_size_inv);
                 n.x = __fdividef(Fx1 - Fx2, gradient_delta.x);
-				
+
                 float Fy1 = interpolate(volume, make_float3(p.x, p.y + gradient_delta.y, p.z) * voxel_size_inv);
                 float Fy2 = interpolate(volume, make_float3(p.x, p.y - gradient_delta.y, p.z) * voxel_size_inv);
                 n.y = __fdividef(Fy1 - Fy2, gradient_delta.y);
@@ -710,7 +712,7 @@ namespace kfusion
                 int z = __float2int_rn (p.z * voxel_size_inv.z);
                 return make_int3 (x, y, z);
             }
-
+			//从tsdf中抽取法线
             __kf_device__ void operator () (float4* output) const
             {
                 int idx = threadIdx.x + blockIdx.x * blockDim.x;
@@ -724,6 +726,7 @@ namespace kfusion
                 float3 point = Rinv * (tr(points.data[idx]) - aff.t);
                 int3 g = getVoxel (point);
 
+				//计算法线
                 if (g.x > 1 && g.y > 1 && g.z > 1 && g.x < volume.dims.x - 2 && g.y < volume.dims.y - 2 && g.z < volume.dims.z - 2)
                 {
                     float3 t;
