@@ -71,7 +71,7 @@ namespace kfusion
 
         Vec3f light_pose; //meters
 
-    };
+    }; 
 
     class KF_EXPORTS KinFu
     {

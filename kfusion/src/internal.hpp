@@ -117,6 +117,8 @@ namespace kfusion
 
 
 		//移动立方体算法函数
+		enum { VOLUME_X = 512, VOLUME_Y = 512, VOLUME_Z = 512 };
+		const float VOLUME_SIZE = 3.0f;
 		void bindTextures(const int *, const int *triBuf, const int *numVertsBuf);
 		void unbindTextures ();
 		int getOccupiedVoxels (const PtrStep<short2>& volume, DeviceArray2D<int>& occupied_voxels);

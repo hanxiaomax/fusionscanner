@@ -24,7 +24,7 @@ kfusion::KinFuParams kfusion::KinFuParams::default_params()//设置默认参数
     p.volume_dims = Vec3i::all(512);  //number of voxels
     p.volume_size = Vec3f::all(3.f);  //meters
     p.volume_pose = Affine3f().translate(Vec3f(-p.volume_size[0]/2, -p.volume_size[1]/2, 0.5f));
-
+ 
     p.bilateral_sigma_depth = 0.04f;  //meter
     p.bilateral_sigma_spatial = 4.5; //pixels
     p.bilateral_kernel_size = 7;     //pixels
@@ -32,18 +32,18 @@ kfusion::KinFuParams kfusion::KinFuParams::default_params()//设置默认参数
 	//迭代最近点ICP参数
     p.icp_truncate_depth_dist = 0.0f;        //meters, disabled	截断深度（过滤超过此值的深度数据）设置为0则不过滤
     p.icp_dist_thres = 0.1f;                //meters			深度阀值（过滤低于此值的深度数据）
-    p.icp_angle_thres = deg2rad(10.f); //radians				参数是角度
+    p.icp_angle_thres = deg2rad(60.f); //radians				参数是角度
     p.icp_iter_num.assign(iters, iters + levels);
 
     p.tsdf_min_camera_movement = 0.f; //meters, disabled		//进行融合的最小摄像机位移
-    p.tsdf_trunc_dist = 0.04f; //meters;
-    p.tsdf_max_weight = 100;   //frames
+    p.tsdf_trunc_dist = 0.03f; //meters;
+    p.tsdf_max_weight = 128;   //frames
 
     p.raycast_step_factor = 0.75f;  //in voxel sizes
-    p.gradient_delta_factor = 0.5f; //in voxel sizes
+    p.gradient_delta_factor = 0.75f; //in voxel sizes
 
-    //p.light_pose = p.volume_pose.translation()/4; //meters
-    p.light_pose = Vec3f::all(0.f); //meters
+    p.light_pose = p.volume_pose.translation()/4; //meters
+    //p.light_pose = Vec3f::all(0.f); //meters
 
     return p;
 }

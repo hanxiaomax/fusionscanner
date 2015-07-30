@@ -25,13 +25,18 @@ public:
 class PCDFilewriter:public CloudWriter{
 
 public:
-	PCDFilewriter():CloudWriter(),infobox("PCDFilewriter"){};//必须有函数体，因为没有在.cpp文件中定义，否则出现LINK2019,虚函数没有实现
+	PCDFilewriter():CloudWriter(),infobox("PCDFilewriter"),valid_point(0){};//必须有函数体，因为没有在.cpp文件中定义，否则出现LINK2019,虚函数没有实现
 	~PCDFilewriter(){};
 private:
 	string headerGenerator(cuda::DeviceArray<Point> &cloud,bool withNormal=false);//生成header字符串
+	string headerGenerator(cuda::DeviceArray<Point> &cloud,bool withNormal=false,int valid_point=0);//只写入有效数据
+
 	int writePoint(cuda::DeviceArray<Point> &cloud,std::ofstream& fs);//写入点
 	int writePoint_Normal(cuda::DeviceArray<Point> &cloud,cuda::DeviceArray<Normal> &normal,std::ofstream& fs);
+	string writePoint_Normal(cuda::DeviceArray<Point> &cloud,cuda::DeviceArray<Normal> &normal,int &valid_point);//只写入有效数据
+
 	InfoBox infobox;//创建通知处理器
+	int valid_point;
 public:
 	virtual int write(const string &file_name,cuda::DeviceArray<Point> &cloud,int precision=5);
 	virtual int write(const string &file_name,cuda::DeviceArray<Point> &cloud,cuda::DeviceArray<Point> &normal,int precision=5);
@@ -41,13 +46,17 @@ public:
 class PLYFilewriter:public CloudWriter{
 
 public:
-	PLYFilewriter():CloudWriter(),infobox("PLYFilewriter"){};
+	PLYFilewriter():CloudWriter(),infobox("PLYFilewriter"),valid_point(0){};
 	~PLYFilewriter(){};
 private:
 	string headerGenerator(cuda::DeviceArray<Point> &cloud,bool withNormal=false);//生成header字符串
+	string headerGenerator(cuda::DeviceArray<Point> &cloud,bool withNormal=false,int valid_point=0);
 	int writePoint(cuda::DeviceArray<Point> &cloud,std::ofstream& fs);//写入点
 	int writePoint_Normal(cuda::DeviceArray<Point> &cloud,cuda::DeviceArray<Normal> &normal,std::ofstream& fs);
+	string writePoint_Normal(cuda::DeviceArray<Point> &cloud,cuda::DeviceArray<Normal> &normal,int &valid_point);
+
 	InfoBox infobox;
+	int valid_point;
 public:
 	virtual int write(const string &file_name,cuda::DeviceArray<Point> &cloud,int precision=5);
 	virtual int write(const string &file_name,cuda::DeviceArray<Point> &cloud,cuda::DeviceArray<Normal> &normal,int precision=5);

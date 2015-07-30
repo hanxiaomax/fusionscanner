@@ -58,6 +58,8 @@ namespace kfusion
     namespace cuda
     {
         typedef cuda::DeviceMemory CudaData;
+		typedef cuda::DeviceArray2D<int> tempCudaData;
+
         typedef cuda::DeviceArray2D<unsigned short> Depth;
         typedef cuda::DeviceArray2D<unsigned short> Dists;
         typedef cuda::DeviceArray2D<RGB> Image;

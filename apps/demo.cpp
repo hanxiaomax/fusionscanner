@@ -121,11 +121,11 @@ struct KinFuApp
 			}
 
 // 			/*把点云数据写入pcd文件*/
-// 			{
-// 				ScopeTime st("pcd writer");
-// 				PCDFilewriter PCDw;
-// 				PCDw.write("cloud_file.pcd",cloud,normal);
-// 			}
+			{
+				ScopeTime st("pcd writer");
+				PCDFilewriter PCDw;
+				PCDw.write("cloud_file-n.pcd",cloud,normal);
+			}
 		}
 		
 		
