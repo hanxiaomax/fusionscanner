@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainform.ui'
 **
-** Created: Thu Jun 11 16:45:05 2015
+** Created: Mon Aug 3 19:44:30 2015
 **      by: Qt User Interface Compiler version 4.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -29,6 +29,7 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QSlider>
 #include <QtGui/QSpacerItem>
+#include <QtGui/QSpinBox>
 #include <QtGui/QStatusBar>
 #include <QtGui/QTabWidget>
 #include <QtGui/QToolBar>
@@ -200,8 +201,19 @@ public:
     QGridLayout *gridLayout_6;
     QToolBox *toolBox;
     QWidget *page_3;
+    QWidget *layoutWidget1;
+    QVBoxLayout *verticalLayout_10;
+    QPushButton *outremoveBtn;
     QPushButton *pushButton;
     QPushButton *pushButton_2;
+    QWidget *outRemovePage;
+    QVBoxLayout *verticalLayout_11;
+    QGridLayout *gridLayout_2;
+    QLabel *label_9;
+    QSpinBox *sb_meank;
+    QLabel *label_10;
+    QDoubleSpinBox *sb_std_dev;
+    QSpacerItem *verticalSpacer_6;
     QWidget *page_4;
     QWidget *process;
     QGridLayout *gridLayout_7;
@@ -612,7 +624,7 @@ public:
         init_toolbox->addItem(page, QString::fromUtf8("\346\211\253\346\217\217\345\217\202\346\225\260"));
         page_2 = new QWidget();
         page_2->setObjectName(QString::fromUtf8("page_2"));
-        page_2->setGeometry(QRect(0, 0, 273, 490));
+        page_2->setGeometry(QRect(0, 0, 219, 464));
         gridLayout_14 = new QGridLayout(page_2);
         gridLayout_14->setSpacing(6);
         gridLayout_14->setContentsMargins(11, 11, 11, 11);
@@ -1135,19 +1147,78 @@ public:
         page_3 = new QWidget();
         page_3->setObjectName(QString::fromUtf8("page_3"));
         page_3->setGeometry(QRect(0, 0, 98, 28));
-        pushButton = new QPushButton(page_3);
+        layoutWidget1 = new QWidget(page_3);
+        layoutWidget1->setObjectName(QString::fromUtf8("layoutWidget1"));
+        layoutWidget1->setGeometry(QRect(10, 20, 131, 171));
+        verticalLayout_10 = new QVBoxLayout(layoutWidget1);
+        verticalLayout_10->setSpacing(6);
+        verticalLayout_10->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_10->setObjectName(QString::fromUtf8("verticalLayout_10"));
+        verticalLayout_10->setContentsMargins(0, 0, 0, 0);
+        outremoveBtn = new QPushButton(layoutWidget1);
+        outremoveBtn->setObjectName(QString::fromUtf8("outremoveBtn"));
+
+        verticalLayout_10->addWidget(outremoveBtn);
+
+        pushButton = new QPushButton(layoutWidget1);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setGeometry(QRect(80, 40, 171, 71));
-        pushButton_2 = new QPushButton(page_3);
+
+        verticalLayout_10->addWidget(pushButton);
+
+        pushButton_2 = new QPushButton(layoutWidget1);
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
-        pushButton_2->setGeometry(QRect(80, 150, 171, 71));
+
+        verticalLayout_10->addWidget(pushButton_2);
+
         toolBox->addItem(page_3, QString::fromUtf8("\346\223\215\344\275\234"));
+        outRemovePage = new QWidget();
+        outRemovePage->setObjectName(QString::fromUtf8("outRemovePage"));
+        outRemovePage->setGeometry(QRect(0, 0, 346, 485));
+        verticalLayout_11 = new QVBoxLayout(outRemovePage);
+        verticalLayout_11->setSpacing(6);
+        verticalLayout_11->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_11->setObjectName(QString::fromUtf8("verticalLayout_11"));
+        gridLayout_2 = new QGridLayout();
+        gridLayout_2->setSpacing(6);
+        gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
+        label_9 = new QLabel(outRemovePage);
+        label_9->setObjectName(QString::fromUtf8("label_9"));
+
+        gridLayout_2->addWidget(label_9, 0, 0, 1, 1);
+
+        sb_meank = new QSpinBox(outRemovePage);
+        sb_meank->setObjectName(QString::fromUtf8("sb_meank"));
+        sb_meank->setMinimum(1);
+        sb_meank->setMaximum(1000);
+        sb_meank->setValue(200);
+
+        gridLayout_2->addWidget(sb_meank, 0, 1, 1, 1);
+
+        label_10 = new QLabel(outRemovePage);
+        label_10->setObjectName(QString::fromUtf8("label_10"));
+
+        gridLayout_2->addWidget(label_10, 1, 0, 1, 1);
+
+        sb_std_dev = new QDoubleSpinBox(outRemovePage);
+        sb_std_dev->setObjectName(QString::fromUtf8("sb_std_dev"));
+        sb_std_dev->setValue(1);
+
+        gridLayout_2->addWidget(sb_std_dev, 1, 1, 1, 1);
+
+
+        verticalLayout_11->addLayout(gridLayout_2);
+
+        verticalSpacer_6 = new QSpacerItem(20, 398, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_11->addItem(verticalSpacer_6);
+
+        toolBox->addItem(outRemovePage, QString::fromUtf8("\347\250\200\347\226\217\347\246\273\347\276\244\347\202\271\347\256\227\346\263\225\345\217\202\346\225\260"));
         page_4 = new QWidget();
         page_4->setObjectName(QString::fromUtf8("page_4"));
         page_4->setGeometry(QRect(0, 0, 98, 28));
         toolBox->addItem(page_4, QString::fromUtf8("\351\207\215\345\273\272\345\217\202\346\225\260"));
 
-        gridLayout_6->addWidget(toolBox, 0, 1, 1, 1);
+        gridLayout_6->addWidget(toolBox, 0, 0, 1, 1);
 
 
         horizontalLayout_2->addWidget(groupBox_2);
@@ -1263,9 +1334,9 @@ public:
         QObject::connect(delay_slider, SIGNAL(valueChanged(int)), delay_value, SLOT(setNum(int)));
         QObject::connect(range_slider, SIGNAL(valueChanged(int)), range_value, SLOT(setNum(int)));
 
-        mainTab->setCurrentIndex(0);
+        mainTab->setCurrentIndex(2);
         init_toolbox->setCurrentIndex(2);
-        toolBox->setCurrentIndex(0);
+        toolBox->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(mainformClass);
@@ -1352,9 +1423,13 @@ public:
         progressBar_2->setFormat(QApplication::translate("mainformClass", "%p%", 0, QApplication::UnicodeUTF8));
         mainTab->setTabText(mainTab->indexOf(scan), QApplication::translate("mainformClass", "\346\211\253\346\217\217", 0, QApplication::UnicodeUTF8));
         groupBox_2->setTitle(QString());
+        outremoveBtn->setText(QApplication::translate("mainformClass", "\347\246\273\347\276\244\347\202\271\350\277\207\346\273\244", 0, QApplication::UnicodeUTF8));
         pushButton->setText(QApplication::translate("mainformClass", "\351\207\215\345\273\272", 0, QApplication::UnicodeUTF8));
         pushButton_2->setText(QApplication::translate("mainformClass", "\345\244\215\344\275\215", 0, QApplication::UnicodeUTF8));
         toolBox->setItemText(toolBox->indexOf(page_3), QApplication::translate("mainformClass", "\346\223\215\344\275\234", 0, QApplication::UnicodeUTF8));
+        label_9->setText(QApplication::translate("mainformClass", "\347\273\237\350\256\241\347\202\271\346\225\260(mean-k)", 0, QApplication::UnicodeUTF8));
+        label_10->setText(QApplication::translate("mainformClass", "\346\240\207\345\207\206\345\267\256", 0, QApplication::UnicodeUTF8));
+        toolBox->setItemText(toolBox->indexOf(outRemovePage), QApplication::translate("mainformClass", "\347\250\200\347\226\217\347\246\273\347\276\244\347\202\271\347\256\227\346\263\225\345\217\202\346\225\260", 0, QApplication::UnicodeUTF8));
         toolBox->setItemText(toolBox->indexOf(page_4), QApplication::translate("mainformClass", "\351\207\215\345\273\272\345\217\202\346\225\260", 0, QApplication::UnicodeUTF8));
         mainTab->setTabText(mainTab->indexOf(reconstruction), QApplication::translate("mainformClass", "\344\270\211\347\273\264\351\207\215\345\273\272", 0, QApplication::UnicodeUTF8));
         groupBox_3->setTitle(QApplication::translate("mainformClass", "\346\250\241\345\236\213\346\223\215\344\275\234", 0, QApplication::UnicodeUTF8));

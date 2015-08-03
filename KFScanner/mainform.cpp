@@ -6,6 +6,9 @@
 #include <QTextCodec> 
 #include <QTime>
 #include <io.h>
+#include <kfusion\OutRemover.h>
+
+
 /*************************************
  *  简要描述: GUI界面逻辑
  ************************************/  
@@ -271,12 +274,14 @@ void mainform::timerEvent(QTimerEvent *event)
 		}	
 		showInViewer(_scanner->image,ui.RGBViewer);
 		showInViewer(_scanner->depth,ui.depthViewer);
+		
 	}
 	if (event->timerId()==delayTimer)
 	{
 		killTimer(delayTimer);//出发一次后关掉定时器
 		_scanner->fusionStart();
 	}
+
 }
 
 /*----------------------------------------*
@@ -518,6 +523,18 @@ void mainform::deleteCombox(int index)
 {
 	ui.script_combox->removeItem(index);
 }
+/*------------------------------------------------------------------*
+ *  功能描述:	离群点过滤按钮
+ *  参数：		从信号传递过来的文件名
+ -------------------------------------------------------------------*/ 
+void mainform::on_outremoveBtn_clicked()
+{	
+	int mean_k = ui.sb_meank->value();
+	float std_dev = ui.sb_std_dev->value();
+	OutRemover outremover(mean_k,std_dev);
+	outremover.execute();
+}
+
 //////////////////////////////////////////////////
 //毫秒级别延时函数
 void sleep(unsigned int msec)

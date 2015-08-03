@@ -57,8 +57,8 @@
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;C:\opencv\build\install\include;D:\SEU\3dSCAN\kinfu_remake\kfusion\include;C:\Program Files\VTK\include\vtk-5.10</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(VCInstallDir)lib\amd64;$(VCInstallDir)atlmfc\lib\amd64;$(WindowsSdkDir)lib\x64;C:\opencv\build\lib</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\Boost\include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;C:\opencv\build\install\include;D:\SEU\3dSCAN\kinfu_remake\kfusion\include;C:\Program Files\VTK\include\vtk-5.10;D:\SEU\3dSCAN\kinfu_remake\build\3rd party\PCL\include;C:\Program Files\flann\include;C:\Program Files (x86)\Eigen\include</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(VCInstallDir)lib\amd64;$(VCInstallDir)atlmfc\lib\amd64;$(WindowsSdkDir)lib\x64;C:\opencv\build\lib;C:\Program Files\Boost\lib</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -89,9 +89,9 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;D:\SEU\3dSCAN\kinfu_remake\build\3rd party\PCL\lib</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;qtmaind.lib;QtCored4.lib;QtGuid4.lib;QtOpenGLd4.lib;%(AdditionalDependencies);D:\SEU\3dSCAN\kinfu_remake\build\lib\Debug\kfusiond.lib;C:\opencv\build\lib\Debug\opencv_viz249d.lib;C:\opencv\build\lib\Debug\opencv_highgui249d.lib;C:\opencv\build\lib\Debug\opencv_imgproc249d.lib;C:\opencv\build\lib\Debug\opencv_core249d.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64\cudart.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64\cuda.lib;C:\Program Files\OpenNI\Lib64\openNI64.lib;qextserialportd.lib</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;qtmaind.lib;QtCored4.lib;QtGuid4.lib;QtOpenGLd4.lib;%(AdditionalDependencies);D:\SEU\3dSCAN\kinfu_remake\build\lib\Debug\kfusiond.lib;C:\opencv\build\lib\Debug\opencv_viz249d.lib;C:\opencv\build\lib\Debug\opencv_highgui249d.lib;C:\opencv\build\lib\Debug\opencv_imgproc249d.lib;C:\opencv\build\lib\Debug\opencv_core249d.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64\cudart.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64\cuda.lib;C:\Program Files\OpenNI\Lib64\openNI64.lib;qextserialportd.lib;pcl_common_debug.lib;pcl_filters_debug.lib;pcl_io_debug.lib;pcl_io_ply_debug.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

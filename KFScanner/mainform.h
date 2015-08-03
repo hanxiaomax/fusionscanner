@@ -56,8 +56,10 @@ private slots:
 	void on_connectPortBtn_clicked();
 	void on_newScriptBtn_clicked();
 	void on_resetMachineBtn_clicked();
+	void on_outremoveBtn_clicked();
 	void addCombox(QString filename);
 	void deleteCombox(int index);
+	
 private:
 	void timerEvent(QTimerEvent *event);
 	void showInViewer(const cv::Mat& depth,glViewer *viewer);
