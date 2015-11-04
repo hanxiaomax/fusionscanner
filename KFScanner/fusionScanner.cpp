@@ -162,6 +162,5 @@ void fusionScanner::take_cloud(bool writetofile)
 		}
 		viz.showWidget("cloud", cv::viz::WPaintedCloud(cloud_host));//显示有颜色的点云
 		// 	viz.showWidget("normal",cv::viz::WCloudNormals(cloud_host,normal_host));//显示法线（法线是否已经计算？）
-	
 
 }

@@ -6,10 +6,7 @@
 #include <kfusion/CloudIO.h>
 #include <fstream>
 
-
-
 using namespace kfusion;
-
 
 class fusionScanner
 {
@@ -24,7 +21,6 @@ public:
 	cuda::DeviceArray<Point> cloud_buffer;//点云数据缓存
 	cuda::DeviceArray<Normal> normal_buffer;//法线数据缓存
 
-
 private:
 	bool exit_, iteractive_mode_;
 	bool fusionstart;
@@ -32,11 +28,9 @@ private:
 	KinFu::Ptr kinfu_sp;
 	cuda::Image view_device_;
 	cuda::Depth depth_device_;
-	
-	
 	double time_ms;
-
 	cv::viz::Viz3d viz;
+
 public:
 	void fusionStart();//启动融合
 	void fusionHold();//暂停融合

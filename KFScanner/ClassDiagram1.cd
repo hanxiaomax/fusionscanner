@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="fusionScanner">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQBAhAAAAAFAgRAARAAAIAEAkAEAEAAAACAAIAQEAAg=</HashCode>
+      <FileName>fusionScanner.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="glViewer" Collapsed="true">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAkAAAAACACAAAGBAgBQAAAAAAAIAAQEACAA=</HashCode>
+      <FileName>GL2Dviewer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mainform">
+    <Position X="12.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KgGAAFRAAIBCHAAIAAxAoQAAAQWBAA0AIEgIgaIAQAw=</HashCode>
+      <FileName>mainform.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="script_Dialog" Collapsed="true">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAjAQAQCAACABAASACAAQIAA=</HashCode>
+      <FileName>script_management.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ui_mainformClass" Collapsed="true">
+    <Position X="3.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>73YYRID3jPmAx/9CmJrwhYtxYgQA4fGE4LEIBnDEPHs=</HashCode>
+      <FileName>GeneratedFiles\ui_mainform.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ui_sctiptDialog" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>7wiIAIAAIAAACFAACAAYhQACggQAIAACAKAAAFCADHA=</HashCode>
+      <FileName>GeneratedFiles\ui_script_management.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="kfusion::InfoBox" Collapsed="true">
+    <Position X="10.5" Y="0.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="kfusion::InfoBox::__unnamed_enum_000c_6" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>D:\SEU\3dSCAN\kinfu_remake\kfusion\include\kfusion\types.hpp</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAAAAAAAAABAAAEAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>D:\SEU\3dSCAN\kinfu_remake\kfusion\include\kfusion\types.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ui::mainformClass">
+    <Position X="3.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GeneratedFiles\ui_mainform.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ui::sctiptDialog" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GeneratedFiles\ui_script_management.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="kfusion::Intr" Collapsed="true">
+    <Position X="8.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEEACAAAAAAAAAAAAAAgAAAAAkAA=</HashCode>
+      <FileName>D:\SEU\3dSCAN\kinfu_remake\kfusion\include\kfusion\types.hpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="kfusion::Point" Collapsed="true">
+    <Position X="3.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\SEU\3dSCAN\kinfu_remake\kfusion\include\kfusion\types.hpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="kfusion::RGB">
+    <Position X="14" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\SEU\3dSCAN\kinfu_remake\kfusion\include\kfusion\types.hpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="kfusion::PixelRGB" Collapsed="true">
+    <Position X="10.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAQABAAAAAAA=</HashCode>
+      <FileName>D:\SEU\3dSCAN\kinfu_remake\kfusion\include\kfusion\types.hpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="kfusion::ScopeTime" Collapsed="true">
+    <Position X="8.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAEAAAAAAABAAAIAAA=</HashCode>
+      <FileName>D:\SEU\3dSCAN\kinfu_remake\kfusion\include\kfusion\types.hpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="kfusion::SampledScopeTime">
+    <Position X="7" Y="2.25" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="kfusion::SampledScopeTime::__unnamed_enum_000c_5" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>D:\SEU\3dSCAN\kinfu_remake\kfusion\include\kfusion\types.hpp</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAQAAAgQAAAAAAAAAAAAAAAAAAgAAEAAAA=</HashCode>
+      <FileName>D:\SEU\3dSCAN\kinfu_remake\kfusion\include\kfusion\types.hpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="kfusion::cuda::Frame">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAEAAAAAAAACAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\SEU\3dSCAN\kinfu_remake\kfusion\include\kfusion\types.hpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Typedef Name="kfusion::Mat3f" Collapsed="true">
+    <Position X="10.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\SEU\3dSCAN\kinfu_remake\kfusion\include\kfusion\types.hpp</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="kfusion::Vec3f" Collapsed="true">
+    <Position X="8.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\SEU\3dSCAN\kinfu_remake\kfusion\include\kfusion\types.hpp</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="kfusion::Vec3i" Collapsed="true">
+    <Position X="10.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\SEU\3dSCAN\kinfu_remake\kfusion\include\kfusion\types.hpp</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="kfusion::Affine3f" Collapsed="true">
+    <Position X="7" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\SEU\3dSCAN\kinfu_remake\kfusion\include\kfusion\types.hpp</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="kfusion::Normal" Collapsed="true">
+    <Position X="3.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\SEU\3dSCAN\kinfu_remake\kfusion\include\kfusion\types.hpp</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="kfusion::cuda::CudaData" Collapsed="true">
+    <Position X="10.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\SEU\3dSCAN\kinfu_remake\kfusion\include\kfusion\types.hpp</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="kfusion::cuda::tempCudaData" Collapsed="true">
+    <Position X="7" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\SEU\3dSCAN\kinfu_remake\kfusion\include\kfusion\types.hpp</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="kfusion::cuda::Depth" Collapsed="true">
+    <Position X="12.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\SEU\3dSCAN\kinfu_remake\kfusion\include\kfusion\types.hpp</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="kfusion::cuda::Dists" Collapsed="true">
+    <Position X="7" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\SEU\3dSCAN\kinfu_remake\kfusion\include\kfusion\types.hpp</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="kfusion::cuda::Image" Collapsed="true">
+    <Position X="8.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\SEU\3dSCAN\kinfu_remake\kfusion\include\kfusion\types.hpp</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="kfusion::cuda::Normals" Collapsed="true">
+    <Position X="12.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\SEU\3dSCAN\kinfu_remake\kfusion\include\kfusion\types.hpp</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="kfusion::cuda::Cloud" Collapsed="true">
+    <Position X="8.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\SEU\3dSCAN\kinfu_remake\kfusion\include\kfusion\types.hpp</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Font Name="Microsoft YaHei" Size="9" />
+</ClassDiagram>
