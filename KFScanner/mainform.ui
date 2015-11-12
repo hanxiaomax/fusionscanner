@@ -15,7 +15,7 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_18">
-    <item row="0" column="0">
+    <item row="0" column="1">
      <widget class="QTabWidget" name="mainTab">
       <property name="enabled">
        <bool>true</bool>
@@ -35,7 +35,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <property name="iconSize">
        <size>
@@ -59,8 +59,8 @@
        <attribute name="title">
         <string>初始化</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_15" columnstretch="3,1">
-        <item row="0" column="1">
+       <layout class="QGridLayout" name="gridLayout_15" columnstretch="3,0,1">
+        <item row="0" column="2">
          <widget class="QToolBox" name="init_toolbox">
           <property name="font">
            <font>
@@ -1294,14 +1294,7 @@ color: rgb(255, 255, 255);</string>
          </widget>
         </item>
         <item row="0" column="0">
-         <widget class="glViewer" name="init_viewer" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>2</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-         </widget>
+         <widget class="InitViewer" name="init_viewer" native="true"/>
         </item>
        </layout>
       </widget>
@@ -1309,20 +1302,27 @@ color: rgb(255, 255, 255);</string>
        <attribute name="title">
         <string>扫描</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_3" columnstretch="0">
-        <item row="2" column="0">
-         <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="3,1">
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_3" stretch="2,1">
+       <layout class="QGridLayout" name="gridLayout_8">
+        <item row="0" column="0">
+         <layout class="QGridLayout" name="gridLayout_3" columnstretch="3,1" columnminimumwidth="3,1">
+          <item row="0" column="0">
+           <layout class="QVBoxLayout" name="verticalLayout_3">
             <item>
-             <widget class="glViewer" name="fusionViewer" native="true">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>2</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-             </widget>
+             <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1">
+              <item>
+               <widget class="glViewer" name="fusionViewer" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>2</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="CloudViewer" name="cloudViewer" native="true"/>
+              </item>
+             </layout>
             </item>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -1347,7 +1347,7 @@ color: rgb(255, 255, 255);</string>
                </widget>
               </item>
               <item>
-               <widget class="glViewer" name="deviceViewer" native="true">
+               <widget class="QWidget" name="deviceViewer" native="true">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                   <horstretch>2</horstretch>
@@ -1360,7 +1360,7 @@ color: rgb(255, 255, 255);</string>
             </item>
            </layout>
           </item>
-          <item>
+          <item row="0" column="1">
            <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
              <widget class="QGroupBox" name="groupBox">
@@ -1424,6 +1424,19 @@ color: rgb(255, 255, 255);</string>
                  </widget>
                 </item>
                </layout>
+              </widget>
+              <widget class="QPushButton" name="save2qglviewerbtn">
+               <property name="geometry">
+                <rect>
+                 <x>40</x>
+                 <y>120</y>
+                 <width>75</width>
+                 <height>23</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>SAVE</string>
+               </property>
               </widget>
              </widget>
             </item>
@@ -1544,9 +1557,9 @@ color: rgb(255, 255, 255);</string>
        <attribute name="title">
         <string>三维重建</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_5">
+       <layout class="QGridLayout" name="gridLayout_5" columnstretch="3">
         <item row="0" column="0">
-         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="2,1">
+         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,1">
           <item>
            <widget class="glViewer" name="init_viewer_6" native="true">
             <property name="sizePolicy">
@@ -1627,8 +1640,8 @@ color: rgb(255, 255, 255);</string>
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>346</width>
-                  <height>485</height>
+                  <width>213</width>
+                  <height>84</height>
                  </rect>
                 </property>
                 <attribute name="label">
@@ -1976,7 +1989,19 @@ color: rgb(255, 255, 255);</string>
   <customwidget>
    <class>glViewer</class>
    <extends>QWidget</extends>
-   <header location="global">GL2Dviewer.h</header>
+   <header>GL2Dviewer.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>InitViewer</class>
+   <extends>QWidget</extends>
+   <header>InitViewer.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CloudViewer</class>
+   <extends>QWidget</extends>
+   <header>CloudViewer.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainform.h'
 **
-** Created: Tue Oct 13 13:09:20 2015
+** Created: Tue Nov 10 16:07:17 2015
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_mainform[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      14,   14, // methods
+      15,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -45,6 +45,7 @@ static const uint qt_meta_data_mainform[] = {
      339,    9,    9,    9, 0x08,
      374,  365,    9,    9, 0x08,
      399,  393,    9,    9, 0x08,
+     417,    9,    9,    9, 0x08,
 
        0        // eod
 };
@@ -63,6 +64,7 @@ static const char qt_meta_stringdata_mainform[] = {
     "on_resetMachineBtn_clicked()\0"
     "on_outremoveBtn_clicked()\0filename\0"
     "addCombox(QString)\0index\0deleteCombox(int)\0"
+    "on_save2qglviewerbtn_clicked()\0"
 };
 
 void mainform::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -85,6 +87,7 @@ void mainform::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 11: _t->on_outremoveBtn_clicked(); break;
         case 12: _t->addCombox((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 13: _t->deleteCombox((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 14: _t->on_save2qglviewerbtn_clicked(); break;
         default: ;
         }
     }
@@ -122,9 +125,9 @@ int mainform::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 14)
+        if (_id < 15)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 14;
+        _id -= 15;
     }
     return _id;
 }

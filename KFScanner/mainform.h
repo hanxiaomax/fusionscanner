@@ -45,6 +45,7 @@ private:
 	
 
 private slots:
+	//////////////////工具栏//////////////////////
 	void on_connectKinect_triggered();//连接kinect设备并检查gpu
 	void on_ToolstartBtn_triggered();//启动扫描
 	void on_ToolstopBtn_triggered();//停止扫描
@@ -52,6 +53,7 @@ private slots:
 	void on_actionSaveCloud_triggered();//保存点云
 	void on_action_ResetKinFuParams_triggered();//重置kinfu参数
 	void on_action_ResetScanParams_triggered();//重置扫描参数
+	//////////////////按钮//////////////////////
 	void on_scanPortBtn_clicked();
 	void on_connectPortBtn_clicked();
 	void on_newScriptBtn_clicked();
@@ -59,6 +61,7 @@ private slots:
 	void on_outremoveBtn_clicked();
 	void addCombox(QString filename);
 	void deleteCombox(int index);
+	void on_save2qglviewerbtn_clicked();
 	
 private:
 	void timerEvent(QTimerEvent *event);

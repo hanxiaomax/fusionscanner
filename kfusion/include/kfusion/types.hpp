@@ -16,6 +16,8 @@ namespace kfusion
     typedef cv::Vec3f Vec3f;//基于Matx的短向量<3 float>
     typedef cv::Vec3i Vec3i;
     typedef cv::Affine3f Affine3f;//仿射
+	
+	typedef vector<cv::Point3d> vertexes;//点云顶点
 
     struct KF_EXPORTS Intr//
     {

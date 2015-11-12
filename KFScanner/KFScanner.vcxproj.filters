@@ -68,6 +68,18 @@
     <ClCompile Include="GeneratedFiles\qrc_script_management.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="InitViewer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_InitViewer.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_InitViewer.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="CloudViewer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="mainform.h">
@@ -88,6 +100,9 @@
     <CustomBuild Include="script_management.qrc">
       <Filter>Resource Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="InitViewer.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_mainform.h">
@@ -105,11 +120,13 @@
     <ClInclude Include="..\kfusion\include\kfusion\types.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="CloudViewer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\images\add.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
 </Project>

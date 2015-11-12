@@ -20,6 +20,7 @@ public:
 	cv::Mat depth, image;//存放深度数据和RGB数据
 	cuda::DeviceArray<Point> cloud_buffer;//点云数据缓存
 	cuda::DeviceArray<Normal> normal_buffer;//法线数据缓存
+	
 
 private:
 	bool exit_, iteractive_mode_;
@@ -36,8 +37,8 @@ public:
 	void fusionHold();//暂停融合
 	void fusionReset();//软件复位
 	void update();//更新数据
-	//cuda::DeviceArray<Point> getCloudBuffer(){return cloud_buffer;};
 	void take_cloud(bool writetofile=false);//默认参数应该在声明时给出
+	vertexes getPointCloud();
 	
 private:
 	void creat_raycasted(KinFu& kinfu);//创建融合结果显示矩阵

@@ -3,6 +3,7 @@
 #include <opencv2/viz/vizcore.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+#include <kfusion\types.hpp>
 
 /**************************************
  *  简要描述: 扫描仪类，实现扫描仪的逻辑
@@ -24,8 +25,6 @@ fusionScanner::fusionScanner(OpenNISource& source)
 	cv::viz::WCube cube(cv::Vec3d::all(0), cv::Vec3d(params.volume_size), true, cv::viz::Color::black());//坐标系？
 	viz.showWidget("cube", cube, params.volume_pose);//showWideget()会创建一个窗口部件
 	viz.showWidget("coor", cv::viz::WCoordinateSystem(0.1));
-
-
 }
 
 
@@ -163,4 +162,27 @@ void fusionScanner::take_cloud(bool writetofile)
 		viz.showWidget("cloud", cv::viz::WPaintedCloud(cloud_host));//显示有颜色的点云
 		// 	viz.showWidget("normal",cv::viz::WCloudNormals(cloud_host,normal_host));//显示法线（法线是否已经计算？）
 
+}
+
+vertexes fusionScanner::getPointCloud()
+{
+	KinFu& kinfu=*kinfu_sp;
+	kfusion::vertexes pcd;
+	cuda::DeviceArray<Point> cloud = kinfu.tsdf().fetchCloud(cloud_buffer);//GPU内存中的一维矩阵	
+	cv::Mat cloud_host(1, (int)cloud.size(), CV_32FC4);//一维矩阵，存放无序点云(1行，n列) CV_32FC4 32位浮点4通道
+	cloud.download(cloud_host.ptr<Point>());
+	for (int i = 0; i < cloud_host.cols; ++i) 
+	{
+		cv::Point3d vertex;
+		vertex.x=cloud_host.at<cv::Vec4f>(0,i)[0];
+		vertex.y=cloud_host.at<cv::Vec4f>(0,i)[1];
+		vertex.z=cloud_host.at<cv::Vec4f>(0,i)[2];
+		
+		pcd.push_back(vertex);
+	}
+	InfoBox infobox("getPointCloud");
+	infobox.printInfo("用于可视化的点云数据已经准备好:",InfoBox::SUC);
+
+	
+	return pcd;
 }

@@ -16,7 +16,6 @@ using namespace kfusion;
 using namespace std;
 
 void sleep(unsigned int msec);
-
 /*-------------------------------------------* 
 *  功能描述: 构造函数完成界面初始化和默认设置
 -------------------------------------------*/  
@@ -84,7 +83,7 @@ void mainform::setkinfuToDefault()
 	ui.tsdf_max_weight_sb->setValue(64.0);//64-->150
 	ui.raycast_factor_sb->setValue(0.75);
 	ui.gradient_factor_sb->setValue(0.50);
-
+	
 }
 
 /*----------------------------------------*
@@ -94,6 +93,13 @@ void mainform::on_actionSaveCloud_triggered()
 {
 	_scanner->take_cloud(true);
 }
+
+void mainform::on_save2qglviewerbtn_clicked()
+{	
+	vertexes pcd=_scanner->getPointCloud();
+	ui.cloudViewer->update(pcd);
+}
+
 /*----------------------------------------*
  *  功能描述: 重置kinfu参数按钮触发槽函数
  ----------------------------------------*/ 
