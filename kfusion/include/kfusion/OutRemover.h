@@ -25,7 +25,6 @@ private:
 	bool loadCloud (const std::string &filename, pcl::PCLPointCloud2 &cloud);//加载点云
 	void runfilter(const pcl::PCLPointCloud2::ConstPtr &input, pcl::PCLPointCloud2 &output,
           int mean_k, double std_dev_mul, bool negative);//执行滤波器
-	
 	void saveCloud (const std::string &filename, const pcl::PCLPointCloud2 &output);//保存点云到ply文件
 	std::vector<string> splitFilename(std::string filename);//分割文件名
 private:

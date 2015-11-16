@@ -11,23 +11,20 @@ void CloudViewer::update(vertexes pcd)
 
 void CloudViewer::draw() 
 {
-	
 	glPushMatrix();
-	//glScaled(vizScale,vizScale,vizScale);
-	//glMultMatrixd(m_global_transform.data());
-
-	glPushAttrib(GL_ENABLE_BIT);
+	glScaled(vizScale,vizScale,vizScale);//缩放比例
 	glDisable(GL_LIGHTING);
+	//glPointSize(5.0f);
+	
+	glColor3f(1,1,0);
 	glBegin(GL_POINTS);
 	for (int i = 0; i < pcd_buffer.size(); ++i) 
 	{
-		glVertex3dv(&(pcd_buffer[i].y));
+		glVertex3d(pcd_buffer[i].x,pcd_buffer[i].y,pcd_buffer[i].z);//绘制一个点
 	}
 	glEnd();
+	glPopMatrix();
 
-	//std::cout<<"update"<<std::endl;
-
-	
 }
 
 void CloudViewer::init() {
@@ -39,4 +36,5 @@ void CloudViewer::init() {
 	setSceneBoundingBox(qglviewer::Vec(-50,-50,-50), qglviewer::Vec(50,50,50));
 
 	showEntireScene();
+	vizScale=80.0f;
 }

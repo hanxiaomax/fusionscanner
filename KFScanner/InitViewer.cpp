@@ -15,10 +15,11 @@ using namespace std;
 void InitViewer::draw()
 { 
   const float nbSteps = 80.0;
-
+  
   glBegin(GL_QUAD_STRIP);
   for (float i=0; i<nbSteps; ++i)
 	{
+	  
 	  float ratio = i/nbSteps;
 	  float angle = 21.0*ratio;
 	  float c = cos(angle);
@@ -34,6 +35,7 @@ void InitViewer::draw()
 	  glVertex3f(r2*c, alt+0.05, r2*s);
 	}
   glEnd();
+  
 }
 
 void InitViewer::init()

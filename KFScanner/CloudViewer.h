@@ -9,7 +9,7 @@ class CloudViewer : public QGLViewer
 {
 
 public:
-	CloudViewer::CloudViewer(QWidget *parent): QGLViewer(parent){};
+	CloudViewer::CloudViewer(QWidget *parent): QGLViewer(parent),vizScale(1.0f){};
 
 protected:
 	virtual void draw();
@@ -18,6 +18,7 @@ public:
 	void update(vertexes v);
 private:
 	vertexes pcd_buffer;
+	float vizScale;
 };
 
 

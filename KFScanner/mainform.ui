@@ -35,7 +35,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <property name="iconSize">
        <size>
@@ -1347,7 +1347,7 @@ color: rgb(255, 255, 255);</string>
                </widget>
               </item>
               <item>
-               <widget class="QWidget" name="deviceViewer" native="true">
+               <widget class="FusionViewer" name="fViewer" native="true">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                   <horstretch>2</horstretch>
@@ -1374,62 +1374,11 @@ color: rgb(255, 255, 255);</string>
               <property name="title">
                <string>状态</string>
               </property>
-              <widget class="QWidget" name="layoutWidget">
-               <property name="geometry">
-                <rect>
-                 <x>10</x>
-                 <y>36</y>
-                 <width>251</width>
-                 <height>31</height>
-                </rect>
-               </property>
-               <layout class="QHBoxLayout" name="horizontalLayout_8">
-                <item>
-                 <widget class="QLabel" name="label_22">
-                  <property name="font">
-                   <font>
-                    <weight>50</weight>
-                    <bold>false</bold>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>FPS</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <widget class="QLabel" name="fps">
-                  <property name="font">
-                   <font>
-                    <weight>50</weight>
-                    <bold>false</bold>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>TextLabel</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
               <widget class="QPushButton" name="save2qglviewerbtn">
                <property name="geometry">
                 <rect>
-                 <x>40</x>
-                 <y>120</y>
+                 <x>10</x>
+                 <y>30</y>
                  <width>75</width>
                  <height>23</height>
                 </rect>
@@ -1545,6 +1494,78 @@ color: rgb(255, 255, 255);</string>
                 </widget>
                </item>
               </layout>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="process">
+       <attribute name="title">
+        <string>后处理</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_7">
+        <item row="0" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="2,1">
+          <item>
+           <widget class="ResultViewer" name="resultViewer" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>2</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_4" stretch="2">
+            <item>
+             <widget class="QGroupBox" name="groupBox_3">
+              <property name="title">
+               <string>模型操作</string>
+              </property>
+              <widget class="QPushButton" name="pushButton_5">
+               <property name="geometry">
+                <rect>
+                 <x>10</x>
+                 <y>40</y>
+                 <width>118</width>
+                 <height>34</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                 <weight>50</weight>
+                 <bold>false</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>修补孔洞</string>
+               </property>
+              </widget>
+              <widget class="QPushButton" name="pushButton_6">
+               <property name="geometry">
+                <rect>
+                 <x>170</x>
+                 <y>40</y>
+                 <width>118</width>
+                 <height>34</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                 <weight>50</weight>
+                 <bold>false</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>输出</string>
+               </property>
+              </widget>
              </widget>
             </item>
            </layout>
@@ -1723,78 +1744,6 @@ color: rgb(255, 255, 255);</string>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="process">
-       <attribute name="title">
-        <string>后处理</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_7">
-        <item row="0" column="0">
-         <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="2,1">
-          <item>
-           <widget class="glViewer" name="init_viewer_2" native="true">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-              <horstretch>2</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_4" stretch="2">
-            <item>
-             <widget class="QGroupBox" name="groupBox_3">
-              <property name="title">
-               <string>模型操作</string>
-              </property>
-              <widget class="QPushButton" name="pushButton_5">
-               <property name="geometry">
-                <rect>
-                 <x>10</x>
-                 <y>40</y>
-                 <width>118</width>
-                 <height>34</height>
-                </rect>
-               </property>
-               <property name="font">
-                <font>
-                 <pointsize>10</pointsize>
-                 <weight>50</weight>
-                 <bold>false</bold>
-                </font>
-               </property>
-               <property name="text">
-                <string>修补孔洞</string>
-               </property>
-              </widget>
-              <widget class="QPushButton" name="pushButton_6">
-               <property name="geometry">
-                <rect>
-                 <x>170</x>
-                 <y>40</y>
-                 <width>118</width>
-                 <height>34</height>
-                </rect>
-               </property>
-               <property name="font">
-                <font>
-                 <pointsize>10</pointsize>
-                 <weight>50</weight>
-                 <bold>false</bold>
-                </font>
-               </property>
-               <property name="text">
-                <string>输出</string>
-               </property>
-              </widget>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </widget>
      </widget>
     </item>
    </layout>
@@ -1840,10 +1789,17 @@ color: rgb(255, 255, 255);</string>
     <property name="title">
      <string>连接</string>
     </property>
+    <widget class="QMenu" name="menuFf">
+     <property name="title">
+      <string>ff </string>
+     </property>
+     <addaction name="actionHggg"/>
+    </widget>
     <addaction name="action_Kinect"/>
     <addaction name="separator"/>
     <addaction name="action_2"/>
     <addaction name="action_3"/>
+    <addaction name="menuFf"/>
    </widget>
    <addaction name="menu_5"/>
    <addaction name="menu_2"/>
@@ -1983,6 +1939,11 @@ color: rgb(255, 255, 255);</string>
     <string>连接Kinect</string>
    </property>
   </action>
+  <action name="actionHggg">
+   <property name="text">
+    <string>hggg</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -2002,6 +1963,18 @@ color: rgb(255, 255, 255);</string>
    <class>CloudViewer</class>
    <extends>QWidget</extends>
    <header>CloudViewer.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>FusionViewer</class>
+   <extends>QWidget</extends>
+   <header>FusionViewer.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ResultViewer</class>
+   <extends>QWidget</extends>
+   <header location="global">ResultViewer.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

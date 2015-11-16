@@ -42,10 +42,6 @@ fusionScanner::fusionScanner(OpenNISource& source,KinFuParams &params)
 	kinfu_sp = KinFu::Ptr( new KinFu(params) );//创建Kinfu对象
 	kinfu_sp->PrintKFparms();
 	capture.setRegistration(true);
-	cv::viz::WCube cube(cv::Vec3d::all(0), cv::Vec3d(params.volume_size), true, cv::viz::Color::apricot());//坐标系？
-        viz.showWidget("cube", cube, params.volume_pose);//showWideget()会创建一个窗口部件
-        viz.showWidget("coor", cv::viz::WCoordinateSystem(0.1));
-
 }
 
 /*-------------------------------------* 
@@ -96,11 +92,6 @@ void fusionScanner::update(){
 			kinfu(depth_device_)   ;//kinfu算法处理，成功返回true
 		}
 		creat_raycasted(kinfu);
-		//Vec3f pos(100,100,100);
-		//cv::Affine3d makeCameraPose(pos);
-		cv::Affine3d viwer_pose = Affine3f().translate(Vec3f(0,0,0.1));
-		viz.setViewerPose(viwer_pose);
-		viz.spinOnce(3, true);
 	}
 	else
 	{
@@ -159,7 +150,7 @@ void fusionScanner::take_cloud(bool writetofile)
 				PCDw.write("cloud_file.pcd",cloud,normal);
 			}
 		}
-		viz.showWidget("cloud", cv::viz::WPaintedCloud(cloud_host));//显示有颜色的点云
+		//viz.showWidget("cloud", cv::viz::WPaintedCloud(cloud_host));//显示有颜色的点云
 		// 	viz.showWidget("normal",cv::viz::WCloudNormals(cloud_host,normal_host));//显示法线（法线是否已经计算？）
 
 }

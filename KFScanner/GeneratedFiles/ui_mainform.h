@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainform.ui'
 **
-** Created: Thu Nov 12 11:50:35 2015
+** Created: Thu Nov 12 20:03:49 2015
 **      by: Qt User Interface Compiler version 4.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -35,7 +35,9 @@
 #include <QtGui/QToolBox>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
+#include <ResultViewer.h>
 #include "CloudViewer.h"
+#include "FusionViewer.h"
 #include "GL2Dviewer.h"
 #include "InitViewer.h"
 
@@ -57,6 +59,7 @@ public:
     QAction *action_2;
     QAction *action_3;
     QAction *action_Kinect;
+    QAction *actionHggg;
     QWidget *centralWidget;
     QGridLayout *gridLayout_18;
     QTabWidget *mainTab;
@@ -177,14 +180,9 @@ public:
     QHBoxLayout *horizontalLayout_3;
     glViewer *depthViewer;
     glViewer *RGBViewer;
-    QWidget *deviceViewer;
+    FusionViewer *fViewer;
     QVBoxLayout *verticalLayout_2;
     QGroupBox *groupBox;
-    QWidget *layoutWidget;
-    QHBoxLayout *horizontalLayout_8;
-    QLabel *label_22;
-    QSpacerItem *horizontalSpacer;
-    QLabel *fps;
     QPushButton *save2qglviewerbtn;
     QGroupBox *groupBox_6;
     QGridLayout *gridLayout_4;
@@ -198,6 +196,14 @@ public:
     QLabel *segment;
     QLabel *R_segement;
     QProgressBar *progressBar_2;
+    QWidget *process;
+    QGridLayout *gridLayout_7;
+    QHBoxLayout *horizontalLayout_5;
+    ResultViewer *resultViewer;
+    QVBoxLayout *verticalLayout_4;
+    QGroupBox *groupBox_3;
+    QPushButton *pushButton_5;
+    QPushButton *pushButton_6;
     QWidget *reconstruction;
     QGridLayout *gridLayout_5;
     QHBoxLayout *horizontalLayout_2;
@@ -206,7 +212,7 @@ public:
     QGridLayout *gridLayout_6;
     QToolBox *toolBox;
     QWidget *page_3;
-    QWidget *layoutWidget1;
+    QWidget *layoutWidget;
     QVBoxLayout *verticalLayout_10;
     QPushButton *outremoveBtn;
     QPushButton *pushButton;
@@ -220,20 +226,13 @@ public:
     QDoubleSpinBox *sb_std_dev;
     QSpacerItem *verticalSpacer_6;
     QWidget *page_4;
-    QWidget *process;
-    QGridLayout *gridLayout_7;
-    QHBoxLayout *horizontalLayout_5;
-    glViewer *init_viewer_2;
-    QVBoxLayout *verticalLayout_4;
-    QGroupBox *groupBox_3;
-    QPushButton *pushButton_5;
-    QPushButton *pushButton_6;
     QMenuBar *menuBar;
     QMenu *menu_2;
     QMenu *menu;
     QMenu *menu_3;
     QMenu *menu_4;
     QMenu *menu_5;
+    QMenu *menuFf;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
     QToolBar *toolBar;
@@ -286,6 +285,8 @@ public:
         action_3->setObjectName(QString::fromUtf8("action_3"));
         action_Kinect = new QAction(mainformClass);
         action_Kinect->setObjectName(QString::fromUtf8("action_Kinect"));
+        actionHggg = new QAction(mainformClass);
+        actionHggg->setObjectName(QString::fromUtf8("actionHggg"));
         centralWidget = new QWidget(mainformClass);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         gridLayout_18 = new QGridLayout(centralWidget);
@@ -1003,12 +1004,12 @@ public:
 
         horizontalLayout_3->addWidget(RGBViewer);
 
-        deviceViewer = new QWidget(scan);
-        deviceViewer->setObjectName(QString::fromUtf8("deviceViewer"));
-        sizePolicy1.setHeightForWidth(deviceViewer->sizePolicy().hasHeightForWidth());
-        deviceViewer->setSizePolicy(sizePolicy1);
+        fViewer = new FusionViewer(scan);
+        fViewer->setObjectName(QString::fromUtf8("fViewer"));
+        sizePolicy1.setHeightForWidth(fViewer->sizePolicy().hasHeightForWidth());
+        fViewer->setSizePolicy(sizePolicy1);
 
-        horizontalLayout_3->addWidget(deviceViewer);
+        horizontalLayout_3->addWidget(fViewer);
 
 
         verticalLayout_3->addLayout(horizontalLayout_3);
@@ -1022,36 +1023,9 @@ public:
         groupBox = new QGroupBox(scan);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
         groupBox->setFont(font3);
-        layoutWidget = new QWidget(groupBox);
-        layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        layoutWidget->setGeometry(QRect(10, 36, 251, 31));
-        horizontalLayout_8 = new QHBoxLayout(layoutWidget);
-        horizontalLayout_8->setSpacing(6);
-        horizontalLayout_8->setContentsMargins(11, 11, 11, 11);
-        horizontalLayout_8->setObjectName(QString::fromUtf8("horizontalLayout_8"));
-        horizontalLayout_8->setContentsMargins(0, 0, 0, 0);
-        label_22 = new QLabel(layoutWidget);
-        label_22->setObjectName(QString::fromUtf8("label_22"));
-        QFont font4;
-        font4.setBold(false);
-        font4.setWeight(50);
-        label_22->setFont(font4);
-
-        horizontalLayout_8->addWidget(label_22);
-
-        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout_8->addItem(horizontalSpacer);
-
-        fps = new QLabel(layoutWidget);
-        fps->setObjectName(QString::fromUtf8("fps"));
-        fps->setFont(font4);
-
-        horizontalLayout_8->addWidget(fps);
-
         save2qglviewerbtn = new QPushButton(groupBox);
         save2qglviewerbtn->setObjectName(QString::fromUtf8("save2qglviewerbtn"));
-        save2qglviewerbtn->setGeometry(QRect(40, 120, 75, 23));
+        save2qglviewerbtn->setGeometry(QRect(10, 30, 75, 23));
 
         verticalLayout_2->addWidget(groupBox);
 
@@ -1133,6 +1107,48 @@ public:
         gridLayout_8->addLayout(gridLayout_3, 0, 0, 1, 1);
 
         mainTab->addTab(scan, QString());
+        process = new QWidget();
+        process->setObjectName(QString::fromUtf8("process"));
+        gridLayout_7 = new QGridLayout(process);
+        gridLayout_7->setSpacing(6);
+        gridLayout_7->setContentsMargins(11, 11, 11, 11);
+        gridLayout_7->setObjectName(QString::fromUtf8("gridLayout_7"));
+        horizontalLayout_5 = new QHBoxLayout();
+        horizontalLayout_5->setSpacing(6);
+        horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
+        resultViewer = new ResultViewer(process);
+        resultViewer->setObjectName(QString::fromUtf8("resultViewer"));
+        sizePolicy1.setHeightForWidth(resultViewer->sizePolicy().hasHeightForWidth());
+        resultViewer->setSizePolicy(sizePolicy1);
+
+        horizontalLayout_5->addWidget(resultViewer);
+
+        verticalLayout_4 = new QVBoxLayout();
+        verticalLayout_4->setSpacing(6);
+        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
+        groupBox_3 = new QGroupBox(process);
+        groupBox_3->setObjectName(QString::fromUtf8("groupBox_3"));
+        pushButton_5 = new QPushButton(groupBox_3);
+        pushButton_5->setObjectName(QString::fromUtf8("pushButton_5"));
+        pushButton_5->setGeometry(QRect(10, 40, 118, 34));
+        pushButton_5->setFont(font3);
+        pushButton_6 = new QPushButton(groupBox_3);
+        pushButton_6->setObjectName(QString::fromUtf8("pushButton_6"));
+        pushButton_6->setGeometry(QRect(170, 40, 118, 34));
+        pushButton_6->setFont(font3);
+
+        verticalLayout_4->addWidget(groupBox_3);
+
+        verticalLayout_4->setStretch(0, 2);
+
+        horizontalLayout_5->addLayout(verticalLayout_4);
+
+        horizontalLayout_5->setStretch(0, 2);
+        horizontalLayout_5->setStretch(1, 1);
+
+        gridLayout_7->addLayout(horizontalLayout_5, 0, 0, 1, 1);
+
+        mainTab->addTab(process, QString());
         reconstruction = new QWidget();
         reconstruction->setObjectName(QString::fromUtf8("reconstruction"));
         gridLayout_5 = new QGridLayout(reconstruction);
@@ -1157,34 +1173,34 @@ public:
         gridLayout_6->setObjectName(QString::fromUtf8("gridLayout_6"));
         toolBox = new QToolBox(groupBox_2);
         toolBox->setObjectName(QString::fromUtf8("toolBox"));
-        QFont font5;
-        font5.setFamily(QString::fromUtf8("\345\276\256\350\275\257\351\233\205\351\273\221"));
-        font5.setPointSize(11);
-        font5.setBold(false);
-        font5.setWeight(50);
-        toolBox->setFont(font5);
+        QFont font4;
+        font4.setFamily(QString::fromUtf8("\345\276\256\350\275\257\351\233\205\351\273\221"));
+        font4.setPointSize(11);
+        font4.setBold(false);
+        font4.setWeight(50);
+        toolBox->setFont(font4);
         page_3 = new QWidget();
         page_3->setObjectName(QString::fromUtf8("page_3"));
         page_3->setGeometry(QRect(0, 0, 98, 28));
-        layoutWidget1 = new QWidget(page_3);
-        layoutWidget1->setObjectName(QString::fromUtf8("layoutWidget1"));
-        layoutWidget1->setGeometry(QRect(10, 20, 131, 171));
-        verticalLayout_10 = new QVBoxLayout(layoutWidget1);
+        layoutWidget = new QWidget(page_3);
+        layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
+        layoutWidget->setGeometry(QRect(10, 20, 131, 171));
+        verticalLayout_10 = new QVBoxLayout(layoutWidget);
         verticalLayout_10->setSpacing(6);
         verticalLayout_10->setContentsMargins(11, 11, 11, 11);
         verticalLayout_10->setObjectName(QString::fromUtf8("verticalLayout_10"));
         verticalLayout_10->setContentsMargins(0, 0, 0, 0);
-        outremoveBtn = new QPushButton(layoutWidget1);
+        outremoveBtn = new QPushButton(layoutWidget);
         outremoveBtn->setObjectName(QString::fromUtf8("outremoveBtn"));
 
         verticalLayout_10->addWidget(outremoveBtn);
 
-        pushButton = new QPushButton(layoutWidget1);
+        pushButton = new QPushButton(layoutWidget);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
 
         verticalLayout_10->addWidget(pushButton);
 
-        pushButton_2 = new QPushButton(layoutWidget1);
+        pushButton_2 = new QPushButton(layoutWidget);
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
 
         verticalLayout_10->addWidget(pushButton_2);
@@ -1248,48 +1264,6 @@ public:
 
         gridLayout_5->setColumnStretch(0, 3);
         mainTab->addTab(reconstruction, QString());
-        process = new QWidget();
-        process->setObjectName(QString::fromUtf8("process"));
-        gridLayout_7 = new QGridLayout(process);
-        gridLayout_7->setSpacing(6);
-        gridLayout_7->setContentsMargins(11, 11, 11, 11);
-        gridLayout_7->setObjectName(QString::fromUtf8("gridLayout_7"));
-        horizontalLayout_5 = new QHBoxLayout();
-        horizontalLayout_5->setSpacing(6);
-        horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
-        init_viewer_2 = new glViewer(process);
-        init_viewer_2->setObjectName(QString::fromUtf8("init_viewer_2"));
-        sizePolicy1.setHeightForWidth(init_viewer_2->sizePolicy().hasHeightForWidth());
-        init_viewer_2->setSizePolicy(sizePolicy1);
-
-        horizontalLayout_5->addWidget(init_viewer_2);
-
-        verticalLayout_4 = new QVBoxLayout();
-        verticalLayout_4->setSpacing(6);
-        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
-        groupBox_3 = new QGroupBox(process);
-        groupBox_3->setObjectName(QString::fromUtf8("groupBox_3"));
-        pushButton_5 = new QPushButton(groupBox_3);
-        pushButton_5->setObjectName(QString::fromUtf8("pushButton_5"));
-        pushButton_5->setGeometry(QRect(10, 40, 118, 34));
-        pushButton_5->setFont(font3);
-        pushButton_6 = new QPushButton(groupBox_3);
-        pushButton_6->setObjectName(QString::fromUtf8("pushButton_6"));
-        pushButton_6->setGeometry(QRect(170, 40, 118, 34));
-        pushButton_6->setFont(font3);
-
-        verticalLayout_4->addWidget(groupBox_3);
-
-        verticalLayout_4->setStretch(0, 2);
-
-        horizontalLayout_5->addLayout(verticalLayout_4);
-
-        horizontalLayout_5->setStretch(0, 2);
-        horizontalLayout_5->setStretch(1, 1);
-
-        gridLayout_7->addLayout(horizontalLayout_5, 0, 0, 1, 1);
-
-        mainTab->addTab(process, QString());
 
         gridLayout_18->addWidget(mainTab, 0, 1, 1, 1);
 
@@ -1307,6 +1281,8 @@ public:
         menu_4->setObjectName(QString::fromUtf8("menu_4"));
         menu_5 = new QMenu(menuBar);
         menu_5->setObjectName(QString::fromUtf8("menu_5"));
+        menuFf = new QMenu(menu_5);
+        menuFf->setObjectName(QString::fromUtf8("menuFf"));
         mainformClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(mainformClass);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
@@ -1341,6 +1317,8 @@ public:
         menu_5->addSeparator();
         menu_5->addAction(action_2);
         menu_5->addAction(action_3);
+        menu_5->addAction(menuFf->menuAction());
+        menuFf->addAction(actionHggg);
         mainToolBar->addAction(connectKinect);
         mainToolBar->addSeparator();
         toolBar->addAction(ToolstartBtn);
@@ -1353,7 +1331,7 @@ public:
         QObject::connect(delay_slider, SIGNAL(valueChanged(int)), delay_value, SLOT(setNum(int)));
         QObject::connect(range_slider, SIGNAL(valueChanged(int)), range_value, SLOT(setNum(int)));
 
-        mainTab->setCurrentIndex(1);
+        mainTab->setCurrentIndex(2);
         init_toolbox->setCurrentIndex(2);
         toolBox->setCurrentIndex(1);
 
@@ -1377,6 +1355,7 @@ public:
         action_2->setText(QApplication::translate("mainformClass", "\346\211\253\346\217\217\347\253\257\345\217\243", 0, QApplication::UnicodeUTF8));
         action_3->setText(QApplication::translate("mainformClass", "\350\277\236\346\216\245\347\253\257\345\217\243", 0, QApplication::UnicodeUTF8));
         action_Kinect->setText(QApplication::translate("mainformClass", "\350\277\236\346\216\245Kinect", 0, QApplication::UnicodeUTF8));
+        actionHggg->setText(QApplication::translate("mainformClass", "hggg", 0, QApplication::UnicodeUTF8));
         groupBox_8->setTitle(QString());
         label_28->setText(QApplication::translate("mainformClass", "\347\253\257\345\217\243", 0, QApplication::UnicodeUTF8));
         label_30->setText(QApplication::translate("mainformClass", "\350\277\220\345\212\250\350\204\232\346\234\254", 0, QApplication::UnicodeUTF8));
@@ -1427,8 +1406,6 @@ public:
         init_toolbox->setItemText(init_toolbox->indexOf(page_2), QApplication::translate("mainformClass", "Kinfu\345\217\202\346\225\260", 0, QApplication::UnicodeUTF8));
         mainTab->setTabText(mainTab->indexOf(initiation), QApplication::translate("mainformClass", "\345\210\235\345\247\213\345\214\226", 0, QApplication::UnicodeUTF8));
         groupBox->setTitle(QApplication::translate("mainformClass", "\347\212\266\346\200\201", 0, QApplication::UnicodeUTF8));
-        label_22->setText(QApplication::translate("mainformClass", "FPS", 0, QApplication::UnicodeUTF8));
-        fps->setText(QApplication::translate("mainformClass", "TextLabel", 0, QApplication::UnicodeUTF8));
         save2qglviewerbtn->setText(QApplication::translate("mainformClass", "SAVE", 0, QApplication::UnicodeUTF8));
         groupBox_6->setTitle(QApplication::translate("mainformClass", "\345\215\207\351\231\215\345\217\260\345\217\202\346\225\260\345\217\212\347\212\266\346\200\201", 0, QApplication::UnicodeUTF8));
         label_23->setText(QApplication::translate("mainformClass", "\350\247\222\351\200\237\345\272\246", 0, QApplication::UnicodeUTF8));
@@ -1442,6 +1419,10 @@ public:
         R_segement->setText(QApplication::translate("mainformClass", "3", 0, QApplication::UnicodeUTF8));
         progressBar_2->setFormat(QApplication::translate("mainformClass", "%p%", 0, QApplication::UnicodeUTF8));
         mainTab->setTabText(mainTab->indexOf(scan), QApplication::translate("mainformClass", "\346\211\253\346\217\217", 0, QApplication::UnicodeUTF8));
+        groupBox_3->setTitle(QApplication::translate("mainformClass", "\346\250\241\345\236\213\346\223\215\344\275\234", 0, QApplication::UnicodeUTF8));
+        pushButton_5->setText(QApplication::translate("mainformClass", "\344\277\256\350\241\245\345\255\224\346\264\236", 0, QApplication::UnicodeUTF8));
+        pushButton_6->setText(QApplication::translate("mainformClass", "\350\276\223\345\207\272", 0, QApplication::UnicodeUTF8));
+        mainTab->setTabText(mainTab->indexOf(process), QApplication::translate("mainformClass", "\345\220\216\345\244\204\347\220\206", 0, QApplication::UnicodeUTF8));
         groupBox_2->setTitle(QString());
         outremoveBtn->setText(QApplication::translate("mainformClass", "\347\246\273\347\276\244\347\202\271\350\277\207\346\273\244", 0, QApplication::UnicodeUTF8));
         pushButton->setText(QApplication::translate("mainformClass", "\351\207\215\345\273\272", 0, QApplication::UnicodeUTF8));
@@ -1452,15 +1433,12 @@ public:
         toolBox->setItemText(toolBox->indexOf(outRemovePage), QApplication::translate("mainformClass", "\347\250\200\347\226\217\347\246\273\347\276\244\347\202\271\347\256\227\346\263\225\345\217\202\346\225\260", 0, QApplication::UnicodeUTF8));
         toolBox->setItemText(toolBox->indexOf(page_4), QApplication::translate("mainformClass", "\351\207\215\345\273\272\345\217\202\346\225\260", 0, QApplication::UnicodeUTF8));
         mainTab->setTabText(mainTab->indexOf(reconstruction), QApplication::translate("mainformClass", "\344\270\211\347\273\264\351\207\215\345\273\272", 0, QApplication::UnicodeUTF8));
-        groupBox_3->setTitle(QApplication::translate("mainformClass", "\346\250\241\345\236\213\346\223\215\344\275\234", 0, QApplication::UnicodeUTF8));
-        pushButton_5->setText(QApplication::translate("mainformClass", "\344\277\256\350\241\245\345\255\224\346\264\236", 0, QApplication::UnicodeUTF8));
-        pushButton_6->setText(QApplication::translate("mainformClass", "\350\276\223\345\207\272", 0, QApplication::UnicodeUTF8));
-        mainTab->setTabText(mainTab->indexOf(process), QApplication::translate("mainformClass", "\345\220\216\345\244\204\347\220\206", 0, QApplication::UnicodeUTF8));
         menu_2->setTitle(QApplication::translate("mainformClass", "\346\211\253\346\217\217", 0, QApplication::UnicodeUTF8));
         menu->setTitle(QApplication::translate("mainformClass", "\346\226\207\344\273\266", 0, QApplication::UnicodeUTF8));
         menu_3->setTitle(QApplication::translate("mainformClass", "\351\207\215\347\275\256\345\217\202\346\225\260", 0, QApplication::UnicodeUTF8));
         menu_4->setTitle(QApplication::translate("mainformClass", "\345\205\263\344\272\216", 0, QApplication::UnicodeUTF8));
         menu_5->setTitle(QApplication::translate("mainformClass", "\350\277\236\346\216\245", 0, QApplication::UnicodeUTF8));
+        menuFf->setTitle(QApplication::translate("mainformClass", "ff ", 0, QApplication::UnicodeUTF8));
         toolBar->setWindowTitle(QApplication::translate("mainformClass", "toolBar", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 

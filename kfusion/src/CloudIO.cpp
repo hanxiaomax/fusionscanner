@@ -6,16 +6,7 @@
 #include <kfusion/CloudIO.h>
 #include <sstream>
 #include <cmath>  
-CloudWriter::CloudWriter(void)
-{
 
-}
-
-
-CloudWriter::~CloudWriter(void)
-{
-
-}
 ////////////////////////////////////////////////////////////////////////////////////////////
 int  PLYFilewriter::write(const string &file_name,cuda::DeviceArray<Point> &cloud,int precision){
 	ofstream f(file_name);
@@ -345,3 +336,38 @@ string PCDFilewriter::writePoint_Normal(cuda::DeviceArray<Point> &cloud,cuda::De
 }
 
 
+///////////////////////////
+
+int PLYFilereader::read(const string &file_name,cv::Mat &cloud_host)
+{
+	return 0;
+}
+
+int PLYFilereader::readToVertexes(const string &file_name,vertexes &cloud_vertex,bool normal)
+{
+	pcl::PointCloud<pcl::PointNormal> input;
+	if(loadPlyCloud(file_name,input))
+	{
+		for(int i=0;i<input.points.size();i++)
+		{	
+			cv::Point3d vertex;
+			vertex.x=input.points[i].x;
+			vertex.y=input.points[i].y;
+			vertex.z=input.points[i].z;
+			cloud_vertex.push_back(vertex);
+		}
+		cout<<"done"<<endl;
+		return 1;
+		
+	}
+	return 0;
+}
+
+
+bool PLYFilereader::loadPlyCloud (const std::string &filename, pcl::PointCloud<pcl::PointNormal> &cloud)
+{
+	if (loadPLYFile(filename, cloud) < 0)
+		return (false);
+    return (true);
+
+}
