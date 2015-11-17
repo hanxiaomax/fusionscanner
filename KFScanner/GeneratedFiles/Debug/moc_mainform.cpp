@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainform.h'
 **
-** Created: Tue Nov 10 16:07:17 2015
+** Created: Tue Nov 17 15:59:33 2015
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -64,7 +64,7 @@ static const char qt_meta_stringdata_mainform[] = {
     "on_resetMachineBtn_clicked()\0"
     "on_outremoveBtn_clicked()\0filename\0"
     "addCombox(QString)\0index\0deleteCombox(int)\0"
-    "on_save2qglviewerbtn_clicked()\0"
+    "on_saveCloudBtn_clicked()\0"
 };
 
 void mainform::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -87,7 +87,7 @@ void mainform::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 11: _t->on_outremoveBtn_clicked(); break;
         case 12: _t->addCombox((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 13: _t->deleteCombox((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 14: _t->on_save2qglviewerbtn_clicked(); break;
+        case 14: _t->on_saveCloudBtn_clicked(); break;
         default: ;
         }
     }

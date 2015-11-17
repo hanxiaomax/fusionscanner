@@ -23,7 +23,9 @@ mainform::mainform(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags),
 	ui(Ui::mainformClass()),//如果ui是对象的话这里其实没有必要，初始化已经完成
 	port(new QextSerialPort()),//初始化串口对象
-	isOpen(false)//串口初始状态
+	isOpen(false),//串口初始状态
+	with_normal(true)//保存点云和法线
+
 {
 	//////指针初始化
 	_scanner = 0;
@@ -91,14 +93,28 @@ void mainform::setkinfuToDefault()
  ----------------------------------------*/ 
 void mainform::on_actionSaveCloud_triggered()
 {
-	_scanner->take_cloud(true);
-}
-
-void mainform::on_save2qglviewerbtn_clicked()
-{	
-	vertexes pcd=_scanner->getPointCloud();
+	vertexes pcd=_scanner->getPointCloud(ui.ply_check->checkState()==Qt::Checked,ui.pcd_check->checkState()==Qt::Checked,ui.normal_check->checkState()==Qt::Checked);//写入文件
 	ui.cloudViewer->update(pcd);
 }
+
+/*----------------------------------------*
+ *  功能描述: 保存点云（按钮）
+ ----------------------------------------*/ 
+void mainform::on_saveCloudBtn_clicked()
+{
+	vertexes pcd=_scanner->getPointCloud(ui.ply_check->checkState()==Qt::Checked,ui.pcd_check->checkState()==Qt::Checked,ui.normal_check->checkState()==Qt::Checked);//写入文件
+	ui.cloudViewer->update(pcd);
+}
+
+/*----------------------------------------*
+ *  功能描述: 点云预览按钮
+ ----------------------------------------*/ 
+//void mainform::on_save2qglviewerbtn_clicked()
+//{	
+//	with_normal=false;
+//	vertexes pcd=_scanner->getPointCloud(false,false,with_normal);//不写入文件
+//	ui.cloudViewer->update(pcd);
+//}
 
 /*----------------------------------------*
  *  功能描述: 重置kinfu参数按钮触发槽函数
@@ -258,6 +274,8 @@ void mainform::on_newScriptBtn_clicked()
 	///////////////////////////
 	//如果是模态的窗口，在这里重新初始化init_scriptList();也是可以的
 }
+
+
 void mainform::on_resetMachineBtn_clicked()
 {
 	port->write("RUN");

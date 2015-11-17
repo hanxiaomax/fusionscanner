@@ -38,7 +38,7 @@ public:
 	void fusionReset();//软件复位
 	void update();//更新数据
 	void take_cloud(bool writetofile=false);//默认参数应该在声明时给出
-	vertexes getPointCloud();
+	vertexes getPointCloud(bool ToPly , bool ToPcd , bool with_normal);
 	
 private:
 	void creat_raycasted(KinFu& kinfu);//创建融合结果显示矩阵

@@ -47,17 +47,15 @@ void ResultViewer::init()
 }
 
 
-///////////////////////////////////////////////////////////
-//             Define new mouse bindings                 //
-//   A camera viewpoint menu binded on right button      //
-///////////////////////////////////////////////////////////
-
+/*----------------------------------------*
+ *  重新绑定鼠标事件
+ ----------------------------------------*/ 
 void ResultViewer::mousePressEvent(QMouseEvent* e)
 {
-  if ((e->button() == Qt::RightButton) && (e->modifiers() == Qt::NoButton))
+  if ((e->button() == Qt::RightButton) && (e->modifiers() == Qt::NoButton))//绑定右击事件
 	{
 	  QMenu menu( this );
-	  QMenu *menu_pos;//,*menu_open;
+	  QMenu *menu_pos;
 	  menu.addAction("PointCloud Viewer");
 	  menu.addSeparator();
 	  QMap<QAction*, int> menuMap;
@@ -68,7 +66,6 @@ void ResultViewer::mousePressEvent(QMouseEvent* e)
 
 
 	  menu.addAction(open_action);//打开按钮
-	  //menu_open=menu.addMenu("Open PointCloud");//二级菜单：打开
 	  menu_pos=menu.addMenu("Positon");//二级菜单：预定义位置
 
 	  bool atLeastOne = false;
@@ -96,6 +93,12 @@ void ResultViewer::mousePressEvent(QMouseEvent* e)
 	  if (atLeastOne && action)
 		  camera()->playPath(menuMap[action]);
 	}
+
+  else if(e->buttons() ==Qt::MidButton)
+  {
+
+	  cout<<"2"<<endl;
+  }
   else
 	QGLViewer::mousePressEvent(e);
 }

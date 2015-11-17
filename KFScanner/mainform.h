@@ -42,6 +42,7 @@ private:
 	HKEY hKey;
 	bool isOpen;
 	cv::Mat frame;
+	bool with_normal;
 	
 
 private slots:
@@ -58,10 +59,11 @@ private slots:
 	void on_connectPortBtn_clicked();
 	void on_newScriptBtn_clicked();
 	void on_resetMachineBtn_clicked();
-	void on_outremoveBtn_clicked();
+	void on_outremoveBtn_clicked();//离群点清除
 	void addCombox(QString filename);
 	void deleteCombox(int index);
-	void on_save2qglviewerbtn_clicked();
+	//void on_save2qglviewerbtn_clicked();//点云预览
+	void on_saveCloudBtn_clicked();//保存点云
 	
 private:
 	void timerEvent(QTimerEvent *event);
@@ -76,6 +78,7 @@ private:
 	QStringList findAvailablePort();//查找全部可用端口
 	QString _getCom(int index ,QString keyorvalue);//查找端口
 	void init_scriptList();
+
 };
 
 #endif // MAINFORM_H

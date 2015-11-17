@@ -6,11 +6,11 @@
 glViewer::glViewer(QWidget *parent):QGLWidget(parent)
 {
 	mSceneChanged = false;
-	mBgColor = QColor::fromRgb(255, 0, 0);//设置背景色
+	mBgColor = QColor::fromRgb(0, 0, 0);//设置背景色
 
 	mOutH = 0;
 	mOutW = 0;
-	mImgRatio = 4.0f/3.0f;
+	mImgRatio = 16.0f/9.0f;
 
 	mPosX = 0;
 	mPosY = 0;
@@ -38,11 +38,10 @@ void glViewer::resizeGL(int width, int height)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	glOrtho(0, width, 0, height, 0, 1);	// To Draw image in the center of the area
+	glOrtho(0, width, 0, height, 0, 1);
 
 	glMatrixMode(GL_MODELVIEW);
 
-	// ---> Scaled Image Sizes
 	mOutH = width/mImgRatio;
 	mOutW = width;
 

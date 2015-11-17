@@ -155,12 +155,23 @@ void fusionScanner::take_cloud(bool writetofile)
 
 }
 
-vertexes fusionScanner::getPointCloud()
+vertexes fusionScanner::getPointCloud(bool ToPly , bool ToPcd , bool with_normal)
 {
 	KinFu& kinfu=*kinfu_sp;
 	kfusion::vertexes pcd;
+	//点云
 	cuda::DeviceArray<Point> cloud = kinfu.tsdf().fetchCloud(cloud_buffer);//GPU内存中的一维矩阵	
 	cv::Mat cloud_host(1, (int)cloud.size(), CV_32FC4);//一维矩阵，存放无序点云(1行，n列) CV_32FC4 32位浮点4通道
+	//法向量
+	cuda::DeviceArray<Point> normal;
+	if(with_normal)
+	{
+		normal = kinfu.tsdf().fetchNormals(cloud,normal_buffer);//传入的是cloud不是cloud_buffer，后者无法正确download
+		cv::Mat normal_host(1, (int)cloud.size(), CV_32FC4);
+		normal.download(normal_host.ptr<Normal>());
+
+	}
+	
 	cloud.download(cloud_host.ptr<Point>());
 	for (int i = 0; i < cloud_host.cols; ++i) 
 	{
@@ -173,7 +184,28 @@ vertexes fusionScanner::getPointCloud()
 	}
 	InfoBox infobox("getPointCloud");
 	infobox.printInfo("用于可视化的点云数据已经准备好:",InfoBox::SUC);
-
+	if (ToPly||ToPly)
+	{
+			if(ToPly)/*把点云数据写入ply文件*/
+			{
+				ScopeTime st("ply writer");
+				PLYFilewriter PLYw;
+				
+				if(with_normal)
+					PLYw .write("cloud_file-n.ply",cloud,normal);
+				else
+					PLYw .write("cloud_file.ply",cloud);
+			}
+			if(ToPcd)/*把点云数据写入pcd文件*/
+			{
+				ScopeTime st("pcd writer");
+				PCDFilewriter PCDw;
+				if(with_normal)
+					PCDw.write("cloud_file.pcd",cloud,normal);
+				else
+					PCDw.write("cloud_file.pcd",cloud);
+			}
+	}
 	
 	return pcd;
 }

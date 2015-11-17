@@ -5,7 +5,7 @@ using namespace std;
 
 void CloudViewer::update(vertexes pcd)
 {
-	pcd_buffer=pcd;//_scanner->getPointCloud();;
+	pcd_buffer=pcd;
 	updateGL();
 }
 
