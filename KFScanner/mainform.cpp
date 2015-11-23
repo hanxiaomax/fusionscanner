@@ -6,8 +6,6 @@
 #include <QTextCodec> 
 #include <QTime>
 #include <io.h>
-#include <kfusion\OutRemover.h>
-
 
 /*************************************
  *  简要描述: GUI界面逻辑
@@ -24,8 +22,8 @@ mainform::mainform(QWidget *parent, Qt::WFlags flags)
 	ui(Ui::mainformClass()),//如果ui是对象的话这里其实没有必要，初始化已经完成
 	port(new QextSerialPort()),//初始化串口对象
 	isOpen(false),//串口初始状态
-	with_normal(true)//保存点云和法线
-
+	with_normal(true),//保存点云和法线
+	cloudFromFile(false)
 {
 	//////指针初始化
 	_scanner = 0;
@@ -93,8 +91,11 @@ void mainform::setkinfuToDefault()
  ----------------------------------------*/ 
 void mainform::on_actionSaveCloud_triggered()
 {
-	vertexes pcd=_scanner->getPointCloud(ui.ply_check->checkState()==Qt::Checked,ui.pcd_check->checkState()==Qt::Checked,ui.normal_check->checkState()==Qt::Checked);//写入文件
-	ui.cloudViewer->update(pcd);
+	pcd_buffer=_scanner->savePointCloud(ui.ply_check->checkState()==Qt::Checked,ui.pcd_check->checkState()==Qt::Checked,ui.normal_check->checkState()==Qt::Checked);//写入文件
+	ui.cloudViewer->setPcdBuffer(pcd_buffer);
+	ui.resultViewer->setPcdBuffer(pcd_buffer);
+	ui.cloudViewer->update();
+	ui.resultViewer->update();
 }
 
 /*----------------------------------------*
@@ -102,19 +103,14 @@ void mainform::on_actionSaveCloud_triggered()
  ----------------------------------------*/ 
 void mainform::on_saveCloudBtn_clicked()
 {
-	vertexes pcd=_scanner->getPointCloud(ui.ply_check->checkState()==Qt::Checked,ui.pcd_check->checkState()==Qt::Checked,ui.normal_check->checkState()==Qt::Checked);//写入文件
-	ui.cloudViewer->update(pcd);
+	//点云写入pcd_buffer
+	pcd_buffer=_scanner->savePointCloud(ui.ply_check->checkState()==Qt::Checked,ui.pcd_check->checkState()==Qt::Checked,ui.normal_check->checkState()==Qt::Checked);//写入文件
+	//
+	ui.cloudViewer->setPcdBuffer(pcd_buffer);//拷贝pcd_buffer到cloudviewer然后显示
+	ui.cloudViewer->update();
+	ui.resultViewer->setPcdBuffer(pcd_buffer);
+	ui.resultViewer->update();
 }
-
-/*----------------------------------------*
- *  功能描述: 点云预览按钮
- ----------------------------------------*/ 
-//void mainform::on_save2qglviewerbtn_clicked()
-//{	
-//	with_normal=false;
-//	vertexes pcd=_scanner->getPointCloud(false,false,with_normal);//不写入文件
-//	ui.cloudViewer->update(pcd);
-//}
 
 /*----------------------------------------*
  *  功能描述: 重置kinfu参数按钮触发槽函数
@@ -553,10 +549,27 @@ void mainform::deleteCombox(int index)
  -------------------------------------------------------------------*/ 
 void mainform::on_outremoveBtn_clicked()
 {	
-	int mean_k = ui.sb_meank->value();
-	float std_dev = ui.sb_std_dev->value();
-	OutRemover outremover(mean_k,std_dev);
-	outremover.execute();
+		vertexes &pcd=ui.resultViewer->getPcdBuffer();
+		vertexes pcd_host;
+		int mean_k = ui.sb_meank->value();
+		float std_dev = ui.sb_std_dev->value();
+		OutRemover or(mean_k,std_dev);
+		pcl::PointCloud<pcl::PointNormal> output;
+		pcl::PointCloud<pcl::PointNormal>::Ptr cloud(new pcl::PointCloud<pcl::PointNormal>());
+		
+
+		if(pcd.size()>0)
+		{
+			convert::vertex_to_pclCloudNormal(pcd,*cloud);
+			or.execute(cloud,output);
+
+			convert::pclCloudNormal_to_vertex(output,pcd_host);
+			
+			ui.resultViewer->setPcdBuffer(pcd_host);
+			ui.resultViewer->update();
+		}
+		else
+			QMessageBox::information(NULL, tr("警告"), tr("没有可以用来处理的点云"));
 }
 
 //////////////////////////////////////////////////

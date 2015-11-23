@@ -1,10 +1,9 @@
 #pragma once
 #ifndef FUSION_SCANNER_H_H
 #define FUSION_SCANNER_H_H
-#include <kfusion/kinfu.hpp>
+
 #include <io/capture.hpp>
 #include <kfusion/CloudIO.h>
-#include <fstream>
 
 using namespace kfusion;
 
@@ -30,15 +29,14 @@ private:
 	cuda::Image view_device_;
 	cuda::Depth depth_device_;
 	double time_ms;
-	cv::viz::Viz3d viz;
 
 public:
 	void fusionStart();//启动融合
 	void fusionHold();//暂停融合
 	void fusionReset();//软件复位
 	void update();//更新数据
-	void take_cloud(bool writetofile=false);//默认参数应该在声明时给出
-	vertexes getPointCloud(bool ToPly , bool ToPcd , bool with_normal);
+	vertexes savePointCloud(bool ToPly , bool ToPcd , bool with_normal);//获取点云并保存到文件（或直接可视化）
+	void getPointCloud(pcl::PointCloud<pcl::PointNormal> &input);
 	
 private:
 	void creat_raycasted(KinFu& kinfu);//创建融合结果显示矩阵

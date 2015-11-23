@@ -3,9 +3,8 @@
 
 using namespace std;
 
-void CloudViewer::update(vertexes pcd)
+void CloudViewer::update()
 {
-	pcd_buffer=pcd;
 	updateGL();
 }
 

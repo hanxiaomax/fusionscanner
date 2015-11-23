@@ -1,4 +1,6 @@
 #pragma once
+#ifndef TYPE_HH
+#define TYPE_HH
 
 #include <kfusion/cuda/device_array.hpp>
 #include <opencv2/core/core.hpp>
@@ -7,6 +9,8 @@
 #include <opencv2/viz/vizcore.hpp>
 #include <iosfwd>
 #include <string>
+#include <pcl/ply_io.h>
+#include <pcl/point_types.h>
 using namespace std;
 struct CUevent_st;
 
@@ -18,6 +22,7 @@ namespace kfusion
     typedef cv::Affine3f Affine3f;//仿射
 	
 	typedef vector<cv::Point3d> vertexes;//点云顶点
+
 
     struct KF_EXPORTS Intr//
     {
@@ -55,6 +60,12 @@ namespace kfusion
     {
         unsigned char r, g, b;
     };
+	//执行可视化点云到pcl::PointNormal点云的转换
+	namespace convert
+	{
+		void vertex_to_pclCloudNormal(vertexes &v,pcl::PointCloud<pcl::PointNormal> &p);
+		void pclCloudNormal_to_vertex(pcl::PointCloud<pcl::PointNormal> &p,vertexes &v);
+	}
 
 	///////用于在CUDA设备上面使用的数据结构
     namespace cuda
@@ -126,4 +137,6 @@ namespace kfusion
 			void printInfo(const string info,int infotype=INFO);
 	};
 
+	
 }
+#endif

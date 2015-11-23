@@ -6,7 +6,6 @@
 #include "pcl/statistical_outlier_removal.h"
 #include "pcl/extract_indices.h"
 #include <vector>
-#include <stdio.h>
 #include <string>
 
 using namespace pcl;
@@ -18,13 +17,20 @@ class OutRemover
 {
 public:
 	OutRemover(int mean_k,float std_dev_mul);
-	~OutRemover(void);
+	~OutRemover(){};
 public:
 	bool execute();
+	bool execute(const std::string &filename);
+	bool execute(const pcl::PointCloud<pcl::PointNormal>::ConstPtr &input, pcl::PointCloud<pcl::PointNormal> &output);
+
 private:
 	bool loadCloud (const std::string &filename, pcl::PCLPointCloud2 &cloud);//加载点云
 	void runfilter(const pcl::PCLPointCloud2::ConstPtr &input, pcl::PCLPointCloud2 &output,
           int mean_k, double std_dev_mul, bool negative);//执行滤波器
+	void runfilter(const pcl::PointCloud<pcl::PointNormal>::ConstPtr &input, pcl::PointCloud<pcl::PointNormal> &output,
+          int mean_k, double std_dev_mul, bool negative);
+
+
 	void saveCloud (const std::string &filename, const pcl::PCLPointCloud2 &output);//保存点云到ply文件
 	std::vector<string> splitFilename(std::string filename);//分割文件名
 private:

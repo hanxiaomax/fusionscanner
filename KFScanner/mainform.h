@@ -8,12 +8,13 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <kfusion/kinfu.hpp>
 #include <io/capture.hpp>
-#include <kfusion/CloudIO.h>
 #include <iostream>
 #include <fstream>
 #include "fusionScanner.h"
 #include <QTimer>
 #include "3rdparty/qextserialport/qextserialport.h"//第三方串口库
+#include <kfusion\OutRemover.h>
+
 
 class mainform : public QMainWindow
 {
@@ -43,6 +44,8 @@ private:
 	bool isOpen;
 	cv::Mat frame;
 	bool with_normal;
+	bool cloudFromFile;
+	vertexes pcd_buffer;
 	
 
 private slots:

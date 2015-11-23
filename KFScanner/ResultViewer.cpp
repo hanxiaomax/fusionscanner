@@ -15,7 +15,11 @@
 
 using namespace std;
 
-// Draws a spiral
+
+void ResultViewer::update()
+{
+	updateGL();
+}
 void ResultViewer::draw()
 { 
 	glPushMatrix();
@@ -111,7 +115,7 @@ void ResultViewer::open()
 	if(!filename.isEmpty())
 	{	
 		PLYFilereader reader;
-		reader.readToVertexes(filename.toStdString(),pcd_buffer,false);
+		reader.readToVertexes(filename.toStdString(),pcd_buffer,false);//读到自己的pcd_buffer,不会影响主界面
 		cout<<"open: "<<filename.toStdString()<<endl;
 
 	}

@@ -356,7 +356,6 @@ int PLYFilereader::readToVertexes(const string &file_name,vertexes &cloud_vertex
 			vertex.z=input.points[i].z;
 			cloud_vertex.push_back(vertex);
 		}
-		cout<<"done"<<endl;
 		return 1;
 		
 	}

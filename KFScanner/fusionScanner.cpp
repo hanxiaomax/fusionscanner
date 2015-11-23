@@ -1,9 +1,7 @@
 #include "fusionScanner.h"
 #include <iostream>
-#include <opencv2/viz/vizcore.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
-#include <kfusion\types.hpp>
 
 /**************************************
  *  简要描述: 扫描仪类，实现扫描仪的逻辑
@@ -22,9 +20,6 @@ fusionScanner::fusionScanner(OpenNISource& source)
 	kinfu_sp = KinFu::Ptr( new KinFu(params) );//创建Kinfu对象
 	kinfu_sp->PrintKFparms();
 	capture.setRegistration(true);//设置点云配准
-	cv::viz::WCube cube(cv::Vec3d::all(0), cv::Vec3d(params.volume_size), true, cv::viz::Color::black());//坐标系？
-	viz.showWidget("cube", cube, params.volume_pose);//showWideget()会创建一个窗口部件
-	viz.showWidget("coor", cv::viz::WCoordinateSystem(0.1));
 }
 
 
@@ -118,44 +113,8 @@ void fusionScanner::clean_raycasted()
 *	功能描述: 获取点云
 *	参数：	  是否写入到文件
 --------------------------------------*/ 
-void fusionScanner::take_cloud(bool writetofile)
-{
-	/*获取点云相关*/ 
-	
-		KinFu& kinfu=*kinfu_sp;
-		cuda::DeviceArray<Point> cloud = kinfu.tsdf().fetchCloud(cloud_buffer);//GPU内存中的一维矩阵
-		cuda::DeviceArray<Point> normal = kinfu.tsdf().fetchNormals(cloud,normal_buffer);//传入的是cloud不是cloud_buffer，后者无法正确download
-		cv::Mat cloud_host(1, (int)cloud.size(), CV_32FC4);//一维矩阵，存放无序点云(1行，n列) CV_32FC4 32位浮点4通道
-		cv::Mat normal_host(1, (int)cloud.size(), CV_32FC4);
 
-		cloud.download(cloud_host.ptr<Point>());
-		normal.download(normal_host.ptr<Normal>());
-
-		InfoBox infobox("take_cloud");
-		infobox.printInfo("点云获取:",InfoBox::SUC);
-		if (writetofile)
-		{
-			/*把点云数据写入ply文件*/
-			{
-				ScopeTime st("ply writer");
-				PLYFilewriter PLYw;
-				PLYw .write("cloud_file.ply",cloud);
-				PLYw .write("cloud_file-n.ply",cloud,normal);
-			}
-
-			/*把点云数据写入pcd文件*/
-			{
-				ScopeTime st("pcd writer");
-				PCDFilewriter PCDw;
-				PCDw.write("cloud_file.pcd",cloud,normal);
-			}
-		}
-		//viz.showWidget("cloud", cv::viz::WPaintedCloud(cloud_host));//显示有颜色的点云
-		// 	viz.showWidget("normal",cv::viz::WCloudNormals(cloud_host,normal_host));//显示法线（法线是否已经计算？）
-
-}
-
-vertexes fusionScanner::getPointCloud(bool ToPly , bool ToPcd , bool with_normal)
+vertexes fusionScanner::savePointCloud(bool ToPly , bool ToPcd , bool with_normal)
 {
 	KinFu& kinfu=*kinfu_sp;
 	kfusion::vertexes pcd;
@@ -207,5 +166,25 @@ vertexes fusionScanner::getPointCloud(bool ToPly , bool ToPcd , bool with_normal
 			}
 	}
 	
-	return pcd;
+	return pcd ;
+}
+
+void fusionScanner::getPointCloud(pcl::PointCloud<pcl::PointNormal> &input)
+{
+	KinFu& kinfu=*kinfu_sp;
+	//点云
+	cuda::DeviceArray<Point> cloud = kinfu.tsdf().fetchCloud(cloud_buffer);//GPU内存中的一维矩阵	
+	cv::Mat cloud_host(1, (int)cloud.size(), CV_32FC4);//一维矩阵，存放无序点云(1行，n列) CV_32FC4 32位浮点4通道
+	for (int i = 0; i < cloud_host.cols; ++i) 
+	{
+		pcl::PointNormal point;
+
+		point.x=cloud_host.at<cv::Vec4f>(0,i)[0];
+		point.y=cloud_host.at<cv::Vec4f>(0,i)[1];
+		point.z=cloud_host.at<cv::Vec4f>(0,i)[2];
+		
+		(input).push_back(point);
+	}
+	
+
 }

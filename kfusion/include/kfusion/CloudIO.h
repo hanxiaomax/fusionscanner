@@ -5,9 +5,8 @@
 #include <iostream>
 #include <fstream>
 #include <kfusion/kinfu.hpp>
-#include <kfusion/types.hpp>
-#include <pcl/ply_io.h>
-#include <pcl/point_types.h>
+
+
 
 /*点云文件写操作基类*/
 using namespace std;
@@ -62,6 +61,7 @@ private:
 public:
 	virtual int write(const string &file_name,cuda::DeviceArray<Point> &cloud,int precision=5);
 	virtual int write(const string &file_name,cuda::DeviceArray<Point> &cloud,cuda::DeviceArray<Normal> &normal,int precision=5);
+	//需要一个写点云的
 };
 
 
