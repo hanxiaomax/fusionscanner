@@ -1,7 +1,8 @@
+#ifndef OUTREMOVER_HH
+#define OUTREMOVER_HH
+
 #pragma once
-#include "pcl/PCLPointCloud2.h"
-#include "pcl/point_types.h"
-#include "pcl/ply_io.h"
+#include <kfusion/types.hpp>
 #include "pcl/time.h"
 #include "pcl/statistical_outlier_removal.h"
 #include "pcl/extract_indices.h"
@@ -40,3 +41,4 @@ private:
     int negative;
 };
 
+#endif

@@ -3,14 +3,13 @@
 #include <QtGui/QMainWindow>
 #include "ui_mainform.h"
 #include "script_management.h"
-#include <io/capture.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <kfusion/kinfu.hpp>
 #include <io/capture.hpp>
 #include <iostream>
 #include <fstream>
-#include "fusionScanner.h"
+#include "fusionScanner.h"//包含cloudIO模块
 #include <QTimer>
 #include "3rdparty/qextserialport/qextserialport.h"//第三方串口库
 #include <kfusion\OutRemover.h>
@@ -32,6 +31,7 @@ private:
 	QextSerialPort * port;
 	int updateTimer;
 	int delayTimer;
+	int updateStateTimer;
 	//QTimer *delayTimer;//一定会用到，且不是参数，应该声明为对象，但是QTimer声明了一个private类型的拷贝构造函数，防止以传值的方式使用，同时也阻止了值初始化。《TIC P.518》
 	QTimer *Serital_Timer;
 	QStringList m_listCommand;  //待发送的命令
@@ -41,10 +41,13 @@ private:
 	int indexnum;
 	DWORD keysize,type,valuesize;
 	HKEY hKey;
-	bool isOpen;
 	cv::Mat frame;
 	bool with_normal;
 	bool cloudFromFile;
+	bool isKinectOK;
+	bool isFacilityOK;
+	bool isGpuOK;
+	
 	vertexes pcd_buffer;
 	
 
@@ -63,11 +66,16 @@ private slots:
 	void on_newScriptBtn_clicked();
 	void on_resetMachineBtn_clicked();
 	void on_outremoveBtn_clicked();//离群点清除
+	void on_cloudOpenBtn_clicked();//打开点云文件
+	void on_cloudExportBtn_clicked();//输出点云
+
+
 	void addCombox(QString filename);
 	void deleteCombox(int index);
 	//void on_save2qglviewerbtn_clicked();//点云预览
 	void on_saveCloudBtn_clicked();//保存点云
 	
+
 private:
 	void timerEvent(QTimerEvent *event);
 	void showInViewer(const cv::Mat& depth,glViewer *viewer);

@@ -1,5 +1,6 @@
 #include "mainform.h"
 #include <QtGui/QDialog>
+#include <QFileDialog>
 #include <string> 
 #include <QSettings>
 #include <QMessageBox>
@@ -21,7 +22,9 @@ mainform::mainform(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags),
 	ui(Ui::mainformClass()),//如果ui是对象的话这里其实没有必要，初始化已经完成
 	port(new QextSerialPort()),//初始化串口对象
-	isOpen(false),//串口初始状态
+	isFacilityOK(false),//串口初始状态
+	isGpuOK(false),//GPU
+	isKinectOK(false),//Kinect
 	with_normal(true),//保存点云和法线
 	cloudFromFile(false)
 {
@@ -44,7 +47,7 @@ mainform::mainform(QWidget *parent, Qt::WFlags flags)
 	ui.runBtn->setDisabled(true);
 	//////////////////////////////////////
 	
-	//Serital_Timer = new QTimer();
+	updateStateTimer=startTimer(1000);//定时检查并更新设备状态500ms
 	
 }
 
@@ -139,6 +142,7 @@ void mainform::on_connectKinect_triggered()
 	///检查显卡，若支持，
 	if(checkGPUdevice())
 	{
+		isGpuOK=true;
 		_capture = new OpenNISource(0,kinectparams);//初始化摄像机
 		if (use_default_params){
 			_scanner = new fusionScanner(*_capture);//创建scanner app实例，注意是一个指针
@@ -146,11 +150,13 @@ void mainform::on_connectKinect_triggered()
 		else{
 			_scanner = new fusionScanner(*_capture,setKinfuParams());
 		}
+		isKinectOK=true;
 	}
 	else
 	{
 //TODO：显卡不支持情况下不应该直接退出
-		return;
+		isGpuOK=false;
+		
 	}
 }
 /*----------------------------------------*
@@ -214,13 +220,13 @@ void mainform::on_connectPortBtn_clicked()
 	{
 		port->setPortName(port_name);
 	}
-	if (isOpen)
+	if (isFacilityOK)
 	{
 		int r = QMessageBox::warning(this,tr("警告"), tr("确定要断开连接吗？"),QMessageBox::Yes|QMessageBox::No);
 		if(r==QMessageBox::Yes)
 		{
 			port->close();
-			isOpen = false;
+			isFacilityOK = false;
 			ui.portStatus->setText(tr("未连接"));
 			ui.connectPortBtn->setText(tr("连接端口"));
 			ui.portStatus->setStyleSheet("background-color:rgb(255,99,71);color:rgb(255,255,255)");
@@ -244,7 +250,8 @@ void mainform::on_connectPortBtn_clicked()
 			ui.portStatus->setText(tr("已连接"));
 			ui.portStatus->setStyleSheet("background-color:rgb(0,255,0)");
 			ui.connectPortBtn->setText(tr("关闭端口"));
-			isOpen = true;
+			isFacilityOK = true;
+			
 			port->write("PC");
 			//Serital_Timer->start(100);
 			ui.runBtn->setDisabled(false);
@@ -301,7 +308,8 @@ void mainform::timerEvent(QTimerEvent *event)
 		killTimer(delayTimer);//出发一次后关掉定时器
 		_scanner->fusionStart();
 	}
-
+	if(event->timerId()==updateStateTimer)
+		ui.init_viewer->updateStates(isFacilityOK,isGpuOK,isKinectOK);
 }
 
 /*----------------------------------------*
@@ -549,7 +557,7 @@ void mainform::deleteCombox(int index)
  -------------------------------------------------------------------*/ 
 void mainform::on_outremoveBtn_clicked()
 {	
-		vertexes &pcd=ui.resultViewer->getPcdBuffer();
+		//vertexes &pcd=ui.resultViewer->getPcdBuffer();
 		vertexes pcd_host;
 		int mean_k = ui.sb_meank->value();
 		float std_dev = ui.sb_std_dev->value();
@@ -558,18 +566,35 @@ void mainform::on_outremoveBtn_clicked()
 		pcl::PointCloud<pcl::PointNormal>::Ptr cloud(new pcl::PointCloud<pcl::PointNormal>());
 		
 
-		if(pcd.size()>0)
+		if(pcd_buffer.size()>0)
 		{
-			convert::vertex_to_pclCloudNormal(pcd,*cloud);
-			or.execute(cloud,output);
-
-			convert::pclCloudNormal_to_vertex(output,pcd_host);
+			convert::FromVertex(pcd_buffer,*cloud);//执行点云格式转换
+			or.execute(cloud,output);//执行滤波
+			convert::ToVertex(output,pcd_host);//执行点云格式转换
 			
-			ui.resultViewer->setPcdBuffer(pcd_host);
+			ui.resultViewer->setPcdBuffer(pcd_host);//对滤波后结果进行可视化
 			ui.resultViewer->update();
 		}
 		else
 			QMessageBox::information(NULL, tr("警告"), tr("没有可以用来处理的点云"));
+}
+
+void mainform::on_cloudOpenBtn_clicked()
+{
+	pcd_buffer.clear();//清空点云buffer，否则会出现叠加
+	QString filename = QFileDialog::getOpenFileName(this,tr("open point cloud"),".",tr("*.ply"));
+	if(!filename.isEmpty())
+	{	
+		PLYFilereader reader;
+		reader.readToVertexes(filename.toStdString(),pcd_buffer,false);//读到主界面的pcd_buffer中
+		cout<<"open: "<<filename.toStdString()<<endl;
+	}
+	ui.resultViewer->setPcdBuffer(pcd_buffer);
+	ui.resultViewer->update();
+}
+void mainform::on_cloudExportBtn_clicked()
+{
+
 }
 
 //////////////////////////////////////////////////

@@ -5,15 +5,35 @@ OutRemover::OutRemover(int mean_k,float std_dev_mul):mean_k(mean_k),std_dev_mul(
 {
 
 }
-
-
-
+std::vector<string> OutRemover::splitFilename(std::string filename)
+{
+	  std::string name,ext;
+	  vector<string> result(128);
+	  bool in_name = true;
+	  for(string::iterator it=filename.begin();it!=filename.end();it++)
+	  {	  
+		  if(*it=='.'){
+			in_name = false;
+		  }
+		  if(in_name){
+			name.push_back(*it);
+		  }
+		  else{
+			  ext.push_back(*it);
+		  }
+	  }
+	  result[0]=name;
+	  result[1]=ext;
+	  return result;
+}
 bool OutRemover::loadCloud (const std::string &filename, pcl::PCLPointCloud2 &cloud)
 {
 	if (loadPLYFile(filename, cloud) < 0)
 		return (false);
     return (true);
 }
+
+
 void OutRemover::runfilter(const pcl::PCLPointCloud2::ConstPtr &input, pcl::PCLPointCloud2 &output,
           int mean_k, double std_dev_mul, bool negative)
 {
@@ -70,27 +90,7 @@ void OutRemover::saveCloud (const std::string &filename, const pcl::PCLPointClou
 }
 
 
-std::vector<string> OutRemover::splitFilename(std::string filename)
-{
-	  std::string name,ext;
-	  vector<string> result(128);
-	  bool in_name = true;
-	  for(string::iterator it=filename.begin();it!=filename.end();it++)
-	  {	  
-		  if(*it=='.'){
-			in_name = false;
-		  }
-		  if(in_name){
-			name.push_back(*it);
-		  }
-		  else{
-			  ext.push_back(*it);
-		  }
-	  }
-	  result[0]=name;
-	  result[1]=ext;
-	  return result;
-}
+
 
 bool OutRemover::execute()
 {
@@ -145,7 +145,7 @@ void OutRemover::runfilter(const pcl::PointCloud<pcl::PointNormal>::ConstPtr &in
 {
 	
 	  pcl::PointIndices::Ptr removed_indices (new PointIndices);
-
+	 
 	  TicToc tt;
 	  tt.tic ();
 	  PointCloud<PointNormal>::Ptr cloud_filtered (new PointCloud<PointNormal> ());//滤波后点云
@@ -160,7 +160,7 @@ void OutRemover::runfilter(const pcl::PointCloud<pcl::PointNormal>::ConstPtr &in
 	  filter.setKeepOrganized (0);
 
 	  printf("共计 %lu 个点， mean_k：%d, std_dev_mul： %f\n",input->size(), filter.getMeanK (), filter.getStddevMulThresh ());
-	  filter.filter (output);//执行滤波保存处理后的结果
+	  filter.filter (*cloud_filtered);//执行滤波保存处理后的结果
 	  filter.getRemovedIndices (*removed_indices);
   
  
@@ -168,10 +168,16 @@ void OutRemover::runfilter(const pcl::PointCloud<pcl::PointNormal>::ConstPtr &in
 	  printf("耗时：%g 毫秒\n",tt.toc ());
 	  printf("移除点：%d 个\n",removed_indices->indices.size ()); 
 
+	  pcl::PCLPointCloud2::Ptr input_pc2(new pcl::PCLPointCloud2());
+	  pcl::PCLPointCloud2 output_pc2;
+
+	  pcl::toPCLPointCloud2<PointNormal>(*input,*input_pc2);
+
 	  //输出剩余的点
-	  //pcl::ExtractIndices<pcl::PointNormal> ei;
-	  //ei.setInputCloud(input);
-	  //ei.setIndices (removed_indices);
-	  //ei.setNegative (true);
-	  //ei.filter (output);//输出点云数据结构
+	  pcl::ExtractIndices<pcl::PCLPointCloud2> ei;
+	  ei.setInputCloud(input_pc2);
+	  ei.setIndices (removed_indices);
+	  ei.setNegative (true);
+	  ei.filter (output_pc2);//输出点云数据结构
+	  pcl::fromPCLPointCloud2<PointNormal>(output_pc2,output);
 }

@@ -1,170 +1,135 @@
 #include "InitViewer.h"
 
-
-#include <QMenu>
-#include <QKeyEvent>
-#include <QMouseEvent>
-#include <QMap>
-#include <QCursor>
-
-#include <math.h>
-
+#include <QPainter>
+#include <QTextDocument>
+#include <iostream>
+#include <string>
 using namespace std;
 
+#ifndef GL_MULTISAMPLE
+#define GL_MULTISAMPLE  0x809D
+#endif
+
+
+
+
+InitViewer::InitViewer(QWidget* parent)
+	: QGLViewer(QGLFormat(QGL::SampleBuffers), parent),kinect_state(false),facility_state(false),GPU_state(false){
+		setAttribute(Qt::WA_NoSystemBackground);
+}
+
+void InitViewer::updateStates(bool fstate,bool Gstate,bool kstate)
+{
+	kinect_state=kstate;
+	facility_state=fstate;
+	GPU_state=Gstate;
+	update();
+}
+void InitViewer::drawLegend(QPainter *painter)
+{
+	painter->save();
+	const int margin=11;
+	const int padding=5;
+	QTextDocument textDocument;
+	textDocument.setDefaultStyleSheet("*{color:#FFEFEF}");
+	string html;
+	string kinect,facility,gpu;
+
+	kinect_state?kinect="OK</h4>":kinect="disconnect</h4>";
+	facility_state?facility="OK</h4>":facility="disconnect</h4>";
+	GPU_state?gpu="OK</h4>":gpu="disconnect</h4>";
+
+	
+	html="<h4 >平台状状态："+facility+"<h4 >Kinect状态："+kinect+"<h4 >GPU状态："+gpu;
+	
+	QString qstr=(tr(html.c_str()));
+	textDocument.setHtml(qstr);
+	textDocument.setTextWidth(textDocument.size().width());
+	QRect rect(QPoint(5,5),textDocument.size().toSize()+QSize(2*padding,2*padding));
+
+	painter->setPen(QColor(255,239,0,31));
+	painter->setBrush(QColor(255,0,0,31));
+	painter->drawRect(rect);
+	painter->translate(padding,padding);
+	textDocument.drawContents(painter);
+	painter->restore();
+}
 // Draws a spiral
 void InitViewer::draw()
-{ 
-  const float nbSteps = 80.0;
-  
-  glBegin(GL_QUAD_STRIP);
-  for (float i=0; i<nbSteps; ++i)
+{
+	const float nbSteps = 200.0;
+
+	glBegin(GL_QUAD_STRIP);
+	for (int i=0; i<nbSteps; ++i)
 	{
-	  
-	  float ratio = i/nbSteps;
-	  float angle = 21.0*ratio;
-	  float c = cos(angle);
-	  float s = sin(angle);
-	  float r1 = 1.0 - 0.8*ratio;
-	  float r2 = 0.8 - 0.8*ratio;
-	  float alt = ratio - 0.5;
-	  const float nor = .5;
-	  const float up = sqrt(1.0-nor*nor);
-	  glColor3f(fabs(c), 0.2f, fabs(s));
-	  glNormal3f(nor*c, up, nor*s);
-	  glVertex3f(r1*c, alt, r1*s);
-	  glVertex3f(r2*c, alt+0.05, r2*s);
+		const float ratio = i/nbSteps;
+		const float angle = 21.0*ratio;
+		const float c = cos(angle);
+		const float s = sin(angle);
+		const float r1 = 1.0 - 0.8f*ratio;
+		const float r2 = 0.8f - 0.8f*ratio;
+		const float alt = ratio - 0.5f;
+		const float nor = 0.5f;
+		const float up = sqrt(1.0-nor*nor);
+		glColor3f(1.0-ratio, 0.2f , ratio);
+		glNormal3f(nor*c, up, nor*s);
+		glVertex3f(r1*c, alt, r1*s);
+		glVertex3f(r2*c, alt+0.05f, r2*s);
 	}
-  glEnd();
-  
+	glEnd();
 }
 
 void InitViewer::init()
 {
-  // Restore previous viewer state.
-  restoreStateFromFile();
-
-
-  /////////////////////////////////////////////////////
-  //       Keyboard shortcut customization           //
-  //      Changes standard action key bindings       //
-  /////////////////////////////////////////////////////
-
-  // Define 'Control+Q' as the new exit shortcut (default was 'Escape')
-  setShortcut(EXIT_VIEWER, Qt::CTRL+Qt::Key_Q);
-
-  // Set 'Control+F' as the FPS toggle state key.
-  setShortcut(DISPLAY_FPS, Qt::CTRL+Qt::Key_F);
-
-  // Disable draw grid toggle shortcut (default was 'G')
-  setShortcut(DRAW_GRID, 0);
-
-
-  // Add custom key description (see keyPressEvent).
-  setKeyDescription(Qt::Key_W, "Toggles wire frame display");
-  setKeyDescription(Qt::Key_F, "Toggles flat shading display");
-
-
-  /////////////////////////////////////////////////////
-  //         Mouse bindings customization            //
-  //     Changes standard action mouse bindings      //
-  /////////////////////////////////////////////////////
-
-  // Left and right buttons together make a camera zoom : emulates a mouse third button if needed.
-  setMouseBinding(Qt::Key_Z, Qt::NoModifier, Qt::LeftButton, CAMERA, ZOOM);
-
-  // Disable previous TRANSLATE mouse binding (and remove it from help mouse tab).
-  setMouseBinding(Qt::NoModifier, Qt::RightButton, NO_CLICK_ACTION);
-
-  setMouseBinding(Qt::ControlModifier | Qt::ShiftModifier, Qt::RightButton, SELECT);
-  setWheelBinding(Qt::AltModifier, CAMERA, MOVE_FORWARD);
-  setMouseBinding(Qt::AltModifier, Qt::LeftButton, CAMERA, TRANSLATE);
-
-  // Add custom mouse bindings description (see mousePressEvent())
-  setMouseBindingDescription(Qt::NoModifier, Qt::RightButton, "Opens a camera path context menu");
+	restoreStateFromFile();
+	//setBackgroundColor(QColor(245,222,179, 100));
 }
 
-
-///////////////////////////////////////////////
-//      Define new key bindings : F & W      //
-///////////////////////////////////////////////
-
-void InitViewer::keyPressEvent(QKeyEvent *e)
+void InitViewer::paintEvent(QPaintEvent *event)//系统调用
 {
-  // Get event modifiers key
-  const Qt::KeyboardModifiers modifiers = e->modifiers();
 
-  // A simple switch on e->key() is not sufficient if we want to take state key into account.
-  // With a switch, it would have been impossible to separate 'F' from 'CTRL+F'.
-  // That's why we use imbricated if...else and a "handled" boolean.
-  bool handled = false;
-  if ((e->key()==Qt::Key_W) && (modifiers==Qt::NoButton))
-	{
-	  wireframe_ = !wireframe_;
-	  if (wireframe_)
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	  else
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	  handled = true;
-	  updateGL();
-	}
-  else
-	if ((e->key()==Qt::Key_F) && (modifiers==Qt::NoButton))
-	  {
-	flatShading_ = !flatShading_;
-	if (flatShading_)
-	  glShadeModel(GL_FLAT);
-	else
-	  glShadeModel(GL_SMOOTH);
-	handled = true;
-	updateGL();
-	  }
-  // ... and so on with other else/if blocks.
+	Q_UNUSED(event)
+		QPainter painter;
+	painter.begin(this);
+	painter.setRenderHint(QPainter::Antialiasing);//反走样
 
-  if (!handled)
-	QGLViewer::keyPressEvent(e);
+	// Save current OpenGL state
+	glPushAttrib(GL_ALL_ATTRIB_BITS);
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+
+	// Reset OpenGL parameters
+	glShadeModel(GL_SMOOTH);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_MULTISAMPLE);
+	static GLfloat lightPosition[4] = { 1.0, 5.0, 5.0, 1.0 };
+	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+	qglClearColor(backgroundColor());
+
+	// Classical 3D drawing, usually performed by paintGL().
+	preDraw();
+	draw();
+	postDraw();
+	// Restore OpenGL state
+	glMatrixMode(GL_MODELVIEW);
+	glPopMatrix();
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glPopAttrib();
+
+	drawLegend(&painter);
+	painter.end();
 }
 
-
-///////////////////////////////////////////////////////////
-//             Define new mouse bindings                 //
-//   A camera viewpoint menu binded on right button      //
-///////////////////////////////////////////////////////////
-
-void InitViewer::mousePressEvent(QMouseEvent* e)
+QString InitViewer::helpString() const
 {
-  if ((e->button() == Qt::RightButton) && (e->modifiers() == Qt::NoButton))
-	{
-	  QMenu menu( this );
-	  menu.addAction("Camera positions");
-	  menu.addSeparator();
-	  QMap<QAction*, int> menuMap;
-
-	  bool atLeastOne = false;
-	  // We only test the 20 first indexes. This is a limitation.
-	  for (unsigned short i=0; i<20; ++i)
-	if (camera()->keyFrameInterpolator(i))
-	  {
-		atLeastOne = true;
-		QString text;
-		if (camera()->keyFrameInterpolator(i)->numberOfKeyFrames() == 1)
-		  text = "Position "+QString::number(i);
-		else
-		  text = "Path "+QString::number(i);
-
-		menuMap[menu.addAction(text)] = i;
-	  }
-
-	  if (!atLeastOne)
-	{
-	  menu.addAction("No position defined");
-	  menu.addAction("Use to Alt+Fx to define one");
-	}
-
-	  QAction* action = menu.exec(e->globalPos());
-
-	  if (atLeastOne && action)
-		  camera()->playPath(menuMap[action]);
-	}
-  else
-	QGLViewer::mousePressEvent(e);
+	QString text("<h2>O v e r p a i n t</h2>");
+	text += "This example shows how to mix the 2D QPainter drawing with regular 3D in an OpenGL QGLViewer.<br>";
+	text += "The <code>paintEvent</code> method is overloaded to interleave the two drawing codes.";
+	return text;
 }

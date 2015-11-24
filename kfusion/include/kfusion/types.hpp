@@ -11,6 +11,9 @@
 #include <string>
 #include <pcl/ply_io.h>
 #include <pcl/point_types.h>
+#include <pcl/conversions.h>
+#include <pcl/PCLPointCloud2.h>
+
 using namespace std;
 struct CUevent_st;
 
@@ -63,8 +66,8 @@ namespace kfusion
 	//执行可视化点云到pcl::PointNormal点云的转换
 	namespace convert
 	{
-		void vertex_to_pclCloudNormal(vertexes &v,pcl::PointCloud<pcl::PointNormal> &p);
-		void pclCloudNormal_to_vertex(pcl::PointCloud<pcl::PointNormal> &p,vertexes &v);
+		void FromVertex(vertexes &v,pcl::PointCloud<pcl::PointNormal> &p);
+		void ToVertex(pcl::PointCloud<pcl::PointNormal> &p,vertexes &v);
 	}
 
 	///////用于在CUDA设备上面使用的数据结构

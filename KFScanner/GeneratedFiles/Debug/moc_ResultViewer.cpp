@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'ResultViewer.h'
 **
-** Created: Sun Nov 22 19:52:12 2015
+** Created: Mon Nov 23 14:55:38 2015
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,33 +23,25 @@ static const uint qt_meta_data_ResultViewer[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       1,   14, // methods
+       0,    0, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
        0,       // signalCount
 
- // slots: signature, parameters, type, tag, flags
-      14,   13,   13,   13, 0x0a,
-
        0        // eod
 };
 
 static const char qt_meta_stringdata_ResultViewer[] = {
-    "ResultViewer\0\0open()\0"
+    "ResultViewer\0"
 };
 
 void ResultViewer::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
-    if (_c == QMetaObject::InvokeMetaMethod) {
-        Q_ASSERT(staticMetaObject.cast(_o));
-        ResultViewer *_t = static_cast<ResultViewer *>(_o);
-        switch (_id) {
-        case 0: _t->open(); break;
-        default: ;
-        }
-    }
+    Q_UNUSED(_o);
+    Q_UNUSED(_id);
+    Q_UNUSED(_c);
     Q_UNUSED(_a);
 }
 
@@ -84,11 +76,6 @@ int ResultViewer::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     _id = QGLViewer::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
-    if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 1)
-            qt_static_metacall(this, _c, _id, _a);
-        _id -= 1;
-    }
     return _id;
 }
 QT_END_MOC_NAMESPACE

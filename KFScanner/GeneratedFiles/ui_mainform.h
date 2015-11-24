@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainform.ui'
 **
-** Created: Tue Nov 17 15:59:33 2015
+** Created: Tue Nov 24 15:16:20 2015
 **      by: Qt User Interface Compiler version 4.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -210,8 +210,8 @@ public:
     QWidget *layoutWidget;
     QHBoxLayout *horizontalLayout_4;
     QSpacerItem *horizontalSpacer;
-    QPushButton *pushButton_7;
-    QPushButton *pushButton_6;
+    QPushButton *cloudOpenBtn;
+    QPushButton *cloudExportBtn;
     QWidget *layoutWidget1;
     QVBoxLayout *verticalLayout_10;
     QGridLayout *gridLayout_20;
@@ -1161,17 +1161,17 @@ public:
 
         horizontalLayout_4->addItem(horizontalSpacer);
 
-        pushButton_7 = new QPushButton(layoutWidget);
-        pushButton_7->setObjectName(QString::fromUtf8("pushButton_7"));
-        pushButton_7->setFont(font3);
+        cloudOpenBtn = new QPushButton(layoutWidget);
+        cloudOpenBtn->setObjectName(QString::fromUtf8("cloudOpenBtn"));
+        cloudOpenBtn->setFont(font3);
 
-        horizontalLayout_4->addWidget(pushButton_7);
+        horizontalLayout_4->addWidget(cloudOpenBtn);
 
-        pushButton_6 = new QPushButton(layoutWidget);
-        pushButton_6->setObjectName(QString::fromUtf8("pushButton_6"));
-        pushButton_6->setFont(font3);
+        cloudExportBtn = new QPushButton(layoutWidget);
+        cloudExportBtn->setObjectName(QString::fromUtf8("cloudExportBtn"));
+        cloudExportBtn->setFont(font3);
 
-        horizontalLayout_4->addWidget(pushButton_6);
+        horizontalLayout_4->addWidget(cloudExportBtn);
 
         layoutWidget1 = new QWidget(groupBox_3);
         layoutWidget1->setObjectName(QString::fromUtf8("layoutWidget1"));
@@ -1260,7 +1260,7 @@ public:
         toolBox->setFont(font1);
         page_3 = new QWidget();
         page_3->setObjectName(QString::fromUtf8("page_3"));
-        page_3->setGeometry(QRect(0, 0, 210, 536));
+        page_3->setGeometry(QRect(0, 0, 98, 28));
         pushButton = new QPushButton(page_3);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
         pushButton->setGeometry(QRect(11, 47, 75, 27));
@@ -1336,7 +1336,7 @@ public:
         QObject::connect(delay_slider, SIGNAL(valueChanged(int)), delay_value, SLOT(setNum(int)));
         QObject::connect(range_slider, SIGNAL(valueChanged(int)), range_value, SLOT(setNum(int)));
 
-        mainTab->setCurrentIndex(1);
+        mainTab->setCurrentIndex(0);
         init_toolbox->setCurrentIndex(0);
         toolBox->setCurrentIndex(0);
 
@@ -1428,8 +1428,8 @@ public:
         progressBar_2->setFormat(QApplication::translate("mainformClass", "%p%", 0, QApplication::UnicodeUTF8));
         mainTab->setTabText(mainTab->indexOf(scan), QApplication::translate("mainformClass", "\346\211\253\346\217\217", 0, QApplication::UnicodeUTF8));
         groupBox_3->setTitle(QApplication::translate("mainformClass", "\347\202\271\344\272\221\346\223\215\344\275\234", 0, QApplication::UnicodeUTF8));
-        pushButton_7->setText(QApplication::translate("mainformClass", "\346\211\223\345\274\200\347\202\271\344\272\221", 0, QApplication::UnicodeUTF8));
-        pushButton_6->setText(QApplication::translate("mainformClass", "\350\276\223\345\207\272\347\202\271\344\272\221", 0, QApplication::UnicodeUTF8));
+        cloudOpenBtn->setText(QApplication::translate("mainformClass", "\346\211\223\345\274\200\347\202\271\344\272\221", 0, QApplication::UnicodeUTF8));
+        cloudExportBtn->setText(QApplication::translate("mainformClass", "\350\276\223\345\207\272\347\202\271\344\272\221", 0, QApplication::UnicodeUTF8));
         label_20->setText(QApplication::translate("mainformClass", "\346\240\207\345\207\206\345\267\256", 0, QApplication::UnicodeUTF8));
         label_11->setText(QApplication::translate("mainformClass", "\347\273\237\350\256\241\347\202\271\346\225\260(mean-k)", 0, QApplication::UnicodeUTF8));
         outremoveBtn->setText(QApplication::translate("mainformClass", "\347\246\273\347\276\244\347\202\271\350\277\207\346\273\244", 0, QApplication::UnicodeUTF8));

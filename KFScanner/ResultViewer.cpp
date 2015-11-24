@@ -66,7 +66,7 @@ void ResultViewer::mousePressEvent(QMouseEvent* e)
 
 	  QAction *open_action= new QAction(tr("Open Point Cloud"),this) ;
 
-	  connect(open_action,SIGNAL(triggered()),this,SLOT(open()));
+	  //connect(open_action,SIGNAL(triggered()),this,SLOT(open()));
 
 
 	  menu.addAction(open_action);//打开按钮
@@ -107,18 +107,18 @@ void ResultViewer::mousePressEvent(QMouseEvent* e)
 	QGLViewer::mousePressEvent(e);
 }
 
-void ResultViewer::open()
-{
-	
-	pcd_buffer.clear();//清空点云buffer，否则会出现叠加
-	QString filename = QFileDialog::getOpenFileName(this,tr("open point cloud"),".",tr("*.ply"));
-	if(!filename.isEmpty())
-	{	
-		PLYFilereader reader;
-		reader.readToVertexes(filename.toStdString(),pcd_buffer,false);//读到自己的pcd_buffer,不会影响主界面
-		cout<<"open: "<<filename.toStdString()<<endl;
-
-	}
-	updateGL();
-}
+//void ResultViewer::open()
+//{
+//	
+//	pcd_buffer.clear();//清空点云buffer，否则会出现叠加
+//	QString filename = QFileDialog::getOpenFileName(this,tr("open point cloud"),".",tr("*.ply"));
+//	if(!filename.isEmpty())
+//	{	
+//		PLYFilereader reader;
+//		reader.readToVertexes(filename.toStdString(),pcd_buffer,false);//读到自己的pcd_buffer,不会影响主界面
+//		cout<<"open: "<<filename.toStdString()<<endl;
+//
+//	}
+//	updateGL();
+//}
 

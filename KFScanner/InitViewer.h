@@ -3,22 +3,29 @@
 
 #include <QGLViewer/qglviewer.h>
 
+class QPaintEvent;
+class QPainter;
+
 class InitViewer : public QGLViewer
 {
-	Q_OBJECT
-
-public:
-	InitViewer(QWidget *parent):QGLViewer(parent),wireframe_(false), flatShading_(false){};
+public :
+	InitViewer(QWidget* parent = 0);
 
 protected :
-  virtual void draw();
-  virtual void init();
-  virtual void keyPressEvent(QKeyEvent *e);
-  virtual void mousePressEvent(QMouseEvent* e);
+	virtual void draw();
+	virtual void init();
+	void drawLegend(QPainter *painter);
+	virtual void paintGL() { update(); };
+	virtual void paintEvent(QPaintEvent *event);
+	// Could be overloaded to defer final initializations
+	//virtual void showEvent(QShowEvent *event);
 
-private :
-  bool wireframe_, flatShading_;
-	
+	virtual QString helpString() const;
+public:
+	void updateStates(bool,bool,bool);
+private:
+	bool kinect_state;
+	bool facility_state;
+	bool GPU_state;
 };
-
 #endif // INITVIEWER_H
