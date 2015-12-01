@@ -84,6 +84,7 @@ public:
 public:
 	virtual int read(const string &file_name,cv::Mat &cloud_host);//读取到矩阵
 	virtual int readToVertexes(const string &file_name,vertexes &cloud_vertex,bool normal);//读取生成顶点
+	virtual int readToVertexes(const string &file_name,pcl::PointCloud<pcl::PointNormal> &input,vertexes &cloud_vertex,bool normal);
 private:
 	InfoBox infobox;
 	int valid_point;

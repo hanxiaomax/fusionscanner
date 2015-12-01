@@ -92,6 +92,9 @@
     <ClCompile Include="GeneratedFiles\Release\moc_ResultViewer.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="_object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="mainform.h">
@@ -136,6 +139,9 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="CloudViewer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_Object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainform.ui'
 **
-** Created: Tue Nov 24 15:16:20 2015
+** Created: Tue Nov 24 21:38:55 2015
 **      by: Qt User Interface Compiler version 4.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -331,7 +331,7 @@ public:
         init_toolbox->setLineWidth(1);
         page_8 = new QWidget();
         page_8->setObjectName(QString::fromUtf8("page_8"));
-        page_8->setGeometry(QRect(0, 0, 228, 523));
+        page_8->setGeometry(QRect(0, 0, 174, 318));
         gridLayout_17 = new QGridLayout(page_8);
         gridLayout_17->setSpacing(6);
         gridLayout_17->setContentsMargins(11, 11, 11, 11);
@@ -961,8 +961,9 @@ public:
         gridLayout_2->setSpacing(6);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
         gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
+        gridLayout_2->setVerticalSpacing(4);
         horizontalLayout = new QHBoxLayout();
-        horizontalLayout->setSpacing(6);
+        horizontalLayout->setSpacing(4);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         fusionViewer = new glViewer(scan);
         fusionViewer->setObjectName(QString::fromUtf8("fusionViewer"));
@@ -1099,7 +1100,7 @@ public:
         gridLayout_2->addLayout(verticalLayout_2, 0, 1, 2, 1);
 
         horizontalLayout_3 = new QHBoxLayout();
-        horizontalLayout_3->setSpacing(6);
+        horizontalLayout_3->setSpacing(4);
         horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
         depthViewer = new glViewer(scan);
         depthViewer->setObjectName(QString::fromUtf8("depthViewer"));
@@ -1336,7 +1337,7 @@ public:
         QObject::connect(delay_slider, SIGNAL(valueChanged(int)), delay_value, SLOT(setNum(int)));
         QObject::connect(range_slider, SIGNAL(valueChanged(int)), range_value, SLOT(setNum(int)));
 
-        mainTab->setCurrentIndex(0);
+        mainTab->setCurrentIndex(1);
         init_toolbox->setCurrentIndex(0);
         toolBox->setCurrentIndex(0);
 

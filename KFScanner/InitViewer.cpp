@@ -14,17 +14,25 @@ using namespace std;
 
 
 InitViewer::InitViewer(QWidget* parent)
-	: QGLViewer(QGLFormat(QGL::SampleBuffers), parent),kinect_state(false),facility_state(false),GPU_state(false){
+	: QGLViewer(QGLFormat(QGL::SampleBuffers), parent),kinect_state(false),facility_state(false),GPU_state(false)
+{
 		setAttribute(Qt::WA_NoSystemBackground);
 }
 
+/*----------------------------------------*
+ *  功能描述: 更新状态并更新显示文字
+ ----------------------------------------*/ 
 void InitViewer::updateStates(bool fstate,bool Gstate,bool kstate)
 {
 	kinect_state=kstate;
 	facility_state=fstate;
 	GPU_state=Gstate;
+	
 	update();
 }
+/*----------------------------------------*
+ *  功能描述: 绘制图示文字
+ ----------------------------------------*/ 
 void InitViewer::drawLegend(QPainter *painter)
 {
 	painter->save();
@@ -77,14 +85,17 @@ void InitViewer::draw()
 		glVertex3f(r2*c, alt+0.05f, r2*s);
 	}
 	glEnd();
+	
 }
 
 void InitViewer::init()
 {
 	restoreStateFromFile();
-	//setBackgroundColor(QColor(245,222,179, 100));
 }
 
+/*----------------------------------------*
+ *  功能描述: 重载绘图事件
+ ----------------------------------------*/ 
 void InitViewer::paintEvent(QPaintEvent *event)//系统调用
 {
 
@@ -121,15 +132,8 @@ void InitViewer::paintEvent(QPaintEvent *event)//系统调用
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
 	glPopAttrib();
-
+	
 	drawLegend(&painter);
 	painter.end();
-}
-
-QString InitViewer::helpString() const
-{
-	QString text("<h2>O v e r p a i n t</h2>");
-	text += "This example shows how to mix the 2D QPainter drawing with regular 3D in an OpenGL QGLViewer.<br>";
-	text += "The <code>paintEvent</code> method is overloaded to interleave the two drawing codes.";
-	return text;
+	
 }

@@ -6,16 +6,14 @@
 glViewer::glViewer(QWidget *parent):QGLWidget(parent)
 {
 	mSceneChanged = false;
-	mBgColor = QColor::fromRgb(0, 0, 0);//设置背景色
+	mBgColor = QColor::fromRgb(51,51,51);//设置背景色
 
 	mOutH = 0;
 	mOutW = 0;
 	mImgRatio = 16.0f/9.0f;
 
 	mPosX = 0;
-	mPosY = 0;
-	//glutCreateWindow("111");
-	
+	mPosY = 0;	
 }
 
 
@@ -27,7 +25,8 @@ glViewer::~glViewer(void)
 void glViewer::initializeGL()
 {
 	makeCurrent();
-	qglClearColor(mBgColor.darker());
+
+	qglClearColor(mBgColor);
 }
 
 void glViewer::resizeGL(int width, int height)
@@ -85,7 +84,6 @@ void glViewer::paintGL()
 void glViewer::renderImage()
 {
 	makeCurrent();
-
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	if (!mRenderQtImg.isNull())
@@ -134,6 +132,7 @@ void glViewer::renderImage()
 
 bool glViewer::showImage( cv::Mat image )
 {
+	
 	image.copyTo(mOrigImage);
 
 	mImgRatio = (float)image.cols/(float)image.rows;

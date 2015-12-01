@@ -17,10 +17,7 @@ protected :
 	void drawLegend(QPainter *painter);
 	virtual void paintGL() { update(); };
 	virtual void paintEvent(QPaintEvent *event);
-	// Could be overloaded to defer final initializations
-	//virtual void showEvent(QShowEvent *event);
-
-	virtual QString helpString() const;
+	
 public:
 	void updateStates(bool,bool,bool);
 private:

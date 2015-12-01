@@ -5,24 +5,38 @@ using namespace std;
 
 void CloudViewer::update()
 {
+	
 	updateGL();
 }
 
 void CloudViewer::draw() 
 {
-	glPushMatrix();
-	glScaled(vizScale,vizScale,vizScale);//缩放比例
-	glDisable(GL_LIGHTING);
-	//glPointSize(5.0f);
-	
-	glColor3f(1,1,0);
-	glBegin(GL_POINTS);
-	for (int i = 0; i < pcd_buffer.size(); ++i) 
+	if(pcd_buffer.size()>0)
 	{
-		glVertex3d(pcd_buffer[i].x,pcd_buffer[i].y,pcd_buffer[i].z);//绘制一个点
+		setFPSIsDisplayed();
+		glPushMatrix();
+		glScaled(vizScale,vizScale,vizScale);//缩放比例
+		glDisable(GL_LIGHTING);
+		//glPointSize(5.0f);
+	
+		glColor3f(1,1,0);
+		glBegin(GL_POINTS);
+		for (int i = 0; i < pcd_buffer.size(); ++i) 
+			glVertex3d(pcd_buffer[i].x,pcd_buffer[i].y,pcd_buffer[i].z);//绘制一个点
+		glEnd();
+		glPopMatrix();
 	}
-	glEnd();
-	glPopMatrix();
+	else
+	{
+		glPushMatrix();
+		glDisable(GL_LIGHTING);
+		glDisable(GL_DEPTH_TEST);
+		qglColor(QColor(255,255,255));
+		QFont font("Microsoft YaHei",25,20);
+		
+		drawText(width()/2-140,height()/2,tr("没有可显示的点云"),font);
+		glPopMatrix();
+	}
 
 }
 
@@ -30,7 +44,7 @@ void CloudViewer::init() {
 	// Restore previous viewer state.
 	restoreStateFromFile();
 
-    setFPSIsDisplayed();
+    
 
 	setSceneBoundingBox(qglviewer::Vec(-50,-50,-50), qglviewer::Vec(50,50,50));
 

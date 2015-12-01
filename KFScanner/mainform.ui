@@ -35,7 +35,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="iconSize">
        <size>
@@ -87,8 +87,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>228</width>
-             <height>523</height>
+             <width>174</width>
+             <height>318</height>
             </rect>
            </property>
            <attribute name="label">
@@ -1303,8 +1303,14 @@ color: rgb(255, 255, 255);</string>
         <string>扫描</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2" columnstretch="5,1">
+        <property name="verticalSpacing">
+         <number>4</number>
+        </property>
         <item row="0" column="0">
          <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1">
+          <property name="spacing">
+           <number>4</number>
+          </property>
           <item>
            <widget class="glViewer" name="fusionViewer" native="true">
             <property name="sizePolicy">
@@ -1493,6 +1499,9 @@ color: rgb(255, 255, 255);</string>
         </item>
         <item row="1" column="0">
          <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <property name="spacing">
+           <number>4</number>
+          </property>
           <item>
            <widget class="glViewer" name="depthViewer" native="true">
             <property name="sizePolicy">

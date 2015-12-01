@@ -26,8 +26,10 @@ public:
 private:
 	Ui::mainformClass ui;//在类内部使用，此时已经构造了对象ui，完成了初始化（需要构造函数支持）
 	script_Dialog * sd;
+
 	fusionScanner*  _scanner;//不一定会用到，且不是参数，声明为指针
 	OpenNISource* _capture;//不一定会用到，且不是参数，声明为指针
+
 	QextSerialPort * port;
 	int updateTimer;
 	int delayTimer;
@@ -49,6 +51,7 @@ private:
 	bool isGpuOK;
 	
 	vertexes pcd_buffer;
+	pcl::PointCloud<pcl::PointNormal> input_cloud;
 	
 
 private slots:

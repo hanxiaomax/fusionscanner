@@ -112,6 +112,8 @@ void mainform::on_saveCloudBtn_clicked()
 	ui.cloudViewer->setPcdBuffer(pcd_buffer);//拷贝pcd_buffer到cloudviewer然后显示
 	ui.cloudViewer->update();
 	ui.resultViewer->setPcdBuffer(pcd_buffer);
+	convert::FromVertex(pcd_buffer,input_cloud);
+	ui.resultViewer->setInputCloud(input_cloud);
 	ui.resultViewer->update();
 }
 
@@ -582,14 +584,19 @@ void mainform::on_outremoveBtn_clicked()
 void mainform::on_cloudOpenBtn_clicked()
 {
 	pcd_buffer.clear();//清空点云buffer，否则会出现叠加
-	QString filename = QFileDialog::getOpenFileName(this,tr("open point cloud"),".",tr("*.ply"));
+	QString filename = QFileDialog::getOpenFileName(this,tr("打开点云文件"),".",tr("*.ply"));
 	if(!filename.isEmpty())
 	{	
 		PLYFilereader reader;
-		reader.readToVertexes(filename.toStdString(),pcd_buffer,false);//读到主界面的pcd_buffer中
-		cout<<"open: "<<filename.toStdString()<<endl;
+		
+		if(reader.readToVertexes(filename.toStdString(),input_cloud,pcd_buffer,false))//读到主界面的pcd_buffer中
+			cout<<"open : "<<filename.toStdString()<<endl;
+		else
+			cout<<"can not open : "<<filename.toStdString()<<endl;
 	}
 	ui.resultViewer->setPcdBuffer(pcd_buffer);
+	ui.resultViewer->setInputCloud(input_cloud);
+	cout<<"main form input_cloud.size()="<<input_cloud.size()<<endl;
 	ui.resultViewer->update();
 }
 void mainform::on_cloudExportBtn_clicked()
