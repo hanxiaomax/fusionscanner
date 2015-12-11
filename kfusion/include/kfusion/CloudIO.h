@@ -61,7 +61,7 @@ private:
 public:
 	virtual int write(const string &file_name,cuda::DeviceArray<Point> &cloud,int precision=5);
 	virtual int write(const string &file_name,cuda::DeviceArray<Point> &cloud,cuda::DeviceArray<Normal> &normal,int precision=5);
-	//需要一个写点云的
+	virtual int write(const string &finle_name,pcl::PointCloud<pcl::PointNormal> &cloud,bool with_normal);
 };
 
 

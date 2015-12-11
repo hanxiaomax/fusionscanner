@@ -15,7 +15,7 @@ protected :
 	virtual void draw();
 	virtual void init();
 	void drawLegend(QPainter *painter);
-	virtual void paintGL() { update(); };
+	virtual void paintGL() { update(); }
 	virtual void paintEvent(QPaintEvent *event);
 	
 public:

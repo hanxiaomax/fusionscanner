@@ -226,6 +226,7 @@ namespace kfusion
 template<class T> inline       T* kfusion::cuda::DeviceMemory::ptr()       { return (      T*)data_; }
 template<class T> inline const T* kfusion::cuda::DeviceMemory::ptr() const { return (const T*)data_; }
 
+//ÀàÐÍ×ª»»
 template <class U> inline kfusion::cuda::DeviceMemory::operator kfusion::cuda::PtrSz<U>() const
 {
     PtrSz<U> result;

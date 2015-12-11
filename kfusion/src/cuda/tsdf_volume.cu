@@ -40,9 +40,11 @@ void kfusion::device::clear_volume(TsdfVolume volume)
 {
     dim3 block (32, 8);//每个block中线程的数量，每行32个线程*每列8个线程，一共32*8=256个线程
     dim3 grid (1, 1, 1);
+	//保证x和y方向各有512个线程，以此来计算grid在每个方向上的个数
     grid.x = divUp (volume.dims.x, block.x);//grid中block的数量（行）	16
     grid.y = divUp (volume.dims.y, block.y);//grid中block的数量（列）	64
-	//grid.z为1
+	//grid.z为1，因为grid的维数为2
+	
 
     clear_volume_kernel<<<grid, block>>>(volume);//核函数调用
     cudaSafeCall ( cudaGetLastError () );

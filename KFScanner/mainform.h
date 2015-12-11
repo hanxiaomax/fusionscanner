@@ -51,7 +51,8 @@ private:
 	bool isGpuOK;
 	
 	vertexes pcd_buffer;
-	pcl::PointCloud<pcl::PointNormal> input_cloud;
+	pcl::PointCloud<pcl::PointNormal>::Ptr input_cloud;
+	PolygonMesh mesh;
 	
 
 private slots:
@@ -71,13 +72,14 @@ private slots:
 	void on_outremoveBtn_clicked();//离群点清除
 	void on_cloudOpenBtn_clicked();//打开点云文件
 	void on_cloudExportBtn_clicked();//输出点云
-
+	void on_reconsBtn_clicked();
+	void on_savePLYmeshBtn_clicked();
 
 	void addCombox(QString filename);
 	void deleteCombox(int index);
 	//void on_save2qglviewerbtn_clicked();//点云预览
 	void on_saveCloudBtn_clicked();//保存点云
-	
+	void on_openMeshBtn_clicked();
 
 private:
 	void timerEvent(QTimerEvent *event);

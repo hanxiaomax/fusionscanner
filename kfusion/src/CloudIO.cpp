@@ -38,7 +38,14 @@ int  PLYFilewriter::write(const string &file_name,cuda::DeviceArray<Point> &clou
 	f.close();
 	
 }
+int PLYFilewriter::write(const string &finle_name,pcl::PointCloud<pcl::PointNormal> &cloud,bool with_normal)
+{
+	//PLYWriter w
 
+	pcl::PLYWriter w;
+	w.write(finle_name,cloud);
+	return 1;
+}
 
 string PLYFilewriter::headerGenerator(cuda::DeviceArray<Point> &cloud,bool withNormal,int valid_point)
 {
@@ -363,7 +370,6 @@ int PLYFilereader::readToVertexes(const string &file_name,vertexes &cloud_vertex
 }
 int PLYFilereader::readToVertexes(const string &file_name,pcl::PointCloud<pcl::PointNormal> &input,vertexes &cloud_vertex,bool normal)
 {
-	//pcl::PointCloud<pcl::PointNormal> input;
 	if(loadPlyCloud(file_name,input))
 	{
 		for(int i=0;i<input.points.size();i++)

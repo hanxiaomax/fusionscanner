@@ -3,11 +3,6 @@
 
 using namespace std;
 
-void CloudViewer::update()
-{
-	
-	updateGL();
-}
 
 void CloudViewer::draw() 
 {

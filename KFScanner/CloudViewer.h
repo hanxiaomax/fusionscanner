@@ -15,14 +15,13 @@ protected:
 	virtual void draw();
 	virtual void init();
 public:
-	void update();
+
 	void setPcdBuffer(vertexes &pcd){pcd_buffer=pcd;};
-	
 	vertexes getPcdBuffer(){return pcd_buffer;};
 private:
 	vertexes pcd_buffer;
 	float vizScale;
-	
+
 
 };
 

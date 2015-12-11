@@ -27,7 +27,9 @@ public:
 	//void update(){cout<<"update"<<endl;updateGL();};//update是QWidget实现的
 	void setPcdBuffer(vertexes &pcd);//设置可视化点云
 	vertexes & getPcdBuffer(){return pcd_buffer;};
-	void setInputCloud(pcl::PointCloud<pcl::PointNormal> &input){input_cloud=input;};//设置输入点云
+	void setInputCloud(pcl::PointCloud<pcl::PointNormal>::Ptr input){input_cloud=input;};//设置输入点云
+	//pcl::PointCloud<pcl::PointNormal> getInputCloud(){return input_cloud;};
+
 
 public slots:
     bool remove_point();//移除选中点
@@ -47,7 +49,7 @@ protected :
  
 private:
 	vertexes pcd_buffer;
-	pcl::PointCloud<pcl::PointNormal> input_cloud;
+	pcl::PointCloud<pcl::PointNormal>::Ptr input_cloud;
 	pcl::PointIndices::Ptr remove_indice;
 	QRect rectangle_;//矩形选择框
 	enum SelectionMode { NONE, ADD, REMOVE };//模式

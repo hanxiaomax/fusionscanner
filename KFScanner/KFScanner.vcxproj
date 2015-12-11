@@ -91,7 +91,7 @@
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;D:\SEU\3dSCAN\kinfu_remake\build\3rd party\PCL\lib</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;qtmaind.lib;QtCored4.lib;QtGuid4.lib;QtOpenGLd4.lib;D:\SEU\3dSCAN\kinfu_remake\build\lib\Debug\kfusiond.lib;C:\opencv\build\lib\Debug\opencv_viz249d.lib;C:\opencv\build\lib\Debug\opencv_highgui249d.lib;C:\opencv\build\lib\Debug\opencv_imgproc249d.lib;C:\opencv\build\lib\Debug\opencv_core249d.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64\cudart.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64\cuda.lib;C:\Program Files\OpenNI\Lib64\openNI64.lib;qextserialportd.lib;pcl_common_debug.lib;pcl_filters_debug.lib;pcl_io_debug.lib;pcl_io_ply_debug.lib;QtXmld4.lib;"C:\Qt\QGLViewer\QGLViewerd2.lib";glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;qtmaind.lib;QtCored4.lib;QtGuid4.lib;QtOpenGLd4.lib;D:\SEU\3dSCAN\kinfu_remake\build\lib\Debug\kfusiond.lib;C:\opencv\build\lib\Debug\opencv_viz249d.lib;C:\opencv\build\lib\Debug\opencv_highgui249d.lib;C:\opencv\build\lib\Debug\opencv_imgproc249d.lib;C:\opencv\build\lib\Debug\opencv_core249d.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64\cudart.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64\cuda.lib;C:\Program Files\OpenNI\Lib64\openNI64.lib;qextserialportd.lib;pcl_common_debug.lib;pcl_filters_debug.lib;pcl_io_debug.lib;pcl_io_ply_debug.lib;pcl_surface_debug.lib;pcl_search_debug.lib;pcl_features_debug.lib;QtXmld4.lib;"C:\Qt\QGLViewer\QGLViewerd2.lib";glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -188,9 +188,9 @@
     <ClCompile Include="InitViewer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainform.cpp" />
+    <ClCompile Include="MeshViewer.cpp" />
     <ClCompile Include="ResultViewer.cpp" />
     <ClCompile Include="script_management.cpp" />
-    <ClCompile Include="_object.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="mainform.h">
@@ -234,7 +234,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="_Object.h" />
+    <ClInclude Include="MeshViewer.h" />
     <CustomBuild Include="ResultViewer.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing ResultViewer.h...</Message>

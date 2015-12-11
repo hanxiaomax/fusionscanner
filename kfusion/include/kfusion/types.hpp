@@ -13,7 +13,7 @@
 #include <pcl/point_types.h>
 #include <pcl/conversions.h>
 #include <pcl/PCLPointCloud2.h>
-
+#include <pcl/PolygonMesh.h>
 using namespace std;
 struct CUevent_st;
 

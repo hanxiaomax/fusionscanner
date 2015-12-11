@@ -35,7 +35,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>3</number>
       </property>
       <property name="iconSize">
        <size>
@@ -1690,9 +1690,9 @@ color: rgb(255, 255, 255);</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_5" columnstretch="3">
         <item row="0" column="0">
-         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="5,1">
+         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="12,3">
           <item>
-           <widget class="glViewer" name="init_viewer_6" native="true">
+           <widget class="MeshViewer" name="mesh_viewer" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>2</horstretch>
@@ -1707,6 +1707,9 @@ color: rgb(255, 255, 255);</string>
              <string/>
             </property>
             <layout class="QGridLayout" name="gridLayout_6">
+             <property name="rightMargin">
+              <number>2</number>
+             </property>
              <item row="0" column="0">
               <widget class="QToolBox" name="toolBox">
                <property name="font">
@@ -1725,38 +1728,62 @@ color: rgb(255, 255, 255);</string>
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>98</width>
-                  <height>28</height>
+                  <width>263</width>
+                  <height>536</height>
                  </rect>
                 </property>
                 <attribute name="label">
                  <string>操作</string>
                 </attribute>
-                <widget class="QPushButton" name="pushButton">
-                 <property name="geometry">
-                  <rect>
-                   <x>11</x>
-                   <y>47</y>
-                   <width>75</width>
-                   <height>27</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>重建</string>
-                 </property>
-                </widget>
-                <widget class="QPushButton" name="pushButton_2">
+                <widget class="QWidget" name="layoutWidget">
                  <property name="geometry">
                   <rect>
                    <x>10</x>
-                   <y>80</y>
-                   <width>75</width>
-                   <height>27</height>
+                   <y>47</y>
+                   <width>241</width>
+                   <height>461</height>
                   </rect>
                  </property>
-                 <property name="text">
-                  <string>复位</string>
-                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_3">
+                  <item>
+                   <layout class="QGridLayout" name="gridLayout_21">
+                    <item row="0" column="0">
+                     <widget class="QPushButton" name="savePLYmeshBtn">
+                      <property name="text">
+                       <string>保存曲面</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QPushButton" name="reconsBtn">
+                      <property name="text">
+                       <string>重建</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="openMeshBtn">
+                    <property name="text">
+                     <string>打开mesh</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="verticalSpacer_8">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>20</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
                 </widget>
                </widget>
                <widget class="QWidget" name="page_4">
@@ -1764,13 +1791,106 @@ color: rgb(255, 255, 255);</string>
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>98</width>
-                  <height>28</height>
+                  <width>249</width>
+                  <height>144</height>
                  </rect>
                 </property>
                 <attribute name="label">
                  <string>重建参数</string>
                 </attribute>
+                <layout class="QVBoxLayout" name="verticalLayout_11">
+                 <item>
+                  <layout class="QGridLayout" name="gridLayout_8">
+                   <item row="5" column="0">
+                    <widget class="QLabel" name="label_32">
+                     <property name="text">
+                      <string>off_surface_displacement</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="label_9">
+                     <property name="text">
+                      <string>iso_level</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="label_10">
+                     <property name="text">
+                      <string>grid_res</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="0">
+                    <widget class="QLabel" name="label_22">
+                     <property name="text">
+                      <string>extend_percentage</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QSpinBox" name="res_value">
+                     <property name="minimum">
+                      <number>50</number>
+                     </property>
+                     <property name="maximum">
+                      <number>100</number>
+                     </property>
+                     <property name="value">
+                      <number>70</number>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="1">
+                    <widget class="QDoubleSpinBox" name="percentage_value">
+                     <property name="maximum">
+                      <double>100.000000000000000</double>
+                     </property>
+                     <property name="singleStep">
+                      <double>1.000000000000000</double>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="5" column="1">
+                    <widget class="QDoubleSpinBox" name="off_value">
+                     <property name="maximum">
+                      <double>1.000000000000000</double>
+                     </property>
+                     <property name="singleStep">
+                      <double>0.010000000000000</double>
+                     </property>
+                     <property name="value">
+                      <double>0.010000000000000</double>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QDoubleSpinBox" name="iso_value">
+                     <property name="maximum">
+                      <double>1.000000000000000</double>
+                     </property>
+                     <property name="singleStep">
+                      <double>0.010000000000000</double>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <spacer name="verticalSpacer_7">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>389</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                </layout>
                </widget>
               </widget>
              </item>
@@ -1981,7 +2101,13 @@ color: rgb(255, 255, 255);</string>
   <customwidget>
    <class>ResultViewer</class>
    <extends>QWidget</extends>
-   <header location="global">ResultViewer.h</header>
+   <header>ResultViewer.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MeshViewer</class>
+   <extends>QWidget</extends>
+   <header location="global">MeshViewer.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

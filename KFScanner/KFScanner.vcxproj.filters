@@ -92,7 +92,7 @@
     <ClCompile Include="GeneratedFiles\Release\moc_ResultViewer.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="_object.cpp">
+    <ClCompile Include="MeshViewer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -141,7 +141,7 @@
     <ClInclude Include="CloudViewer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="_Object.h">
+    <ClInclude Include="MeshViewer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

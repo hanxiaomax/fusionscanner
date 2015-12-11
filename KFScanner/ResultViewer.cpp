@@ -23,7 +23,10 @@ using namespace std;
 #endif
 
 
-ResultViewer::ResultViewer(QWidget *parent):selectionMode_(NONE),remove_indice(new pcl::PointIndices())
+ResultViewer::ResultViewer(QWidget *parent):
+	selectionMode_(NONE),
+	remove_indice(new pcl::PointIndices()),
+	input_cloud(new pcl::PointCloud<pcl::PointNormal>())
 {
 	setAttribute(Qt::WA_NoSystemBackground);
 	setTextIsEnabled();
@@ -106,7 +109,7 @@ void ResultViewer::keyPressEvent(QKeyEvent *e)
 	//添加自定义的按键C
 	if (e->key()==Qt::Key_Delete)
 	{
-		if(input_cloud.size()>0)
+		if(input_cloud->size()>0)
 		{
 			if(remove_point())
 				update();
@@ -240,7 +243,7 @@ bool ResultViewer::remove_point()
 		pcl::PointCloud<pcl::PointNormal> output_cloud;//输出点云
 		vertexes new_pcd;
 
-		pcl::toPCLPointCloud2<pcl::PointNormal>(input_cloud,*input_temp);//转换为ExtractIndices可用的PCLPointCloud2格式temp
+		pcl::toPCLPointCloud2<pcl::PointNormal>(*input_cloud,*input_temp);//转换为ExtractIndices可用的PCLPointCloud2格式temp
 		pcl::ExtractIndices<pcl::PCLPointCloud2> extract;
 		extract.setInputCloud(input_temp);
 		extract.setIndices(remove_indice);
@@ -251,7 +254,7 @@ bool ResultViewer::remove_point()
 		pcl::fromPCLPointCloud2<pcl::PointNormal>(*output_temp,output_cloud);
 		
 		kfusion::convert::ToVertex(output_cloud,new_pcd);
-		input_cloud=output_cloud;//以输出点云更新输入点云
+		*input_cloud=output_cloud;//以输出点云更新输入点云
 		setPcdBuffer(new_pcd);
 		
 		return true;

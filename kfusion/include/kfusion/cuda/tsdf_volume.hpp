@@ -22,8 +22,6 @@ namespace kfusion
             const CudaData data() const;
             CudaData data();
 
-			//const DeviceArray2D<int> getvolume() const;
-
 			///////Getter & Setter//////////////////////////////////////
             Vec3f getSize() const;
             void setSize(const Vec3f& size);

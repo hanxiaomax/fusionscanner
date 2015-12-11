@@ -7,7 +7,11 @@
 #include <QTextCodec> 
 #include <QTime>
 #include <io.h>
-
+#include <pcl/console/time.h>
+#include <pcl/surface/marching_cubes_hoppe.h>
+#include <fstream>
+#include <sstream>
+//#include <pcl/surface/poisson.h>
 /*************************************
  *  简要描述: GUI界面逻辑
  ************************************/  
@@ -26,7 +30,8 @@ mainform::mainform(QWidget *parent, Qt::WFlags flags)
 	isGpuOK(false),//GPU
 	isKinectOK(false),//Kinect
 	with_normal(true),//保存点云和法线
-	cloudFromFile(false)
+	cloudFromFile(false),
+	input_cloud(new pcl::PointCloud<pcl::PointNormal>())
 {
 	//////指针初始化
 	_scanner = 0;
@@ -112,10 +117,88 @@ void mainform::on_saveCloudBtn_clicked()
 	ui.cloudViewer->setPcdBuffer(pcd_buffer);//拷贝pcd_buffer到cloudviewer然后显示
 	ui.cloudViewer->update();
 	ui.resultViewer->setPcdBuffer(pcd_buffer);
-	convert::FromVertex(pcd_buffer,input_cloud);
+	convert::FromVertex(pcd_buffer,*input_cloud);
 	ui.resultViewer->setInputCloud(input_cloud);
 	ui.resultViewer->update();
 }
+/*----------------------------------------*
+ *  功能描述: 曲面重建按钮
+ ----------------------------------------*/ 
+void mainform::on_reconsBtn_clicked()
+{
+	float iso_level = ui.iso_value->value();//0.0
+	
+	int grid_res = ui.res_value->value();//70
+
+	float extend_percentage = ui.percentage_value->value();//0.0
+	
+	float off_surface_displacement =  ui.off_value->value();//0.01
+
+
+	MarchingCubes<PointNormal> *mc;
+	mc = new MarchingCubesHoppe<PointNormal> ();
+	
+
+	mc->setIsoLevel (iso_level);
+	mc->setGridResolution (grid_res, grid_res, grid_res);
+	mc->setPercentageExtendGrid (extend_percentage);
+	mc->setInputCloud (input_cloud);
+
+	TicToc tt;
+	tt.tic ();
+
+	print_highlight ("Computing ");
+	mc->reconstruct (mesh);
+	
+	
+
+	/*for(std::vector< ::pcl::Vertices>::iterator it=mesh.polygons.begin();it!=mesh.polygons.end();it++)
+		(*it).*/
+	//cout<<mesh;
+	//out<<mesh;
+
+	delete mc;
+	
+	print_info ("[done, "); print_value ("%g", tt.toc ()); print_info (" ms]\n");
+	QMessageBox::information(NULL, tr("成功"), tr("重建"));
+	
+
+}
+/*----------------------------------------*
+ *  功能描述: 保存重建后的曲面
+ ----------------------------------------*/ 
+void mainform::on_savePLYmeshBtn_clicked()
+{
+	if (mesh.polygons.size()>0)
+	{
+		QString fileName;  
+		fileName = QFileDialog::getSaveFileName(this,  
+			tr("保存mesh"), "", tr(" (*.ply)"));  
+		if (fileName.size()>0)
+			savePLYFile(fileName.toStdString(),mesh);
+	}
+	else
+		QMessageBox::information(NULL, tr("警告"), tr("没有可以用来输出的mesh"));
+}
+void mainform::on_openMeshBtn_clicked()
+{
+	mesh.polygons.clear();
+	
+	QString filename = QFileDialog::getOpenFileName(this,tr("打开mesh文件"),".",tr("*.ply"));
+	if(!filename.isEmpty())
+	{	
+		cout<<"open:"<<filename.toStdString()<<endl;
+		loadPLYFile(filename.toStdString(),mesh);
+
+		cout<<"opened!"<<endl;
+	}
+	ui.mesh_viewer->setMeshBuffer(mesh);//TODO 应该是一个信号槽
+	//ofstream out("../mesh-point.txt",ofstream::out);
+	//out<<mesh;
+	//out.close();
+	ui.mesh_viewer->update();
+}
+
 
 /*----------------------------------------*
  *  功能描述: 重置kinfu参数按钮触发槽函数
@@ -589,19 +672,33 @@ void mainform::on_cloudOpenBtn_clicked()
 	{	
 		PLYFilereader reader;
 		
-		if(reader.readToVertexes(filename.toStdString(),input_cloud,pcd_buffer,false))//读到主界面的pcd_buffer中
+		if(reader.readToVertexes(filename.toStdString(),*input_cloud,pcd_buffer,false))//读到主界面的pcd_buffer中
 			cout<<"open : "<<filename.toStdString()<<endl;
 		else
 			cout<<"can not open : "<<filename.toStdString()<<endl;
 	}
 	ui.resultViewer->setPcdBuffer(pcd_buffer);
 	ui.resultViewer->setInputCloud(input_cloud);
-	cout<<"main form input_cloud.size()="<<input_cloud.size()<<endl;
+	cout<<"main form input_cloud.size()="<<input_cloud->size()<<endl;
 	ui.resultViewer->update();
 }
 void mainform::on_cloudExportBtn_clicked()
 {
-
+	if (input_cloud->size()>0)
+	{
+		QString fileName;  
+		fileName = QFileDialog::getSaveFileName(this,  
+			tr("保存点云"), "", tr(" (*.ply)"));  
+		if (fileName.size()>0)
+		{
+			PLYFilewriter w;
+			w.write(fileName.toStdString(),*input_cloud,false);
+		}
+	}
+	else
+		QMessageBox::information(NULL, tr("警告"), tr("没有可以用来输出的点云"));
+	
+	
 }
 
 //////////////////////////////////////////////////

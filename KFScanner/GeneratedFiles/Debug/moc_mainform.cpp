@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainform.h'
 **
-** Created: Sun Nov 29 21:34:31 2015
+** Created: Wed Dec 9 17:21:23 2015
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_mainform[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      17,   14, // methods
+      20,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -45,9 +45,12 @@ static const uint qt_meta_data_mainform[] = {
      339,    9,    9,    9, 0x08,
      365,    9,    9,    9, 0x08,
      391,    9,    9,    9, 0x08,
-     428,  419,    9,    9, 0x08,
-     453,  447,    9,    9, 0x08,
-     471,    9,    9,    9, 0x08,
+     419,    9,    9,    9, 0x08,
+     442,    9,    9,    9, 0x08,
+     479,  470,    9,    9, 0x08,
+     504,  498,    9,    9, 0x08,
+     522,    9,    9,    9, 0x08,
+     548,    9,    9,    9, 0x08,
 
        0        // eod
 };
@@ -66,9 +69,12 @@ static const char qt_meta_stringdata_mainform[] = {
     "on_resetMachineBtn_clicked()\0"
     "on_outremoveBtn_clicked()\0"
     "on_cloudOpenBtn_clicked()\0"
-    "on_cloudExportBtn_clicked()\0filename\0"
+    "on_cloudExportBtn_clicked()\0"
+    "on_reconsBtn_clicked()\0"
+    "on_savePLYmeshBtn_clicked()\0filename\0"
     "addCombox(QString)\0index\0deleteCombox(int)\0"
     "on_saveCloudBtn_clicked()\0"
+    "on_openMeshBtn_clicked()\0"
 };
 
 void mainform::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -91,9 +97,12 @@ void mainform::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 11: _t->on_outremoveBtn_clicked(); break;
         case 12: _t->on_cloudOpenBtn_clicked(); break;
         case 13: _t->on_cloudExportBtn_clicked(); break;
-        case 14: _t->addCombox((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 15: _t->deleteCombox((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 16: _t->on_saveCloudBtn_clicked(); break;
+        case 14: _t->on_reconsBtn_clicked(); break;
+        case 15: _t->on_savePLYmeshBtn_clicked(); break;
+        case 16: _t->addCombox((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 17: _t->deleteCombox((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 18: _t->on_saveCloudBtn_clicked(); break;
+        case 19: _t->on_openMeshBtn_clicked(); break;
         default: ;
         }
     }
@@ -131,9 +140,9 @@ int mainform::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 17)
+        if (_id < 20)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 17;
+        _id -= 20;
     }
     return _id;
 }

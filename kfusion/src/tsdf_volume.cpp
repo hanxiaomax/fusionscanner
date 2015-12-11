@@ -83,11 +83,9 @@ const CudaData kfusion::cuda::TsdfVolume::data() const { return data_; }
 CudaData kfusion::cuda::TsdfVolume::data() {  return data_; }
 
 
-//const DeviceArray2D<int> kfusion::cuda::TsdfVolume::getvolume() const { return volume_;}
-
 Vec3f kfusion::cuda::TsdfVolume::getSize() const { return size_; }
-void kfusion::cuda::TsdfVolume::setSize(const Vec3f& size)
-{ size_ = size; setTruncDist(trunc_dist_); }
+void kfusion::cuda::TsdfVolume::setSize(const Vec3f& size){ size_ = size; setTruncDist(trunc_dist_); }
+
 
 //获取截断距离
 //PCL是动态设置的，此处我们固定为0.03

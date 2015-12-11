@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'ResultViewer.h'
 **
-** Created: Tue Dec 1 16:25:02 2015
+** Created: Wed Dec 2 10:34:05 2015
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.0)
 **
 ** WARNING! All changes made in this file will be lost!
