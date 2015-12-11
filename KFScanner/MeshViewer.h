@@ -15,6 +15,8 @@ public:
 private:
 	qglviewer::ManipulatedFrame* light1;
 	qglviewer::ManipulatedFrame* light2;
+	bool wireframe_;
+	void keyPressEvent(QKeyEvent *e);
 private:
 	pcl::PolygonMesh input_mesh;
 	pcl::PointCloud<pcl::PointNormal>::Ptr cloud;

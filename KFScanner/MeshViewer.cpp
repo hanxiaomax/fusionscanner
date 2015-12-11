@@ -1,12 +1,13 @@
 #include "MeshViewer.h"
 #include <iostream>
-
+#include <QKeyEvent>
 using namespace qglviewer;
 using namespace std;
 MeshViewer::MeshViewer(QWidget *parent): 
 	QGLViewer(parent),
 	cloud(new pcl::PointCloud<pcl::PointNormal>()),
-	normal(new pcl::PointCloud<pcl::PointNormal>())
+	normal(new pcl::PointCloud<pcl::PointNormal>()),
+	wireframe_(false)
 {
 
 
@@ -187,3 +188,17 @@ void MeshViewer::setMeshBuffer(pcl::PolygonMesh &input)
 	cout<<"done"<<endl;
 }
 
+void MeshViewer::keyPressEvent(QKeyEvent *e)
+{
+	if (e->key()==Qt::Key_W)
+	{
+		wireframe_ = !wireframe_;
+		if (wireframe_)
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		else
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		updateGL();
+	}
+	else
+		QGLViewer::keyPressEvent(e);
+}
