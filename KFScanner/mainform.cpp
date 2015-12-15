@@ -9,6 +9,8 @@
 #include <io.h>
 #include <pcl/console/time.h>
 #include <pcl/surface/marching_cubes_hoppe.h>
+#include <pcl/kdtree/kdtree_flann.h>
+#include <pcl/surface/mls.h>
 #include <fstream>
 #include <sstream>
 //#include <pcl/surface/poisson.h>
@@ -31,7 +33,7 @@ mainform::mainform(QWidget *parent, Qt::WFlags flags)
 	isKinectOK(false),//Kinect
 	with_normal(true),//保存点云和法线
 	cloudFromFile(false),
-	input_cloud(new pcl::PointCloud<pcl::PointNormal>())
+	pcd_buffer_(new pcl::PointCloud<pcl::PointNormal>())
 {
 	//////指针初始化
 	_scanner = 0;
@@ -99,9 +101,9 @@ void mainform::setkinfuToDefault()
  ----------------------------------------*/ 
 void mainform::on_actionSaveCloud_triggered()
 {
-	pcd_buffer=_scanner->savePointCloud(ui.ply_check->checkState()==Qt::Checked,ui.pcd_check->checkState()==Qt::Checked,ui.normal_check->checkState()==Qt::Checked);//写入文件
-	ui.cloudViewer->setPcdBuffer(pcd_buffer);
-	ui.resultViewer->setPcdBuffer(pcd_buffer);
+	*pcd_buffer_=_scanner->savePointCloud(ui.ply_check->checkState()==Qt::Checked,ui.pcd_check->checkState()==Qt::Checked);//写入文件
+	ui.cloudViewer->setPcdBuffer(pcd_buffer_);
+	ui.resultViewer->setPcdBuffer(pcd_buffer_);
 	ui.cloudViewer->update();
 	ui.resultViewer->update();
 }
@@ -112,13 +114,12 @@ void mainform::on_actionSaveCloud_triggered()
 void mainform::on_saveCloudBtn_clicked()
 {
 	//点云写入pcd_buffer
-	pcd_buffer=_scanner->savePointCloud(ui.ply_check->checkState()==Qt::Checked,ui.pcd_check->checkState()==Qt::Checked,ui.normal_check->checkState()==Qt::Checked);//写入文件
+	*pcd_buffer_=_scanner->savePointCloud(ui.ply_check->checkState()==Qt::Checked,ui.pcd_check->checkState()==Qt::Checked);//写入文件
 	//
-	ui.cloudViewer->setPcdBuffer(pcd_buffer);//拷贝pcd_buffer到cloudviewer然后显示
+	ui.cloudViewer->setPcdBuffer(pcd_buffer_);//拷贝pcd_buffer到cloudviewer然后显示
 	ui.cloudViewer->update();
-	ui.resultViewer->setPcdBuffer(pcd_buffer);
-	convert::FromVertex(pcd_buffer,*input_cloud);
-	ui.resultViewer->setInputCloud(input_cloud);
+	ui.resultViewer->setPcdBuffer(pcd_buffer_);
+	ui.resultViewer->setInputCloud(pcd_buffer_);
 	ui.resultViewer->update();
 }
 /*----------------------------------------*
@@ -126,42 +127,15 @@ void mainform::on_saveCloudBtn_clicked()
  ----------------------------------------*/ 
 void mainform::on_reconsBtn_clicked()
 {
-	float iso_level = ui.iso_value->value();//0.0
 	
-	int grid_res = ui.res_value->value();//70
-
-	float extend_percentage = ui.percentage_value->value();//0.0
+	runMarchingCube();
 	
-	float off_surface_displacement =  ui.off_value->value();//0.01
-
-
-	MarchingCubes<PointNormal> *mc;
-	mc = new MarchingCubesHoppe<PointNormal> ();
-	
-
-	mc->setIsoLevel (iso_level);
-	mc->setGridResolution (grid_res, grid_res, grid_res);
-	mc->setPercentageExtendGrid (extend_percentage);
-	mc->setInputCloud (input_cloud);
-
-	TicToc tt;
-	tt.tic ();
-
-	print_highlight ("Computing ");
-	mc->reconstruct (mesh);
-	
-	
-
-	/*for(std::vector< ::pcl::Vertices>::iterator it=mesh.polygons.begin();it!=mesh.polygons.end();it++)
-		(*it).*/
-	//cout<<mesh;
-	//out<<mesh;
-
-	delete mc;
-	
-	print_info ("[done, "); print_value ("%g", tt.toc ()); print_info (" ms]\n");
 	QMessageBox::information(NULL, tr("成功"), tr("重建"));
-	
+	ui.mesh_viewer->setMeshBuffer(mesh);
+	//ui.mesh_viewer->setInputCloud(pcd_buffer_);
+	ui.mesh_viewer->update();
+	//ui.resultViewer->setPcdBuffer(pcd_buffer_);
+	//ui.resultViewer->update();
 
 }
 /*----------------------------------------*
@@ -182,23 +156,19 @@ void mainform::on_savePLYmeshBtn_clicked()
 }
 void mainform::on_openMeshBtn_clicked()
 {
-	mesh.polygons.clear();
-	
 	QString filename = QFileDialog::getOpenFileName(this,tr("打开mesh文件"),".",tr("*.ply"));
 	if(!filename.isEmpty())
 	{	
+		mesh.polygons.clear();
 		cout<<"open:"<<filename.toStdString()<<endl;
 		loadPLYFile(filename.toStdString(),mesh);
 
 		cout<<"opened!"<<endl;
+		ui.mesh_viewer->setMeshBuffer(mesh);
+		ui.mesh_viewer->update();
 	}
-	ui.mesh_viewer->setMeshBuffer(mesh);//TODO 应该是一个信号槽
-	//ofstream out("../mesh-point.txt",ofstream::out);
-	//out<<mesh;
-	//out.close();
-	ui.mesh_viewer->update();
+	
 }
-
 
 /*----------------------------------------*
  *  功能描述: 重置kinfu参数按钮触发槽函数
@@ -250,6 +220,9 @@ void mainform::on_connectKinect_triggered()
 void mainform::on_ToolstartBtn_triggered()
 {
 	unsigned int delay=ui.delay_slider->value()*1000;//毫秒变为秒
+	_scanner->fusionStart();
+	_scanner->cameraStart();
+	
 	updateTimer=startTimer(33);//viewer定时器，33ms触发一次
 	delayTimer=startTimer(delay);//fusionstart延时启动定时器，触发一次
 }
@@ -260,6 +233,7 @@ void mainform::on_ToolstartBtn_triggered()
 void mainform::on_ToolstopBtn_triggered()
 {
 	_scanner->fusionHold();
+	_scanner->cameraHold();
 }
 /*----------------------------------------*
  *  功能描述: 复位摄像机按钮触发槽函数
@@ -642,22 +616,17 @@ void mainform::deleteCombox(int index)
  -------------------------------------------------------------------*/ 
 void mainform::on_outremoveBtn_clicked()
 {	
-		//vertexes &pcd=ui.resultViewer->getPcdBuffer();
-		vertexes pcd_host;
+		pcl::PointCloud<pcl::PointNormal>::Ptr temp(new pcl::PointCloud<pcl::PointNormal>);
+
 		int mean_k = ui.sb_meank->value();
 		float std_dev = ui.sb_std_dev->value();
 		OutRemover or(mean_k,std_dev);
-		pcl::PointCloud<pcl::PointNormal> output;
-		pcl::PointCloud<pcl::PointNormal>::Ptr cloud(new pcl::PointCloud<pcl::PointNormal>());
-		
 
-		if(pcd_buffer.size()>0)
+		if(pcd_buffer_->size()>0)
 		{
-			convert::FromVertex(pcd_buffer,*cloud);//执行点云格式转换
-			or.execute(cloud,output);//执行滤波
-			convert::ToVertex(output,pcd_host);//执行点云格式转换
-			
-			ui.resultViewer->setPcdBuffer(pcd_host);//对滤波后结果进行可视化
+			or.execute(pcd_buffer_,*temp);//执行滤波
+			pcd_buffer_= temp;
+			ui.resultViewer->setPcdBuffer(pcd_buffer_);//对滤波后结果进行可视化
 			ui.resultViewer->update();
 		}
 		else
@@ -666,25 +635,29 @@ void mainform::on_outremoveBtn_clicked()
 
 void mainform::on_cloudOpenBtn_clicked()
 {
-	pcd_buffer.clear();//清空点云buffer，否则会出现叠加
+	pcd_buffer_->clear();//清空点云buffer，否则会出现叠加
 	QString filename = QFileDialog::getOpenFileName(this,tr("打开点云文件"),".",tr("*.ply"));
 	if(!filename.isEmpty())
 	{	
 		PLYFilereader reader;
 		
-		if(reader.readToVertexes(filename.toStdString(),*input_cloud,pcd_buffer,false))//读到主界面的pcd_buffer中
+		if (reader.loadPlyCloud(filename.toStdString(),*pcd_buffer_))
+		{
 			cout<<"open : "<<filename.toStdString()<<endl;
+		}
+		///if(reader.readToVertexes(filename.toStdString(),*input_cloud,pcd_buffer,false))//读到主界面的pcd_buffer中
+			
 		else
 			cout<<"can not open : "<<filename.toStdString()<<endl;
 	}
-	ui.resultViewer->setPcdBuffer(pcd_buffer);
-	ui.resultViewer->setInputCloud(input_cloud);
-	cout<<"main form input_cloud.size()="<<input_cloud->size()<<endl;
+	ui.resultViewer->setPcdBuffer(pcd_buffer_);
+	ui.resultViewer->setInputCloud(pcd_buffer_);
+	cout<<"main form input_cloud.size()="<<pcd_buffer_->size()<<endl;
 	ui.resultViewer->update();
 }
 void mainform::on_cloudExportBtn_clicked()
 {
-	if (input_cloud->size()>0)
+	if (pcd_buffer_->size()>0)
 	{
 		QString fileName;  
 		fileName = QFileDialog::getSaveFileName(this,  
@@ -692,13 +665,11 @@ void mainform::on_cloudExportBtn_clicked()
 		if (fileName.size()>0)
 		{
 			PLYFilewriter w;
-			w.write(fileName.toStdString(),*input_cloud,false);
+			w.write(fileName.toStdString(),*pcd_buffer_,false);
 		}
 	}
 	else
-		QMessageBox::information(NULL, tr("警告"), tr("没有可以用来输出的点云"));
-	
-	
+		QMessageBox::information(NULL, tr("警告"), tr("没有可以用来输出的点云"));	
 }
 
 //////////////////////////////////////////////////
@@ -708,5 +679,47 @@ void sleep(unsigned int msec)
 	QTime dieTime = QTime::currentTime().addMSecs(msec);
 	while( QTime::currentTime() < dieTime )
 		QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+}
+
+void mainform::runMarchingCube()
+{
+	float iso_level = ui.iso_value->value();//0.0
+	int grid_res = ui.res_value->value();//70
+	float extend_percentage = ui.percentage_value->value();//0.0
+	float off_surface_displacement =  ui.off_value->value();//0.01
+
+
+	MarchingCubes<PointNormal> *mc;
+	mc = new MarchingCubesHoppe<PointNormal> ();
+
+
+	mc->setIsoLevel (iso_level);
+	mc->setGridResolution (grid_res, grid_res, grid_res);
+	mc->setPercentageExtendGrid (extend_percentage);
+	mc->setInputCloud (pcd_buffer_);
+
+	TicToc tt;
+	tt.tic ();
+
+	print_highlight ("Computing... ");
+	mc->reconstruct (mesh);
+
+	delete mc;
+}
+void mainform::runMLS()
+{
+	pcl::MovingLeastSquares<pcl::PointXYZ, pcl::PointNormal> mls;
+	pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ>);
+	pcl::PointCloud<pcl::PointNormal>::Ptr mls_points;
+	mls.setComputeNormals (true);
+
+	// Set parameters
+	mls.setInputCloud (pcd_xyz);
+	mls.setPolynomialFit (true);
+	mls.setSearchMethod (tree);
+	mls.setSearchRadius (0.03);
+
+	// Reconstruct
+	mls.process (*mls_points);
 }
 

@@ -6,7 +6,7 @@ using namespace std;
 
 void CloudViewer::draw() 
 {
-	if(pcd_buffer.size()>0)
+	if(pcd_buffer_->size()>0)
 	{
 		setFPSIsDisplayed();
 		glPushMatrix();
@@ -16,8 +16,8 @@ void CloudViewer::draw()
 	
 		glColor3f(1,1,0);
 		glBegin(GL_POINTS);
-		for (int i = 0; i < pcd_buffer.size(); ++i) 
-			glVertex3d(pcd_buffer[i].x,pcd_buffer[i].y,pcd_buffer[i].z);//绘制一个点
+		for (int i = 0; i < pcd_buffer_->size(); ++i) 
+			glVertex3d(pcd_buffer_->points[i].x,pcd_buffer_->points[i].y,pcd_buffer_->points[i].z);//绘制一个点
 		glEnd();
 		glPopMatrix();
 	}

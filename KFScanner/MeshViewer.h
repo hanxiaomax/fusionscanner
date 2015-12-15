@@ -20,6 +20,6 @@ private:
 private:
 	pcl::PolygonMesh input_mesh;
 	pcl::PointCloud<pcl::PointNormal>::Ptr cloud;
-	pcl::PointCloud<pcl::PointNormal>::Ptr normal;
+
 };
 

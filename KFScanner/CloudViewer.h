@@ -9,17 +9,17 @@ class CloudViewer : public QGLViewer
 {
 
 public:
-	CloudViewer::CloudViewer(QWidget *parent): QGLViewer(parent),vizScale(1.0f){};
+	CloudViewer::CloudViewer(QWidget *parent): QGLViewer(parent),vizScale(1.0f),pcd_buffer_(new pcl::PointCloud<pcl::PointNormal>()){};
 
 protected:
 	virtual void draw();
 	virtual void init();
 public:
 
-	void setPcdBuffer(vertexes &pcd){pcd_buffer=pcd;};
-	vertexes getPcdBuffer(){return pcd_buffer;};
+	void setPcdBuffer(pcl::PointCloud<pcl::PointNormal>::Ptr pcd){pcd_buffer_=pcd;};
+	pcl::PointCloud<pcl::PointNormal> getPcdBuffer(){return *pcd_buffer_;};
 private:
-	vertexes pcd_buffer;
+	pcl::PointCloud<pcl::PointNormal>::Ptr pcd_buffer_;
 	float vizScale;
 
 

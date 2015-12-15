@@ -58,6 +58,7 @@ namespace kfusion
             int bgra;
         };
     };
+
 	//ÏñËØÑÕÉ«Öµ
     struct PixelRGB
     {

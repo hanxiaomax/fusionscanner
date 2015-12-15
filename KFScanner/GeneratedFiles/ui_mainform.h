@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainform.ui'
 **
-** Created: Wed Dec 9 16:04:08 2015
+** Created: Mon Dec 14 10:33:07 2015
 **      by: Qt User Interface Compiler version 4.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -183,7 +183,6 @@ public:
     QGridLayout *gridLayout_3;
     QCheckBox *ply_check;
     QCheckBox *pcd_check;
-    QCheckBox *normal_check;
     QPushButton *saveCloudBtn;
     QGroupBox *groupBox_6;
     QGridLayout *gridLayout_4;
@@ -348,7 +347,7 @@ public:
         init_toolbox->setLineWidth(1);
         page_8 = new QWidget();
         page_8->setObjectName(QString::fromUtf8("page_8"));
-        page_8->setGeometry(QRect(0, 0, 174, 318));
+        page_8->setGeometry(QRect(0, 0, 228, 523));
         gridLayout_17 = new QGridLayout(page_8);
         gridLayout_17->setSpacing(6);
         gridLayout_17->setContentsMargins(11, 11, 11, 11);
@@ -1025,16 +1024,10 @@ public:
 
         gridLayout_3->addWidget(pcd_check, 0, 2, 1, 1);
 
-        normal_check = new QCheckBox(groupBox_5);
-        normal_check->setObjectName(QString::fromUtf8("normal_check"));
-        normal_check->setChecked(true);
-
-        gridLayout_3->addWidget(normal_check, 1, 1, 1, 1);
-
         saveCloudBtn = new QPushButton(groupBox_5);
         saveCloudBtn->setObjectName(QString::fromUtf8("saveCloudBtn"));
 
-        gridLayout_3->addWidget(saveCloudBtn, 1, 2, 1, 1);
+        gridLayout_3->addWidget(saveCloudBtn, 1, 1, 1, 1);
 
 
         horizontalLayout_13->addLayout(gridLayout_3);
@@ -1446,7 +1439,7 @@ public:
         QObject::connect(delay_slider, SIGNAL(valueChanged(int)), delay_value, SLOT(setNum(int)));
         QObject::connect(range_slider, SIGNAL(valueChanged(int)), range_value, SLOT(setNum(int)));
 
-        mainTab->setCurrentIndex(3);
+        mainTab->setCurrentIndex(1);
         init_toolbox->setCurrentIndex(0);
         toolBox->setCurrentIndex(0);
 
@@ -1523,7 +1516,6 @@ public:
         groupBox_5->setTitle(QApplication::translate("mainformClass", "\347\202\271\344\272\221\346\223\215\344\275\234", 0, QApplication::UnicodeUTF8));
         ply_check->setText(QApplication::translate("mainformClass", "ply", 0, QApplication::UnicodeUTF8));
         pcd_check->setText(QApplication::translate("mainformClass", "pcd", 0, QApplication::UnicodeUTF8));
-        normal_check->setText(QApplication::translate("mainformClass", "\346\263\225\345\220\221\351\207\217", 0, QApplication::UnicodeUTF8));
         saveCloudBtn->setText(QApplication::translate("mainformClass", "\344\277\235\345\255\230/\351\242\204\350\247\210\347\202\271\344\272\221", 0, QApplication::UnicodeUTF8));
         groupBox_6->setTitle(QApplication::translate("mainformClass", "\345\215\207\351\231\215\345\217\260\345\217\202\346\225\260\345\217\212\347\212\266\346\200\201", 0, QApplication::UnicodeUTF8));
         label_23->setText(QApplication::translate("mainformClass", "\350\247\222\351\200\237\345\272\246", 0, QApplication::UnicodeUTF8));

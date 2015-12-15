@@ -22,20 +22,22 @@ public:
 	
 
 private:
-	bool exit_, iteractive_mode_;
-	bool fusionstart;
-	OpenNISource& capture;
-	KinFu::Ptr kinfu_sp;
-	cuda::Image view_device_;
-	cuda::Depth depth_device_;
+	OpenNISource& capture;//openNI设备
+	KinFu::Ptr kinfu_sp;//kinfu指针
+	cuda::Image rgb_device_;//视频数据容器
+	cuda::Depth depth_device_;//深度数据容器
 	double time_ms;
+	bool fusion_start,camera_start;//是否开启摄像头，是否进行融合
 
 public:
 	void fusionStart();//启动融合
 	void fusionHold();//暂停融合
 	void fusionReset();//软件复位
+	void cameraStart(){camera_start=true;};
+	void cameraHold(){camera_start=false;};
+	
 	void update();//更新数据
-	vertexes savePointCloud(bool ToPly , bool ToPcd , bool with_normal);//获取点云并保存到文件（或直接可视化）
+	pcl::PointCloud<pcl::PointNormal> fusionScanner::savePointCloud(bool ToPly , bool ToPcd);//获取点云并保存到文件（或直接可视化）
 	void getPointCloud(pcl::PointCloud<pcl::PointNormal> &input);
 	
 private:

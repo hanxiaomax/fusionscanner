@@ -85,11 +85,10 @@ public:
 	virtual int read(const string &file_name,cv::Mat &cloud_host);//读取到矩阵
 	virtual int readToVertexes(const string &file_name,vertexes &cloud_vertex,bool normal);//读取生成顶点
 	virtual int readToVertexes(const string &file_name,pcl::PointCloud<pcl::PointNormal> &input,vertexes &cloud_vertex,bool normal);
+	bool loadPlyCloud (const std::string &filename, pcl::PointCloud<pcl::PointNormal> &cloud);//将PLY文件转换为PCL点类型
 private:
 	InfoBox infobox;
 	int valid_point;
-private:
-	bool loadPlyCloud (const std::string &filename, pcl::PointCloud<pcl::PointNormal> &cloud);//将PLY文件转换为PCL点类型
 };
 
 

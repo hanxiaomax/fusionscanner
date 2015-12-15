@@ -4,7 +4,6 @@
 #include <QTextCodec> 
 #include <kfusion/types.hpp>
 #include "QGLViewer/frame.h"
-
 //点云frame
 class _PointFrame
 {
@@ -24,12 +23,11 @@ class ResultViewer : public QGLViewer
 
 public:
 	ResultViewer(QWidget *parent);
-	//void update(){cout<<"update"<<endl;updateGL();};//update是QWidget实现的
-	void setPcdBuffer(vertexes &pcd);//设置可视化点云
-	vertexes & getPcdBuffer(){return pcd_buffer;};
+	void setPcdBuffer(pcl::PointCloud<pcl::PointNormal>::Ptr pcd);
+	pcl::PointCloud<pcl::PointNormal>::Ptr getPcdBuffer(){return pcd_buffer_;};
 	void setInputCloud(pcl::PointCloud<pcl::PointNormal>::Ptr input){input_cloud=input;};//设置输入点云
-	//pcl::PointCloud<pcl::PointNormal> getInputCloud(){return input_cloud;};
 
+	
 
 public slots:
     bool remove_point();//移除选中点
@@ -48,7 +46,7 @@ protected :
   virtual void paintEvent(QPaintEvent *event);
  
 private:
-	vertexes pcd_buffer;
+	pcl::PointCloud<pcl::PointNormal>::Ptr pcd_buffer_;
 	pcl::PointCloud<pcl::PointNormal>::Ptr input_cloud;
 	pcl::PointIndices::Ptr remove_indice;
 	QRect rectangle_;//矩形选择框

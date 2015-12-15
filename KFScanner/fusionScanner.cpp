@@ -14,7 +14,8 @@
 fusionScanner::fusionScanner(OpenNISource& source)
 	:capture(source),
 	time_ms(0),
-	fusionstart(false)
+	fusion_start(false),
+	camera_start(false)
 {
 	KinFuParams params = KinFuParams::default_params();//设置默认参数
 	kinfu_sp = KinFu::Ptr( new KinFu(params) );//创建Kinfu对象
@@ -31,7 +32,7 @@ fusionScanner::fusionScanner(OpenNISource& source)
 fusionScanner::fusionScanner(OpenNISource& source,KinFuParams &params)
 	:capture(source),
 	 time_ms(0),
-	 fusionstart(false)
+	 fusion_start(false)
 {
 	//KinFuParams p = params;//可以删掉？
 	kinfu_sp = KinFu::Ptr( new KinFu(params) );//创建Kinfu对象
@@ -52,7 +53,7 @@ fusionScanner::~fusionScanner(void)
 --------------------------------------*/ 
 void fusionScanner::fusionStart()
 {
-	fusionstart=true;
+	fusion_start=true;
 }
 
 /*-------------------------------------* 
@@ -60,7 +61,7 @@ void fusionScanner::fusionStart()
 --------------------------------------*/ 
 void fusionScanner::fusionHold()
 {
-	fusionstart=false;
+	fusion_start=false;
 }
 /*-------------------------------------* 
 *	功能描述: 重置相机
@@ -75,7 +76,7 @@ void fusionScanner::fusionReset()
 *	功能描述: 更新扫描数据
 --------------------------------------*/ 
 void fusionScanner::update(){
-	if (fusionstart)
+	if (fusion_start)
 	{
 		capture.grab(depth, image);
 		KinFu& kinfu=*kinfu_sp;
@@ -88,7 +89,7 @@ void fusionScanner::update(){
 		}
 		creat_raycasted(kinfu);
 	}
-	else
+	else if(camera_start)
 	{
 		capture.grab(depth, image);
 	}
@@ -99,10 +100,10 @@ void fusionScanner::update(){
 --------------------------------------*/ 
 void fusionScanner::creat_raycasted(KinFu& kinfu)
 {		int mode=1;
-        kinfu.renderImage(view_device_, mode);
+        kinfu.renderImage(rgb_device_, mode);
 
-        view_host_.create(view_device_.rows(), view_device_.cols(), CV_8UC4);//创建矩阵储存像素
-        view_device_.download(view_host_.ptr<void>(), view_host_.step);		
+        view_host_.create(rgb_device_.rows(), rgb_device_.cols(), CV_8UC4);//创建矩阵储存像素
+        rgb_device_.download(view_host_.ptr<void>(), view_host_.step);		
 }
 
 void fusionScanner::clean_raycasted()
@@ -113,59 +114,54 @@ void fusionScanner::clean_raycasted()
 *	功能描述: 获取点云
 *	参数：	  是否写入到文件
 --------------------------------------*/ 
-
-vertexes fusionScanner::savePointCloud(bool ToPly , bool ToPcd , bool with_normal)
+pcl::PointCloud<pcl::PointNormal> fusionScanner::savePointCloud(bool ToPly , bool ToPcd)
 {
 	KinFu& kinfu=*kinfu_sp;
-	kfusion::vertexes pcd;
+	pcl::PointCloud<pcl::PointNormal> pcd;
 	//点云
 	cuda::DeviceArray<Point> cloud = kinfu.tsdf().fetchCloud(cloud_buffer);//GPU内存中的一维矩阵	
 	cv::Mat cloud_host(1, (int)cloud.size(), CV_32FC4);//一维矩阵，存放无序点云(1行，n列) CV_32FC4 32位浮点4通道
 	//法向量
 	cuda::DeviceArray<Point> normal;
-	if(with_normal)
-	{
-		normal = kinfu.tsdf().fetchNormals(cloud,normal_buffer);//传入的是cloud不是cloud_buffer，后者无法正确download
-		cv::Mat normal_host(1, (int)cloud.size(), CV_32FC4);
-		normal.download(normal_host.ptr<Normal>());
+	
+	normal = kinfu.tsdf().fetchNormals(cloud,normal_buffer);//传入的是cloud不是cloud_buffer，后者无法正确download
+	cv::Mat normal_host(1, (int)cloud.size(), CV_32FC4);
+	normal.download(normal_host.ptr<Normal>());
 
-	}
+	
 	
 	cloud.download(cloud_host.ptr<Point>());
 	for (int i = 0; i < cloud_host.cols; ++i) 
 	{
-		cv::Point3d vertex;
-		vertex.x=cloud_host.at<cv::Vec4f>(0,i)[0];
-		vertex.y=cloud_host.at<cv::Vec4f>(0,i)[1];
-		vertex.z=cloud_host.at<cv::Vec4f>(0,i)[2];
-		
-		pcd.push_back(vertex);
+		pcl::PointNormal p;
+		p.x=cloud_host.at<cv::Vec4f>(0,i)[0];
+		p.y=cloud_host.at<cv::Vec4f>(0,i)[1];
+		p.z=cloud_host.at<cv::Vec4f>(0,i)[2];
+		p.normal_x=normal_host.at<cv::Vec4f>(0,i)[0];
+		p.normal_y=normal_host.at<cv::Vec4f>(0,i)[1];
+		p.normal_z=normal_host.at<cv::Vec4f>(0,i)[2];
+		pcd.points.push_back(p);
 	}
 	InfoBox infobox("getPointCloud");
 	infobox.printInfo("用于可视化的点云数据已经准备好:",InfoBox::SUC);
-	if (ToPly||ToPly)
+	if (ToPly||ToPcd)
 	{
 			if(ToPly)/*把点云数据写入ply文件*/
 			{
 				ScopeTime st("ply writer");
 				PLYFilewriter PLYw;
+				PLYw .write("cloud_file-n.ply",cloud,normal);
+				infobox.printInfo("PLY生成:",InfoBox::SUC);
 				
-				if(with_normal)
-					PLYw .write("cloud_file-n.ply",cloud,normal);
-				else
-					PLYw .write("cloud_file.ply",cloud);
 			}
 			if(ToPcd)/*把点云数据写入pcd文件*/
 			{
 				ScopeTime st("pcd writer");
 				PCDFilewriter PCDw;
-				if(with_normal)
-					PCDw.write("cloud_file.pcd",cloud,normal);
-				else
-					PCDw.write("cloud_file.pcd",cloud);
+				PCDw.write("000cloud_file.pcd",cloud,normal);
+				infobox.printInfo("PCD生成:",InfoBox::SUC);
 			}
 	}
-	
 	return pcd ;
 }
 

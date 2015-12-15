@@ -49,9 +49,8 @@ private:
 	bool isKinectOK;
 	bool isFacilityOK;
 	bool isGpuOK;
-	
-	vertexes pcd_buffer;
-	pcl::PointCloud<pcl::PointNormal>::Ptr input_cloud;
+	pcl::PointCloud<pcl::PointNormal>::Ptr pcd_buffer_;
+	pcl::PointCloud<pcl::PointXYZ>::Ptr pcd_xyz;
 	PolygonMesh mesh;
 	
 
@@ -94,7 +93,8 @@ private:
 	QStringList findAvailablePort();//查找全部可用端口
 	QString _getCom(int index ,QString keyorvalue);//查找端口
 	void init_scriptList();
-
+	void runMarchingCube();
+	void runMLS();
 };
 
 #endif // MAINFORM_H

@@ -15,12 +15,12 @@
 #include <math.h>
 #include <iostream>
 
-
 using namespace std;
 
 #ifndef GL_MULTISAMPLE
 #define GL_MULTISAMPLE  0x809D
 #endif
+
 
 
 ResultViewer::ResultViewer(QWidget *parent):
@@ -172,18 +172,20 @@ void ResultViewer::mouseReleaseEvent(QMouseEvent* e)
 /*----------------------------------------*
  *  功能描述: 设置待显示的点云
  ----------------------------------------*/ 
-void ResultViewer::setPcdBuffer(vertexes &pcd)
+
+void ResultViewer::setPcdBuffer(pcl::PointCloud<pcl::PointNormal>::Ptr pcd)
 {
-	pcd_buffer=pcd;
+	pcd_buffer_=pcd;
 	reset();//复位selection，objects和remove_indices
 
-	for (int i = 0; i < pcd_buffer.size(); ++i) 
+	for (int i = 0; i < pcd_buffer_->size(); ++i) 
 	{
 		_PointFrame * p = new _PointFrame();
-		p->frame.setPosition(qglviewer::Vec(pcd_buffer[i].x,pcd_buffer[i].y,pcd_buffer[i].z));
+		
+		p->frame.setPosition(qglviewer::Vec(pcd_buffer_->points[i].x,pcd_buffer_->points[i].y,pcd_buffer_->points[i].z));
 		objects_.append(p);		
 	}
-}
+ }
 
 /*----------------------------------------*
  *  功能描述: 矩形选择框
@@ -241,7 +243,7 @@ bool ResultViewer::remove_point()
 		pcl::PCLPointCloud2::Ptr input_temp(new pcl::PCLPointCloud2()),//临时输入
 								output_temp(new pcl::PCLPointCloud2());//输出为PCLPointCloud2
 		pcl::PointCloud<pcl::PointNormal> output_cloud;//输出点云
-		vertexes new_pcd;
+		pcl::PointCloud<pcl::PointNormal> new_pcd;
 
 		pcl::toPCLPointCloud2<pcl::PointNormal>(*input_cloud,*input_temp);//转换为ExtractIndices可用的PCLPointCloud2格式temp
 		pcl::ExtractIndices<pcl::PCLPointCloud2> extract;
@@ -249,13 +251,13 @@ bool ResultViewer::remove_point()
 		extract.setIndices(remove_indice);
 		extract.setNegative(true);
 		extract.filter(*output_temp);
-		/*pcl::PLYWriter plywriter;
-		plywriter.writeASCII("./1111.ply",*output_temp);*/
+	
+
 		pcl::fromPCLPointCloud2<pcl::PointNormal>(*output_temp,output_cloud);
 		
-		kfusion::convert::ToVertex(output_cloud,new_pcd);
+		
 		*input_cloud=output_cloud;//以输出点云更新输入点云
-		setPcdBuffer(new_pcd);
+		setPcdBuffer(input_cloud);
 		
 		return true;
 	}
