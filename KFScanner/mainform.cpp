@@ -13,7 +13,7 @@
 #include <pcl/surface/mls.h>
 #include <fstream>
 #include <sstream>
-//#include <pcl/surface/poisson.h>
+#include <kfusion/MCmesh.h>
 /*************************************
  *  简要描述: GUI界面逻辑
  ************************************/  
@@ -688,21 +688,23 @@ void mainform::runMarchingCube()
 	float extend_percentage = ui.percentage_value->value();//0.0
 	float off_surface_displacement =  ui.off_value->value();//0.01
 
+	//MarchingCubes<PointNormal> *mc;
+	//mc = new MarchingCubesHoppe<PointNormal> ();
 
-	MarchingCubes<PointNormal> *mc;
-	mc = new MarchingCubesHoppe<PointNormal> ();
-
-
+	mesh::MCmesh *mc;
+	mc = new mesh::MCmesh();
+	
 	mc->setIsoLevel (iso_level);
-	mc->setGridResolution (grid_res, grid_res, grid_res);
-	mc->setPercentageExtendGrid (extend_percentage);
+	mc->setGridRes(grid_res,grid_res,grid_res);
+	mc->setPercentage(extend_percentage);
+	
 	mc->setInputCloud (pcd_buffer_);
 
 	TicToc tt;
 	tt.tic ();
 
-	print_highlight ("Computing... ");
-	mc->reconstruct (mesh);
+	print_highlight ("重建中... \n");
+	mc->run(mesh);
 
 	delete mc;
 }

@@ -68,6 +68,7 @@ void MeshViewer::init()
 	
 	glColorMaterial ( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE ) ;
 	glEnable ( GL_COLOR_MATERIAL ) ;//ÑÕÉ«Çý¶¯
+	glShadeModel(GL_SMOOTH);
 	restoreStateFromFile();
 	
 	
@@ -78,6 +79,8 @@ void MeshViewer::setMeshBuffer(pcl::PolygonMesh &input)
 {
 	input_mesh=input;
 	pcl::fromPCLPointCloud2<pcl::PointNormal>(input_mesh.cloud,*cloud);
+	//pcl::PLYWriter w;
+	//w.write("./mesh_cloud.ply",*cloud);
 	cout<<"done"<<endl;
 }
 
