@@ -169,7 +169,7 @@ namespace kfusion
 
         } /* for(int z = 0; z < VOLUME_Z - 1; z++) */
 
-
+	
         /////////////////////////
         // prepare for future scans
         if (ftid == 0)

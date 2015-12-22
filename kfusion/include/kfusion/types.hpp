@@ -3,7 +3,6 @@
 #define TYPE_HH
 
 #include <kfusion/cuda/device_array.hpp>
-#include <opencv2/core/core.hpp>
 #include <opencv2/contrib/contrib.hpp>
 #include <opencv2/core/affine.hpp>
 #include <opencv2/viz/vizcore.hpp>
